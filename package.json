@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "update-types": "npx --yes supabase gen types typescript --project-id tfjuhfngozqxeeglqfza > types/database.types.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.116.0",
     "@tanstack/react-query": "^5.101.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

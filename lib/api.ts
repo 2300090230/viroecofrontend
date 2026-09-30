@@ -40,7 +40,11 @@ export async function api<T>(path: string, opts: Options = {}): Promise<T> {
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    if (res.status === 401 || res.status === 403) clearSession();
+    // Only clear session if an authenticated request failed with 401 (JWT expired or invalid).
+    // Do not clear on login attempts or 403 (insufficient permissions / operational error).
+    if (res.status === 401 && token && !path.startsWith("/user/login")) {
+      clearSession();
+    }
     throw new ApiError(res.status, text.trim());
   }
 

@@ -22,9 +22,22 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
   return (
     <div className="pt-24">
       <Container className="py-10">
-        <Link href="/orders" className="cursor-pointer text-sm text-muted-foreground hover:text-foreground">
-          ← All orders
-        </Link>
+        <div className="mb-6 space-y-2">
+          <Link
+            href="/orders"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+          >
+            <span className="text-base leading-none group-hover:-translate-x-0.5 transition-transform">←</span>
+            <span>Back to Orders</span>
+          </Link>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+            <span>/</span>
+            <Link href="/orders" className="hover:text-foreground transition-colors">Orders</Link>
+            <span>/</span>
+            <span className="text-foreground font-medium">Order #{id}</span>
+          </nav>
+        </div>
 
         {order.isLoading ? (
           <Skeleton className="mt-6 h-64 w-full" />
@@ -33,7 +46,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         ) : (
           <>
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-              <h1 className="font-display text-4xl tracking-tight">Order #{order.data.id}</h1>
+              <h1 className="font-display text-2xl sm:text-4xl tracking-tight">Order #{order.data.id}</h1>
               <OrderStatusBadge status={order.data.status} />
             </div>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -42,19 +55,19 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
             <ul className="mt-8 divide-y divide-border border-y border-border">
               {order.data.items.map((i) => (
-                <li key={i.productId} className="flex items-center justify-between gap-4 py-4">
+                <li key={i.productId} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 py-4">
                   <div>
                     <Link
                       href={`/products/${i.productId}`}
-                      className="cursor-pointer font-display text-lg hover:text-terra-deep"
+                      className="cursor-pointer font-display text-base sm:text-lg hover:text-terra-deep leading-snug"
                     >
                       {i.pname}
                     </Link>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
                       {formatINR(i.price)} × {i.quantity}
                     </p>
                   </div>
-                  <span className="font-medium tabular-nums">{formatINR(i.price * i.quantity)}</span>
+                  <span className="font-medium text-sm sm:text-base tabular-nums self-end sm:self-center">{formatINR(i.price * i.quantity)}</span>
                 </li>
               ))}
             </ul>

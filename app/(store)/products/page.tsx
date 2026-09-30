@@ -6,7 +6,7 @@ export const metadata = { title: "Shop" };
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ query?: string; category?: string; page?: string }>;
+  searchParams: Promise<{ query?: string; category?: string; page?: string; size?: string }>;
 }) {
   const sp = await searchParams;
 
@@ -21,6 +21,7 @@ export default async function ProductsPage({
           initialQuery={sp.query ?? ""}
           initialCategory={sp.category ?? ""}
           initialPage={sp.page ? Number(sp.page) : 0}
+          initialPageSize={sp.size ? Number(sp.size) : 12}
         />
       </Container>
     </div>

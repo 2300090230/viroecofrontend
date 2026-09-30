@@ -1,0 +1,335 @@
+# ViroEco — Full Technical & Domain Knowledge Base
+> *llm.txt specification for AI models, agents, search indexers, and developers interacting with the ViroEco platform.*
+
+---
+
+## 1. Executive Summary & Brand Mission
+
+**ViroEco** is a premier circular bio-materials and sustainable consumer goods brand and enterprise foodservice technology platform. Founded on the principle of **Agricultural Circularity**, ViroEco replaces fossil petroleum single-use plastics, PFAS-laden paperboards, and toxic synthetic polymers with 100% natural, regeneratively harvested agricultural residues and rapidly renewable plant fibers.
+
+### Core Problem Solved:
+- **Petroleum Plastic Pollution:** Conventional plastics (PP, PS, PET) persist for 450+ years, degrading into microplastics and leaching endocrine disruptors (BPA, phthalates).
+- **Agricultural Crop Stubble Burning:** Millions of tons of rice husks and crop byproducts are incinerated across rural farmlands annually, producing severe particulate smog (PM2.5/PM10).
+- **Toxic PFAS / Fluorinated Liners:** Standard single-use paper cups and takeout containers use polyethylene (PE) or polyfluoroalkyl (PFAS) coatings to repel grease, contaminating compost and groundwater.
+- **Rural Economic Disparity:** Agrarian communities often lack secondary revenue streams for crop residues and fallen forest leaves.
+
+### ViroEco's Solution:
+ViroEco converts post-harvest agricultural crop residues (rice husks, sugarcane bagasse, bamboo fibers, and fallen areca palm leaves) into high-performance, microwave-safe, dishwasher-safe, hot-liquid resilient, and 100% biodegradable dinnerware, drinkware, kitchen storage, and gardenware.
+
+---
+
+## 2. Key Impact Statistics & Circular Metrics
+
+- **CO₂ Emissions Reduced:** 1,000+ Metric Tons of CO₂ equivalent neutralized.
+- **Agricultural Waste Upcycled:** 350+ Metric Tons of crop residue diverted from open-field incineration.
+- **Fossil Plastic Displaced:** 400+ Metric Tons of single-use virgin petroleum polymers prevented.
+- **Farming Communities Empowered:** Direct fair-trade partnerships with 4,500+ smallholder farming families across Southern and Western India.
+- **Net Carbon Footprint:** `-0.82 kg CO₂e / kg` (certified cradle-to-gate net carbon sink).
+- **PFAS / Total Fluorine:** `0.00 ppm` (tested & verified non-detectable under Intertek standards).
+- **Degradability:** 100% biodegradable and home compostable in 60–90 days in natural soil.
+
+---
+
+## 3. Materials Science & Bio-Feedstocks
+
+ViroEco formulates its goods from four primary agricultural feedstocks:
+
+### 1. Bamboo Fiber Biocomposite
+- **Source:** FSC-certified, rapidly renewable bamboo culms that mature in 3 years without chemical fertilizers or pesticides.
+- **Characteristics:** High tensile strength, feather-light weight, naturally antimicrobial, thermal resilience from -20°C to +120°C.
+- **Primary Applications:** Drinkware, classic mugs, insulated travel tumblers, reusable sippers, lunchboxes, and cutleries.
+
+### 2. Rice Husk Agricultural Residue
+- **Source:** Outer protective husks separated from rice grains during milling that would otherwise be burned in fields.
+- **Characteristics:** Rich in natural silica, extremely rigid, microwave-safe, shatter-resistant, scratch-resistant, and dishwasher-safe.
+- **Primary Applications:** Dinner bowls, plates, stackable food storage canisters, desk organisers, and durable planters.
+
+### 3. Sugarcane Bagasse Pulp
+- **Source:** Fibrous agricultural byproduct remaining after sugarcane juice extraction.
+- **Characteristics:** High hydraulic density, 100% home compostable within 60–90 days, unbleached natural tint, leak-proof against boiling liquids and grease.
+- **Primary Applications:** Foodservice takeaway containers, multi-compartment meal trays, soup bowls, and clamshell packaging.
+
+### 4. Naturally Fallen Areca Palm Leaves
+- **Source:** Shed sheaths naturally dropped by the *Areca catechu* palm tree.
+- **Characteristics:** Zero tree cutting or deforestation; washed solely with pure spring water and steam-pressed; distinct natural grain aesthetic; completely chemical-free and varnish-free.
+- **Primary Applications:** Premium event dinner plates, banqueting wares, canape platters, and catering trays.
+
+---
+
+## 4. Life Cycle Assessment (LCA) Comparison
+
+| Impact Assessment Metric | 🌱 ViroEco Circular Wares | Petroleum Plastic (PP / PS / PET) | PE-Lined Paperboard |
+|---|---|---|---|
+| **Fossil Petroleum Usage** | **0%** (Zero fossil polymer) | 100% (Virgin crude oil) | 15–20% (Polyethylene/PLA liner) |
+| **Carbon Footprint (Cradle-to-Gate)** | **-0.82 kg CO₂e / kg** (Net Sink) | +3.20 kg CO₂e / kg | +1.95 kg CO₂e / kg |
+| **Manufacturing Water Cycle** | **95% Closed-Loop Recycled** | High toxic wastewater effluent | Intensive chlorine bleaching effluent |
+| **End-of-Life Degradation** | **60–90 Days in natural soil** | 450+ Years (Microplastics) | Landfill methane emissions |
+| **PFAS & Forever Chemicals** | **0.00 ppm** (Certified Total Fluorine Free) | Phthalates & BPA/BPS | Fluorinated grease coatings |
+
+---
+
+## 5. Product Catalog & Category Taxonomy
+
+ViroEco features an extensive catalog of over 500+ SKUs spanning 18+ earthy color palettes:
+
+### 1. Drinkware
+- **Bottles:** Lightweight thermal-stable travel water bottles.
+- **Mugs & Cups:** Classic coffee mugs (300ml–450ml), espresso cups, stackable tea cups.
+- **Tumblers & Sippers:** Insulated travel tumblers, leakproof flip-top sippers, smoothie tumblers with reusable straws.
+
+### 2. Tableware & Dining
+- **Plates & Platters:** Side plates, dinner plates, compartment partitioned dining plates, serving platters.
+- **Bowls:** Soup bowls, cereal bowls, ramen bowls, sauce dip cups.
+- **Dinner Sets:** Complete 4-piece to 24-piece dining sets for residential, hospitality, and gifting uses.
+- **Trays:** Rectangular serving trays, breakfast trays, cafeteria trays.
+
+### 3. Gardenware & Planters
+- **Planter Types:** Small, Medium, Large, Table-Top, Hanging Planters, Planters with Drainage Trays, and Self-Watering Planters.
+- **Features:** UV-stabilized, weather-resistant, non-brittle, breathable biocomposite supporting root oxygenation.
+
+### 4. Storage & Home Improvements
+- **Kitchen Storage:** Modular airtight pantry canisters, grain dispensers, spice jars, snack boxes.
+- **General Organisers:** Desk trays, bathroom caddies, cutlery organizers, vanity storage.
+
+### 5. Gift Collections & Festive Editions
+- **Corporate Gift Boxes:** Customized eco-hampers for corporate ESG gifting.
+- **Festive Specials:** Plantable seed Rakhis, artisanal festive gift sets, customized packaging.
+
+---
+
+## 6. Enterprise & B2B Institutional Solutions
+
+ViroEco provides end-to-end sustainable supply chains for institutional high-volume buyers:
+
+### Target Industry Segments:
+1. **Hospitality & Resorts:** Luxury eco-resorts, five-star hotel banqueting, in-room amenities, poolside unbreakable drinkware.
+2. **QSR & Cloud Kitchens:** Nationwide delivery packaging, tamper-evident biodegradable meal bowls, grease-resistant containers.
+3. **Corporate Tech Campuses & Cafeterias:** Multi-thousand meal daily operations, branded corporate employee mugs, zero-waste cafeterias.
+4. **Airlines & Transit Catering:** Lightweight aviation-grade in-flight tableware meeting strict weight and compostability standards.
+5. **Healthcare & Hospitals:** Hypoallergenic, sterile, non-toxic patient dining trays and drinkware.
+6. **Festivals & Event Venues:** High-volume single-day events requiring zero-landfill waste streams.
+7. **Educational Institutions:** School, college, and university dining halls replacing melamine and styrofoam.
+8. **Modern Retail & Merchandising:** Private label manufacturing and shelf-ready retail packaging.
+
+### Enterprise SLA & Guarantees:
+- **Zero Stock-Out Buffer SLA:** Maintained logistics hubs in Bengaluru, Delhi-NCR, UAE (Dubai JAFZA), and London with 24–48h replenishment.
+- **Bespoke Tooling & Mold Design:** In-house mold engineering delivers custom compartment trays, shapes, and laser debossing within 14 days.
+- **Audit-Ready ESG Compliance Packs:** Automated quarterly certificates calculating exact kilograms of plastic displaced and carbon offset.
+- **Dynamic Wholesale Tiered Pricing:** Volume-tiered discounts (e.g. 50+ units: 5%, 200+ units: 12%, 1000+ units: 25%).
+
+---
+
+## 7. Global Compliance & Certifications
+
+- **FDA 21 CFR 175/176:** United States Food & Drug Administration certified food-contact safe for aqueous, fatty, and high-temperature foods.
+- **EN 13432:** European standard certifying 100% industrial and soil biodegradability within 90 days.
+- **ASTM D6400:** North American standard for solid material compostability in municipal and commercial facilities.
+- **ISO 9001:2015:** Quality Management System certification for standardized, sterile manufacturing protocols.
+- **USDA BioPreferred:** 100% Biobased content certification verifying zero fossil polymer additives.
+- **Intertek Zero-PFAS:** Comprehensive laboratory testing confirming total fluorine is below 10 ppm (non-detectable).
+
+---
+
+## 8. Software Architecture & Technical Stack
+
+The ViroEco software ecosystem is built on a high-concurrency, modern full-stack architecture:
+
+### Frontend Architecture:
+- **Framework:** Next.js 15+ (App Router) with React 19 and TypeScript.
+- **Styling & UI:** Tailwind CSS v4, Lucide React icons, Radix UI primitives, `@fontsource/plus-jakarta-sans`, `next-themes`.
+- **Motion & Experience:** Framer Motion, Lenis smooth scrolling.
+- **State Management & Hooks:** Custom React hooks (`useCart`, `useAddresses`, `useSession`), optimistic UI updates, localStorage synchronization.
+- **Payment & Checkout:** Razorpay Checkout JS integration with client-side modal and backend cryptographic signature verification.
+
+### Backend Architecture:
+- **Runtime & Language:** Java 21 LTS on Spring Boot 3.x.
+- **Security:** Spring Security 6, Stateless JWT Authentication (24-hour token validity), BCrypt password hashing (strength 12), Role-Based Access Control (`USER`, `ADMIN`).
+- **Database & ORM:** MySQL 8 with Spring Data JPA & Hibernate, relational indexing, foreign key constraints, connection pooling with HikariCP.
+- **Storage & Media:** Cloudinary REST API integration for automated asset optimization, secure HTTPS transformation, and multi-image array storage.
+- **Email & OTP Service:** Spring Mail Sender (JavaMailSender) delivering cryptographically generated 6-digit verification codes.
+- **Payment Gateway:** Razorpay Java SDK (`razorpay-java 1.4.8`) for HMAC-SHA256 order signature verification and payment status webhooks.
+
+---
+
+## 9. Comprehensive REST API Reference
+
+The backend exposes a secure REST API on port `2420` (or reverse-proxied at `/api`):
+
+### 1. Authentication & User Management
+- `POST /api/user/register` — Registers a new user account, verifies payload, and triggers an email OTP.
+- `POST /api/user/login` — Authenticates email and password, returns JWT token and sanitized `LoginResponse` (no password).
+- `PUT /api/user/update-profile-image` — Updates user avatar URL stored in Cloudinary (requires JWT).
+- `POST /api/verification/sendotp` — Sends a 6-digit OTP to the specified email address.
+- `POST /api/verification/verifyotp` — Validates the OTP against the stored database timestamp and activates the user account.
+
+### 2. Product Management
+- `GET /api/product/all` — Returns all active products with parsed image lists and volume discount tiers.
+- `GET /api/product/paginated?page=0&size=12` — Returns paginated product listings.
+- `GET /api/product/get/{id}` — Returns a specific product by ID with full specifications.
+- `POST /api/product/add` — `[ADMIN ONLY]` Creates a new product with multipart image uploads to Cloudinary.
+- `PUT /api/product/update/{id}` — `[ADMIN ONLY]` Updates product fields, inventory counts, pricing, and images.
+- `DELETE /api/product/delete/{id}` — `[ADMIN ONLY]` Deletes a product and archives associated assets.
+
+### 3. Category Management
+- `GET /api/category/all` — Returns all product categories.
+- `POST /api/category/add` — `[ADMIN ONLY]` Adds a new category.
+- `PUT /api/category/update/{id}` — `[ADMIN ONLY]` Renames or modifies a category.
+- `DELETE /api/category/delete/{id}` — `[ADMIN ONLY]` Deletes a category.
+
+### 4. Shopping Cart
+- `GET /api/cart` — Retrieves the authenticated user's active cart with calculated discount tiers.
+- `POST /api/cart/add` — Adds an item to the user's cart or increments quantity.
+- `PUT /api/cart/update` — Modifies cart item quantity with real-time price tier recalculation.
+- `DELETE /api/cart/remove/{productId}` — Removes a specific item from the cart.
+- `DELETE /api/cart/clear` — Clears all items in the user's cart.
+
+### 5. Addresses & Delivery
+- `GET /api/address/all` — Lists all saved shipping addresses for the user.
+- `POST /api/address/add` — Adds a new shipping address.
+- `PUT /api/address/update/{id}` — Updates an existing address.
+- `DELETE /api/address/delete/{id}` — Deletes an address.
+
+### 6. Orders & Checkout
+- `POST /api/order/place` — Converts the active cart into a confirmed order.
+- `GET /api/order/my-orders` — Returns all past orders for the logged-in customer.
+- `GET /api/order/{id}` — Returns detailed line-items, address, and tracking status for an order.
+- `GET /api/order/admin/all` — `[ADMIN ONLY]` Returns orders across all platform users.
+- `PUT /api/order/admin/update-status` — `[ADMIN ONLY]` Updates order lifecycle status (`PENDING`, `CONFIRMED`, `SHIPPED`, `DELIVERED`, `CANCELLED`).
+
+### 7. Razorpay Payments
+- `POST /api/payment/create-order` — Initializes a Razorpay order in INR paise.
+- `POST /api/payment/verify` — Validates Razorpay payment signature (`razorpay_signature`), marks order as paid.
+
+### 8. System Administration & Audit Logs
+- `GET /api/admin/audit-logs` — `[ADMIN ONLY]` Returns immutable audit trail of system events.
+- `GET /api/admin/users` — `[ADMIN ONLY]` Lists all registered users.
+- `PUT /api/admin/users/{gmail}/toggle-status` — `[ADMIN ONLY]` Enables or disables user access.
+
+---
+
+## 10. Data Models & Database Schema
+
+### `users` Table:
+- `gmail` (VARCHAR, PK) — Unique email identifier.
+- `name` (VARCHAR) — User's full name.
+- `password` (VARCHAR) — BCrypt hashed password (12 rounds).
+- `contactno` (VARCHAR) — Contact phone number.
+- `image_url` (VARCHAR) — Cloudinary avatar link.
+- `gender` (VARCHAR) — Gender identity.
+- `dob` (DATE) — Date of birth.
+- `role` (ENUM) — `USER` or `ADMIN`.
+- `enabled` (BOOLEAN) — Active account status.
+
+### `products` Table:
+- `product_id` (BIGINT, PK, Auto-increment) — Unique numeric ID.
+- `pname` (VARCHAR) — Product name.
+- `category` (VARCHAR) — Category name.
+- `sub_category` (VARCHAR) — Subcategory identifier.
+- `size` (VARCHAR) — Dimensions / volume (e.g., 350ml, 10 inch).
+- `material` (VARCHAR) — Feedstock (Bamboo, Rice Husk, Bagasse, Areca Palm).
+- `uv_protection` (BOOLEAN) — Weather UV stabilization flag.
+- `usage_desc` (TEXT) — Usage instructions and thermal tolerances.
+- `pack_size` (VARCHAR) — Packaging bundle (Single, Pack of 4, Case of 50).
+- `color` (VARCHAR) — Color variant name.
+- `price` (DOUBLE) — Current retail price in INR.
+- `original_price` (DOUBLE) — Strike-through comparison price.
+- `quantity` (INT) — Live inventory stock count.
+- `is_available` (BOOLEAN) — Stock availability status.
+- `weight` / `length` / `width` / `height` (VARCHAR) — Physical package dimensions.
+- `sustainability_tag` (VARCHAR) — Impact badge (e.g., "100% Carbon Negative").
+- `features` (TEXT) — Bulleted feature list.
+
+### `product_images` Table:
+- `id` (BIGINT, PK) — Image record ID.
+- `product_id` (BIGINT, FK) — Associated product reference.
+- `image_url` (VARCHAR) — Cloudinary HTTPS CDN link.
+
+### `product_discount_tiers` Table:
+- `id` (BIGINT, PK) — Tier record ID.
+- `product_id` (BIGINT, FK) — Associated product.
+- `min_quantity` (INT) — Minimum volume threshold (e.g., 50).
+- `discount_percent` (DOUBLE) — Percentage discount applied (e.g., 15.0).
+
+### `orders` & `order_items` Tables:
+- Captures total amount, address snapshot, fulfillment status, itemized products, quantities, and applied bulk discount percentages.
+
+---
+
+## 11. Key Business Logics & Algorithms
+
+### 1. Dynamic Bulk Tier Discount Engine:
+```
+Given a product P with discount tiers T = {(q_1, d_1), (q_2, d_2), ...} where q_i <= q_{i+1}:
+For a chosen cart quantity Q:
+  Applicable discount D(Q) = max({ d_i | q_i <= Q } U {0})
+  Discounted unit price P_effective = P.price * (1 - D(Q) / 100)
+  Line total = Q * P_effective
+```
+
+### 2. Annual Circular Savings Calculator Formula:
+```
+Inputs:
+  - N_meals = Annual meals / single-use items served
+  - P_unit_cost = Current single-use unit price
+  - Material_type = Plastic / Paper / Styrofoam
+
+Calculations:
+  - Displaced Plastic (kg) = N_meals * 0.028 kg (avg weight of single-use container)
+  - CO₂ Equivalent Neutralized (kg CO₂e) = Displaced Plastic * 3.20 + N_meals * 0.82 (net sink credit)
+  - Crop Residue Diverted (kg) = Displaced Plastic * 1.15
+  - Municipal Landfill Volume Saved (m³) = Displaced Plastic / 45 kg/m³
+  - Net Enterprise Cost Delta = (N_meals * P_unit_cost) - (N_meals * ViroEco_Tiered_Price)
+```
+
+---
+
+## 12. Development, Setup & Deployment
+
+### Backend Setup:
+```bash
+# 1. Database Configuration:
+# Ensure MySQL is running on port 3306 with database 'viroeco_db'
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS viroeco_db;"
+mysql -u root -p viroeco_db < seed.sql
+
+# 2. Environment Variables:
+export DB_HOST=localhost
+export DB_PORT=3306
+export DB_NAME=viroeco_db
+export DB_USER=root
+export DB_PASS=your_password
+export JWT_SECRET=your_base64_jwt_secret_key_minimum_256_bits
+export CLOUDINARY_CLOUD=your_cloud_name
+export CLOUDINARY_KEY=your_api_key
+export CLOUDINARY_SECRET=your_api_secret
+export RAZORPAY_KEY_ID=your_razorpay_key_id
+export RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+
+# 3. Compile & Run:
+cd BeuroBackend
+./mvnw clean spring-boot:run
+```
+
+### Frontend Setup:
+```bash
+# 1. Install Dependencies:
+cd viroecofrontend
+npm install
+
+# 2. Configure Environment (.env.local):
+NEXT_PUBLIC_API_URL=http://localhost:2420
+NEXT_PUBLIC_RAZORPAY_KEY_ID=your_razorpay_key_id
+
+# 3. Launch Development Server:
+npm run dev
+# Application available at http://localhost:3000
+```
+
+---
+
+## 13. Contact & Support
+
+- **Brand Website:** [https://viroeco.com](https://viroeco.com) (or local runtime `http://localhost:3000`)
+- **Headquarters:** Bengaluru, Karnataka, India
+- **Global Distribution Hubs:** Bengaluru (India), Delhi-NCR (India), Dubai JAFZA (UAE), London (UK)
+- **Enterprise Inquiries:** [enterprise@viroeco.com](mailto:enterprise@viroeco.com) / [support@viroeco.com](mailto:support@viroeco.com)

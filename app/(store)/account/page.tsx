@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { Pencil, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { Container } from "@/components/container";
@@ -25,9 +26,9 @@ export default function AccountPage() {
     setUploading(true);
     try {
       await updateProfileImage(session.gmail, file);
-      toast.success("Profile photo updated — it'll show on next sign in.");
+      toast.success("Image uploaded successfully.");
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Upload failed");
+      toast.error(err instanceof ApiError ? err.message : "Image upload failed.");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -41,7 +42,12 @@ export default function AccountPage() {
   return (
     <div className="pt-24">
       <Container className="py-10">
-        <h1 className="font-display text-4xl tracking-tight sm:text-5xl">Account</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h1 className="font-display text-4xl tracking-tight sm:text-5xl">Account &amp; Addresses</h1>
+          <Button asChild className="bg-[#50644C] hover:bg-[#384935] text-white self-start sm:self-auto">
+            <Link href="/profile">View &amp; Edit My Profile →</Link>
+          </Button>
+        </div>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[20rem_1fr]">
           <section className="h-fit border border-border bg-card p-6">

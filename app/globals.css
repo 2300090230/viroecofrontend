@@ -7,18 +7,37 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-heading: var(--font-fraunces);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Brand palette exposed as Tailwind utilities (bg-terra, text-moss, ...) */
-  --color-cream: #fdf8f0;
-  --color-sand: #f2e9e1;
-  --color-charcoal: #2d2d2d;
-  --color-terra: #c88a6d;
-  --color-terra-deep: #a8664a;
-  --color-moss: #8da089;
-  --color-moss-deep: #5f7358;
+  /* Brand palette matching VIRO eco Logo System */
+  --color-forest: #50644c;
+  --color-forest-dark: #243021;
+  --color-forest-light: #647a5f;
+  --color-forest-subtle: #edf2eb;
+  --color-sage: #94a478;
+  --color-sage-light: #dce4d6;
+  --color-cream: #faf9f5;
+  --color-sand: #f5efe6;
+  --color-sand-border: #dfd5c6;
+  --color-charcoal: #1a241c;
+  --color-terra: #c08058;
+  --color-terra-deep: #a6633d;
+  --color-moss: #889a6b;
+  --color-moss-deep: #50644c;
+  --color-camel: #ccac88;
+  --color-camel-dark: #b3926d;
+  --color-camel-light: #f7f1e9;
+
+  /* Semantic tokens — mapped to brand palette */
+  --color-success:         #50644c;   /* logo forest green */
+  --color-success-surface: #edf2eb;   /* forest-subtle */
+  --color-success-text:    #243021;   /* forest-dark */
+  --color-warning:         #c08058;   /* logo terracotta */
+  --color-warning-surface: #faf2ec;
+  --color-info:            #94a478;   /* logo leaf sage */
+  --color-info-surface:    #dce4d6;   /* sage-light */
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -49,55 +68,72 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  /* Sharp, sophisticated radii per spec (2–4px) */
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
-  --radius-2xl: 8px;
-  --radius-3xl: 12px;
+  --radius: 0px;
+  --radius-none: 0px;
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+  --radius-full: 0px;
 }
 
 :root {
-  --radius: 4px;
+  --radius: 0px;
+  --radius-none: 0px;
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+  --radius-full: 0px;
 
-  --background: #fdf8f0;        /* Warm Cream */
-  --foreground: #2d2d2d;        /* Deep Charcoal */
-  --card: #f2e9e1;             /* Light Sand */
-  --card-foreground: #2d2d2d;
-  --popover: #fdf8f0;
-  --popover-foreground: #2d2d2d;
-  --primary: #c88a6d;          /* Sun-kissed Terracotta */
-  --primary-foreground: #2d2d2d; /* charcoal on terracotta = 4.8:1 (AA) */
-  --secondary: #8da089;        /* Soft Moss Green */
-  --secondary-foreground: #21281f;
-  --muted: #f2e9e1;
-  --muted-foreground: #6f6a62;  /* accessible warm grey (4.6:1 on cream) */
-  --accent: #efe3d8;           /* lighter sand for hover */
-  --accent-foreground: #2d2d2d;
-  --destructive: #b8442b;      /* warm brick red */
-  --border: rgba(100, 100, 100, 0.14);
-  --input: rgba(100, 100, 100, 0.22);
-  --ring: #c88a6d;
-  --chart-1: #c88a6d;
-  --chart-2: #8da089;
-  --chart-3: #a8664a;
-  --chart-4: #5f7358;
-  --chart-5: #8c8c8c;
+  --background: #faf9f5;        /* Warm Cream Base */
+  --foreground: #1a241c;        /* Deep Organic Charcoal */
+  --card: #ffffff;             /* Crisp Card */
+  --card-foreground: #1a241c;
+  --popover: #ffffff;
+  --popover-foreground: #1a241c;
+  --primary: #50644c;          /* VIRO eco Logo Olive Forest Green */
+  --primary-foreground: #ffffff; 
+  --secondary: #edf2eb;        /* Soft Logo Green Wash */
+  --secondary-foreground: #243021;
+  --muted: #f5efe6;            /* Warm Sand Muted */
+  --muted-foreground: #5a6659;  /* Accessible warm slate */
+  --accent: #edf2eb;           /* Sage hover wash */
+  --accent-foreground: #243021;
+  --destructive: #b8442b;      /* Warm brick red */
+  --border: rgba(80, 100, 76, 0.15);
+  --input: rgba(80, 100, 76, 0.20);
+  --ring: #50644c;
+  --chart-1: #50644c;
+  --chart-2: #94a478;
+  --chart-3: #c08058;
+  --chart-4: #ccac88;
+  --chart-5: #1a241c;
 
-  --sidebar: #f2e9e1;
-  --sidebar-foreground: #2d2d2d;
-  --sidebar-primary: #c88a6d;
-  --sidebar-primary-foreground: #2d2d2d;
-  --sidebar-accent: #efe3d8;
-  --sidebar-accent-foreground: #2d2d2d;
-  --sidebar-border: rgba(100, 100, 100, 0.14);
-  --sidebar-ring: #c88a6d;
+  --sidebar: #f5efe6;
+  --sidebar-foreground: #1a241c;
+  --sidebar-primary: #50644c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #edf2eb;
+  --sidebar-accent-foreground: #243021;
+  --sidebar-border: rgba(80, 100, 76, 0.15);
+  --sidebar-ring: #50644c;
 }
 
 @layer base {
-  * {
+  *,
+  *::before,
+  *::after {
     @apply border-border outline-ring/50;
+    border-radius: 0px !important;
   }
   body {
     @apply bg-background text-foreground antialiased;
@@ -112,8 +148,8 @@
     font-optical-sizing: auto;
   }
   ::selection {
-    background: #c88a6d;
-    color: #fdf8f0;
+    background: #c08058;
+    color: #ffffff;
   }
 }
 

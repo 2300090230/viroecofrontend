@@ -24,14 +24,11 @@ export default function CheckoutPage() {
   const { session } = useAuth();
   const { items, subtotal, savings, cart } = useCart();
   const { list } = useAddresses();
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [paying, setPaying] = useState(false);
 
   const addresses = list.data ?? [];
-
-  useEffect(() => {
-    if (selected == null && addresses.length > 0) setSelected(addresses[0].id);
-  }, [addresses, selected]);
+  const selected = selectedId ?? (addresses.length > 0 ? addresses[0].id : null);
 
   useEffect(() => {
     if (!cart.isLoading && items.length === 0) router.replace("/cart");
@@ -54,7 +51,7 @@ export default function CheckoutPage() {
         name: "Viroeco",
         description: "Sustainable home & kitchen",
         prefill: { name: session?.name, email: session?.gmail, contact: session?.contactno },
-        theme: { color: "#C88A6D" },
+        theme: { color: "#C08058" },
         modal: { ondismiss: () => setPaying(false) },
         handler: async (r) => {
           try {
@@ -84,7 +81,7 @@ export default function CheckoutPage() {
   return (
     <div className="pt-24">
       <Container className="py-10">
-        <h1 className="font-display text-4xl tracking-tight sm:text-5xl">Checkout</h1>
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight">Checkout</h1>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_22rem]">
           <section>
@@ -114,7 +111,7 @@ export default function CheckoutPage() {
                 {addresses.map((a) => (
                   <button
                     key={a.id}
-                    onClick={() => setSelected(a.id)}
+                    onClick={() => setSelectedId(a.id)}
                     className={cn(
                       "cursor-pointer border p-4 text-left transition-colors",
                       selected === a.id
@@ -146,7 +143,7 @@ export default function CheckoutPage() {
                   <span className="text-muted-foreground">
                     {i.pname} × {i.quantity}
                     {i.discountPercent > 0 && (
-                      <span className="ml-1 text-moss">({i.discountPercent}% off)</span>
+                      <span className="ml-1 text-moss-deep font-medium">({i.discountPercent}% off)</span>
                     )}
                   </span>
                   <span className="tabular-nums">{formatINR(i.discountedPrice * i.quantity)}</span>
@@ -154,7 +151,7 @@ export default function CheckoutPage() {
               ))}
             </ul>
             {savings > 0 && (
-              <div className="mt-4 flex justify-between text-sm text-moss">
+              <div className="mt-4 flex justify-between text-sm text-moss-deep font-medium">
                 <span>Bulk savings</span>
                 <span className="tabular-nums">−{formatINR(savings)}</span>
               </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -16,8 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Trash2 } from "lucide-react";
-import { adminSaveProduct, adminSetProductTiers } from "@/lib/endpoints";
-import type { Product } from "@/lib/types";
+import { adminSaveProduct, adminSetProductTiers, getCategories } from "@/lib/endpoints";
+import type { Product, Category } from "@/lib/types";
 
 type TierRow = { minQuantity: string; discountPercent: string };
 
@@ -88,6 +88,19 @@ export function ProductFormDialog({
   const setTier = (i: number, k: keyof TierRow, v: string) =>
     setTiers((rows) => rows.map((r, j) => (j === i ? { ...r, [k]: v } : r)));
 
+  const categoriesQuery = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      try {
+        const fetched = await getCategories();
+        if (Array.isArray(fetched)) return fetched;
+      } catch {}
+      return [] as Category[];
+    },
+  });
+
+  const categoriesList = categoriesQuery.data ?? [];
+
   const save = useMutation({
     mutationFn: async () => {
       const result = await adminSaveProduct(form, images, product?.productId);
@@ -107,7 +120,8 @@ export function ProductFormDialog({
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "products"] });
       qc.invalidateQueries({ queryKey: ["products"] });
-      toast.success(product ? "Product updated" : "Product created");
+      qc.invalidateQueries({ queryKey: ["admin", "audit-logs"] });
+      toast.success(product ? "Product updated successfully." : "Product created successfully.");
       setOpen(false);
       if (!product) {
         setForm(fromProduct());
@@ -115,7 +129,7 @@ export function ProductFormDialog({
       }
       setImages([]);
     },
-    onError: (e: Error) => toast.error(e.message || "Could not save product"),
+    onError: (e: Error) => toast.error(e.message || (product ? "Failed to update product." : "Failed to create product.")),
   });
 
   return (
@@ -138,8 +152,49 @@ export function ProductFormDialog({
           <Field label="Product name" required value={form.pname} onChange={(v) => set("pname", v)} />
 
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Category" required value={form.category} onChange={(v) => set("category", v)} />
-            <Field label="Sub-category" value={form.subCategory} onChange={(v) => set("subCategory", v)} />
+            <div>
+              <Field
+                label="Category"
+                required
+                value={form.category}
+                onChange={(v) => set("category", v)}
+                list="category-suggestions"
+              />
+              <datalist id="category-suggestions">
+                {categoriesList.map((c) => (
+                  <option key={c.id} value={c.name} />
+                ))}
+              </datalist>
+            </div>
+            <div>
+              <Field
+                label="Sub-category"
+                value={form.subCategory}
+                onChange={(v) => set("subCategory", v)}
+                list="subcategory-suggestions"
+              />
+              <datalist id="subcategory-suggestions">
+                <option value="Mugs" />
+                <option value="Cups" />
+                <option value="Bottles" />
+                <option value="Sippers" />
+                <option value="Tumblers" />
+                <option value="Bowls" />
+                <option value="Plates" />
+                <option value="Dinner set" />
+                <option value="Trays" />
+                <option value="Large-Size Planters" />
+                <option value="Medium-Size Planters" />
+                <option value="Small-Size Planters" />
+                <option value="Table-Top Planters" />
+                <option value="Hanging Planters" />
+                <option value="Planters with Tray" />
+                <option value="Self-Watering" />
+                <option value="Kitchen Storage" />
+                <option value="General Organisers" />
+                <option value="RAKHI" />
+              </datalist>
+            </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
@@ -273,12 +328,14 @@ function Field({
   onChange,
   type = "text",
   required,
+  list,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
   required?: boolean;
+  list?: string;
 }) {
   return (
     <div className="space-y-1.5">
@@ -290,6 +347,7 @@ function Field({
         min={type === "number" ? "0" : undefined}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        list={list}
       />
     </div>
   );

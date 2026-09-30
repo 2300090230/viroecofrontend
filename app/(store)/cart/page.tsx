@@ -34,64 +34,75 @@ export default function CartPage() {
           <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_20rem]">
             <ul className="divide-y divide-border border-y border-border">
               {items.map((item) => (
-                <li key={item.productId} className="flex items-center gap-4 py-5">
+                <li key={item.productId} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 py-5">
                   <div className="flex-1">
-                    <Link
-                      href={`/products/${item.productId}`}
-                      className="cursor-pointer font-display text-lg hover:text-terra-deep"
-                    >
-                      {item.pname}
-                    </Link>
+                    <div className="flex items-start justify-between gap-2">
+                      <Link
+                        href={`/products/${item.productId}`}
+                        className="cursor-pointer font-display text-base sm:text-lg hover:text-terra-deep leading-snug"
+                      >
+                        {item.pname}
+                      </Link>
+                      <button
+                        aria-label={`Remove ${item.pname}`}
+                        className="cursor-pointer p-1 text-muted-foreground hover:text-destructive sm:hidden shrink-0"
+                        onClick={() => remove.mutate(item.productId)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                     {item.discountPercent > 0 ? (
-                      <p className="text-sm text-muted-foreground">
+                      <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
                         <span className="font-medium text-foreground">
                           {formatINR(item.discountedPrice)}
                         </span>{" "}
                         <span className="line-through">{formatINR(item.price)}</span> each
-                        <span className="ml-2 rounded bg-moss/20 px-1.5 py-0.5 text-xs font-medium text-moss">
+                        <span className="ml-2 inline-block rounded-none bg-forest-subtle px-1.5 py-0.5 text-[10px] sm:text-xs font-semibold text-forest">
                           {item.discountPercent}% bulk off
                         </span>
                       </p>
                     ) : (
-                      <p className="text-sm text-muted-foreground">{formatINR(item.price)} each</p>
+                      <p className="mt-1 text-xs sm:text-sm text-muted-foreground">{formatINR(item.price)} each</p>
                     )}
                   </div>
 
-                  <div className="flex items-center border border-border">
+                  <div className="flex items-center justify-between sm:justify-end gap-4">
+                    <div className="flex items-center border border-border">
+                      <button
+                        aria-label="Decrease"
+                        className="flex h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center hover:bg-accent disabled:opacity-40"
+                        disabled={update.isPending}
+                        onClick={() =>
+                          update.mutate({ productId: item.productId, quantity: item.quantity - 1 })
+                        }
+                      >
+                        <Minus className="h-3.5 w-3.5" />
+                      </button>
+                      <span className="w-8 sm:w-9 text-center text-xs sm:text-sm tabular-nums">{item.quantity}</span>
+                      <button
+                        aria-label="Increase"
+                        className="flex h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center hover:bg-accent disabled:opacity-40"
+                        disabled={update.isPending}
+                        onClick={() =>
+                          update.mutate({ productId: item.productId, quantity: item.quantity + 1 })
+                        }
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+
+                    <div className="min-w-20 text-right font-medium text-sm sm:text-base tabular-nums">
+                      {formatINR(item.discountedPrice * item.quantity)}
+                    </div>
+
                     <button
-                      aria-label="Decrease"
-                      className="flex h-9 w-9 cursor-pointer items-center justify-center hover:bg-accent disabled:opacity-40"
-                      disabled={update.isPending}
-                      onClick={() =>
-                        update.mutate({ productId: item.productId, quantity: item.quantity - 1 })
-                      }
+                      aria-label={`Remove ${item.pname}`}
+                      className="hidden sm:inline-flex cursor-pointer p-2 text-muted-foreground hover:text-destructive"
+                      onClick={() => remove.mutate(item.productId)}
                     >
-                      <Minus className="h-3.5 w-3.5" />
-                    </button>
-                    <span className="w-9 text-center text-sm tabular-nums">{item.quantity}</span>
-                    <button
-                      aria-label="Increase"
-                      className="flex h-9 w-9 cursor-pointer items-center justify-center hover:bg-accent disabled:opacity-40"
-                      disabled={update.isPending}
-                      onClick={() =>
-                        update.mutate({ productId: item.productId, quantity: item.quantity + 1 })
-                      }
-                    >
-                      <Plus className="h-3.5 w-3.5" />
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
-
-                  <div className="w-24 text-right font-medium tabular-nums">
-                    {formatINR(item.discountedPrice * item.quantity)}
-                  </div>
-
-                  <button
-                    aria-label={`Remove ${item.pname}`}
-                    className="cursor-pointer p-2 text-muted-foreground hover:text-destructive"
-                    onClick={() => remove.mutate(item.productId)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
                 </li>
               ))}
             </ul>
@@ -99,7 +110,7 @@ export default function CartPage() {
             <aside className="h-fit border border-border bg-card p-6">
               <h2 className="font-display text-xl">Summary</h2>
               {savings > 0 && (
-                <div className="mt-4 flex justify-between text-moss">
+                <div className="mt-4 flex justify-between text-moss-deep">
                   <span>Bulk savings</span>
                   <span className="font-medium tabular-nums">−{formatINR(savings)}</span>
                 </div>

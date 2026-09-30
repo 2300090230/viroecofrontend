@@ -66,6 +66,19 @@ export interface RegisterRequest {
   dob: string;
 }
 
+export interface UpdateProfileRequest {
+  name?: string;
+  contactno?: string;
+  imageUrl?: string;
+  gender?: string;
+  dob?: string;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface OtpVerificationRequest {
   gmail: string;
   otp: number;
@@ -148,3 +161,111 @@ export interface PaymentVerifyRequest {
   razorpaySignature: string;
   addressId: number;
 }
+
+export interface AuditLog {
+  id: number;
+  action: string;
+  entityType: "PRODUCT" | "CATEGORY" | "ORDER" | "CUSTOMER" | "AUTH" | "SYSTEM" | string;
+  entityId?: string;
+  performedBy: string;
+  details: string;
+  ipAddress?: string;
+  timestamp: string;
+}
+
+export interface TimePeriodMetric {
+  date: string;
+  revenue: number;
+  orderCount: number;
+  unitsSold: number;
+  averageOrderValue: number;
+}
+
+export interface CategoryMetric {
+  category: string;
+  revenue: number;
+  unitsSold: number;
+  orderCount: number;
+  percentageShare: number;
+}
+
+export interface MaterialMetric {
+  material: string;
+  revenue: number;
+  unitsSold: number;
+  percentageShare: number;
+}
+
+export interface TopProductMetric {
+  productId: number;
+  pname: string;
+  category: string;
+  unitPrice: number;
+  unitsSold: number;
+  totalRevenue: number;
+  currentStock: number;
+  material: string;
+}
+
+export interface LowStockAlert {
+  productId: number;
+  pname: string;
+  category: string;
+  quantity: number;
+  price: number;
+  isAvailable: boolean;
+}
+
+export interface CustomerSpendMetric {
+  gmail: string;
+  name: string;
+  totalOrders: number;
+  totalSpend: number;
+  averageSpend: number;
+  lastOrderDate: string;
+}
+
+export interface AdminAnalytics {
+  totalGrossRevenue: number;
+  totalNetRevenue: number;
+  pendingRevenue: number;
+  cancelledRevenue: number;
+  totalDiscountsGiven: number;
+  averageOrderValue: number;
+  averageItemsPerOrder: number;
+
+  totalOrders: number;
+  deliveredOrders: number;
+  shippedOrders: number;
+  processingOrders: number;
+  placedOrders: number;
+  cancelledOrders: number;
+  fulfillmentRate: number;
+  cancellationRate: number;
+
+  totalProducts: number;
+  inStockProducts: number;
+  lowStockProducts: number;
+  outOfStockProducts: number;
+  totalInventoryUnits: number;
+  totalInventoryValuation: number;
+
+  plasticDisplacedKg: number;
+  co2NeutralizedKg: number;
+  cropResidueUpcycledKg: number;
+  stubbleIncinerationAvertedKg: number;
+  treesEquivalent: number;
+
+  totalCustomers: number;
+  activeOrderingCustomers: number;
+  repeatCustomers: number;
+  repeatCustomerRate: number;
+
+  timeSeries: TimePeriodMetric[];
+  categoryMetrics: CategoryMetric[];
+  materialMetrics: MaterialMetric[];
+  topSellingProducts: TopProductMetric[];
+  lowStockAlerts: LowStockAlert[];
+  topCustomers: CustomerSpendMetric[];
+}
+
