@@ -1,5 +1,5 @@
 import { Container } from "@/components/container";
-import { Sparkles, Building2, Utensils, Coffee, Music, Plane, ShoppingBag, Store, HeartPulse } from "lucide-react";
+import { Building2, Utensils, Coffee, Music, Plane, ShoppingBag, Store, HeartPulse } from "lucide-react";
 
 const INDUSTRIES = [
   {
@@ -59,8 +59,7 @@ export function IndustryScale() {
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
           <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold">
               Tailored Sector Solutions
             </p>
             <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[#50644C]">

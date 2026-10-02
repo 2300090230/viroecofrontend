@@ -22,7 +22,6 @@ import {
   Clock,
   Truck,
   XCircle,
-  Sparkles,
   Calendar,
   Percent,
   Box,
@@ -625,7 +624,6 @@ export default function AdminAnalysisPage() {
             </p>
           </div>
           <div className="mt-2 flex items-center gap-1 text-[11px] text-purple-700 font-medium truncate">
-            <Sparkles className="w-3 h-3 shrink-0" />
             <span className="truncate">Wholesale savings</span>
           </div>
         </div>

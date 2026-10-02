@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { useAuth } from "@/providers/auth-provider";
 import { AdminSidebarProvider, useAdminSidebar } from "@/providers/admin-sidebar-context";
-import { ExternalLink, Sparkles, PanelLeft } from "lucide-react";
+import { ExternalLink, PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function AdminLayoutInner({ children }: { children: React.ReactNode }) {
@@ -39,7 +39,6 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-[#FAF9F5] border border-[#DFD5C6] text-[11px] text-[#5A6659] font-medium">
-              <Sparkles className="w-3 h-3 text-emerald-600" />
               <span>Viroeco Biocomposites Active</span>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Sparkles, ShieldCheck, Award, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Award, CheckCircle2 } from "lucide-react";
 import { Logo } from "@/components/logo";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
@@ -31,7 +31,6 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {/* Center Spotlight */}
         <div className="relative z-10 my-auto py-8 space-y-6 max-w-lg">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-[#50644C]/40 border border-[#94A478]/30 text-emerald-200 text-xs font-semibold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5 text-[#CCAC88]" />
             100% Bamboo &amp; Rice Husk Biocomposites
           </div>
 

@@ -4,7 +4,6 @@ import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Badge } from "@/components/ui/badge";
 import { formatINR, discountPct } from "@/lib/format";
 import type { Product } from "@/lib/types";
-import { Sparkles } from "lucide-react";
 
 export function ProductCard({ product }: { product: Product }) {
   const off = discountPct(product.price, product.originalPrice);
@@ -31,9 +30,8 @@ export function ProductCard({ product }: { product: Product }) {
             {product.sustainabilityTag}
           </span>
         ) : (
-          <span className="absolute right-2 sm:right-3 top-2 sm:top-3 bg-[#EDF2EB]/95 backdrop-blur-xs text-[#50644C] border border-[#50644C]/10 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider rounded-none shadow-xs flex items-center gap-0.5 sm:gap-1">
-            <Sparkles className="w-2 sm:w-2.5 h-2 sm:h-2.5 text-emerald-600" />
-            <span className="hidden xs:inline">Zero Plastic</span>
+          <span className="absolute right-2 sm:right-3 top-2 sm:top-3 bg-[#EDF2EB]/95 backdrop-blur-xs text-[#50644C] border border-[#50644C]/10 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider rounded-none shadow-xs flex items-center">
+            <span>Zero Plastic</span>
           </span>
         )}
       </Link>

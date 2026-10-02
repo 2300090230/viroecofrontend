@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AddressFormDialog } from "@/components/address-form-dialog";
 import { useAuth } from "@/providers/auth-provider";
 import { useAddresses } from "@/hooks/use-addresses";
-import { updateProfileImage } from "@/lib/endpoints";
+import { updateProfileImage, removeProfileImage } from "@/lib/endpoints";
 import { ApiError } from "@/lib/api";
 
 export default function AccountPage() {
@@ -32,6 +32,19 @@ export default function AccountPage() {
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
+  async function onRemovePhoto() {
+    if (!session) return;
+    setUploading(true);
+    try {
+      await removeProfileImage(session.gmail);
+      toast.success("Profile photo removed.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to remove photo.");
+    } finally {
+      setUploading(false);
     }
   }
 
@@ -59,15 +72,28 @@ export default function AccountPage() {
               <p className="mt-4 font-display text-xl">{session.name}</p>
               <p className="text-sm text-muted-foreground">{session.gmail}</p>
               <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-4 cursor-pointer"
-                disabled={uploading}
-                onClick={() => fileRef.current?.click()}
-              >
-                <Upload className="mr-1 h-4 w-4" /> {uploading ? "Uploading…" : "Change photo"}
-              </Button>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="cursor-pointer text-xs"
+                  disabled={uploading}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  <Upload className="mr-1 h-3.5 w-3.5" /> {uploading ? "Uploading…" : "Change photo"}
+                </Button>
+                {session.imageUrl && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer border-red-200 text-red-600 hover:bg-red-50 text-xs"
+                    disabled={uploading}
+                    onClick={onRemovePhoto}
+                  >
+                    <Trash2 className="mr-1 h-3.5 w-3.5" /> Remove
+                  </Button>
+                )}
+              </div>
             </div>
 
             <dl className="mt-6 space-y-3 border-t border-border pt-6 text-sm">

@@ -1,5 +1,5 @@
 import { Container } from "@/components/container";
-import { ShieldCheck, Flame, RefreshCw, Truck, Sparkles, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Flame, RefreshCw, Truck, CheckCircle2 } from "lucide-react";
 
 export function WhyChooseUs() {
   return (
@@ -7,8 +7,7 @@ export function WhyChooseUs() {
       <Container>
         {/* Section Header */}
         <div className="max-w-3xl mb-12 space-y-3">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold">
             Circular Engineering &amp; Reliability
           </p>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[#50644C]">

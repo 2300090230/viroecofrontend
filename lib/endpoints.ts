@@ -254,6 +254,25 @@ export async function updateProfileImage(gmail: string, file: File): Promise<str
   });
 }
 
+export async function removeProfileImage(gmail: string): Promise<string> {
+  const supabase = getSupabase();
+  const { error } = await supabase
+    .from("users")
+    .update({ image_url: "" })
+    .eq("gmail", gmail.trim().toLowerCase());
+
+  if (error) {
+    throw new Error(error.message || "Failed to remove profile picture");
+  }
+
+  const currentSession = getSession();
+  if (currentSession && currentSession.gmail.toLowerCase() === gmail.toLowerCase()) {
+    setSession({ ...currentSession, imageUrl: "" });
+  }
+
+  return "Profile picture removed successfully";
+}
+
 // ---- Products (public) ----
 export async function getAllProducts(): Promise<Product[]> {
   const supabase = getSupabase();
@@ -802,10 +821,35 @@ export async function placeOrder(addressId: number): Promise<Order> {
 export async function createPaymentOrder(): Promise<PaymentOrder> {
   const cart = await getCart();
   const total = cart.items.reduce((sum, item) => sum + item.discountedPrice * item.quantity, 0);
+  const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_jVej2lE9ffasi1";
+  const amountPaise = Math.round(total * 100);
+
+  // Attempt server order creation if in browser
+  if (typeof window !== "undefined") {
+    try {
+      const res = await fetch("/api/payment/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: amountPaise, currency: "INR" }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return {
+          razorpayOrderId: data.razorpayOrderId || null,
+          keyId: data.keyId || keyId,
+          amount: data.amount || amountPaise,
+          currency: data.currency || "INR",
+        };
+      }
+    } catch (err) {
+      console.warn("Server order creation warning:", err);
+    }
+  }
+
   return {
-    razorpayOrderId: `order_${Date.now()}`,
-    keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_mockKey",
-    amount: Math.round(total * 100),
+    razorpayOrderId: null,
+    keyId,
+    amount: amountPaise,
     currency: "INR",
   };
 }

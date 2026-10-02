@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Mail, Sparkles, ArrowRight } from "lucide-react";
+import { Phone, Mail, ArrowRight } from "lucide-react";
 import { QuoteDialog } from "@/components/quote-dialog";
 
 export function TopAnnouncementBar() {
@@ -13,7 +13,6 @@ export function TopAnnouncementBar() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           <div className="flex items-center gap-2 justify-center">
             <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none bg-white/10 text-[11px] font-medium text-emerald-300">
-              <Sparkles className="w-3 h-3" />
               B2B &amp; Enterprise Direct
             </span>
             <span className="hidden md:inline text-white/80">

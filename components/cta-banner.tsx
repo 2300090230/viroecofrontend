@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Box } from "lucide-react";
+import { ArrowRight, Box } from "lucide-react";
 import { QuoteDialog } from "@/components/quote-dialog";
 
 export function CtaBanner() {
@@ -26,7 +26,6 @@ export function CtaBanner() {
               {/* Left Content */}
               <div className="lg:col-span-7 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-white/10 text-emerald-300 text-xs font-semibold">
-                  <Sparkles className="w-3.5 h-3.5" />
                   Enterprise Full-Volume Supply &amp; Custom Tooling
                 </div>
 

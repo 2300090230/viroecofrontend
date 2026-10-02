@@ -3,7 +3,6 @@ import { Container } from "@/components/container";
 import { SavingsCalculator } from "@/components/savings-calculator";
 import { CertificationsBar } from "@/components/certifications-bar";
 import {
-  Sparkles,
   ArrowRight,
   TrendingDown,
   ShieldCheck,
@@ -49,7 +48,6 @@ export default function CalculatorPage() {
         <Container>
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
               ESG &amp; Carbon Accounting Tool
             </div>
             <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#50644C] leading-tight">

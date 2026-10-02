@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { ProductCard } from "@/components/product-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Product } from "@/lib/types";
 
 interface EnterpriseInventoryProps {
@@ -42,8 +42,7 @@ export function EnterpriseInventory({ products }: EnterpriseInventoryProps) {
         {/* Header and Filter Tabs */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold">
               Currently In Stock
             </p>
             <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[#50644C]">

@@ -1,5 +1,5 @@
 import { Container } from "@/components/container";
-import { Star, Sparkles, CheckCircle2 } from "lucide-react";
+import { Star, CheckCircle2 } from "lucide-react";
 
 const REVIEWS = [
   {
@@ -35,7 +35,6 @@ export function ProcurementTestimonials() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
           <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold inline-flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
             Verified Customer Reviews
           </p>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[#50644C]">

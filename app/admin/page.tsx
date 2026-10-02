@@ -14,7 +14,6 @@ import {
   Plus,
   Tags,
   Layers,
-  Sparkles,
   ExternalLink,
   BarChart3,
 } from "lucide-react";
@@ -246,7 +245,6 @@ export default function AdminDashboard() {
         <div className="rounded-none border border-[#DFD5C6] bg-gradient-to-br from-[#50644C] to-[#1A2418] text-white p-6 sm:p-8 flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-white/10 text-emerald-300 border border-white/15 text-xs font-semibold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
               Live Catalog Health
             </div>
             <h3 className="font-display text-2xl font-bold text-white leading-snug">

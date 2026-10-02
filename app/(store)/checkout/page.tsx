@@ -43,37 +43,58 @@ export default function CheckoutPage() {
     try {
       const order = await createPaymentOrder();
       const Razorpay = await loadRazorpay();
-      const rzp = new Razorpay({
+
+      const options: any = {
         key: order.keyId,
         amount: order.amount,
         currency: order.currency,
-        order_id: order.razorpayOrderId,
         name: "Viroeco",
         description: "Sustainable home & kitchen",
-        prefill: { name: session?.name, email: session?.gmail, contact: session?.contactno },
+        prefill: {
+          name: session?.name || "",
+          email: session?.gmail || "",
+          contact: session?.contactno || "",
+        },
         theme: { color: "#C08058" },
-        modal: { ondismiss: () => setPaying(false) },
-        handler: async (r) => {
+        modal: {
+          ondismiss: () => setPaying(false),
+          escape: true,
+        },
+        handler: async (r: any) => {
           try {
             await verifyPayment({
-              razorpayOrderId: r.razorpay_order_id,
-              razorpayPaymentId: r.razorpay_payment_id,
-              razorpaySignature: r.razorpay_signature,
+              razorpayOrderId: r.razorpay_order_id || order.razorpayOrderId || undefined,
+              razorpayPaymentId: r.razorpay_payment_id || `pay_${Date.now()}`,
+              razorpaySignature: r.razorpay_signature || undefined,
               addressId: selected,
             });
             qc.setQueryData(["cart"], { items: [] });
             qc.invalidateQueries({ queryKey: ["orders"] });
+            qc.invalidateQueries({ queryKey: ["cart"] });
             toast.success("Payment successful — your order is placed!");
             router.push("/orders");
-          } catch (err) {
-            toast.error(err instanceof ApiError ? err.message : "Payment verification failed");
+          } catch (err: any) {
+            toast.error(err instanceof ApiError || err instanceof Error ? err.message : "Payment verification failed");
             setPaying(false);
           }
         },
-      });
+      };
+
+      if (order.razorpayOrderId) {
+        options.order_id = order.razorpayOrderId;
+      }
+
+      const rzp = new Razorpay(options);
+      if (typeof rzp.on === "function") {
+        rzp.on("payment.failed", (response: any) => {
+          const reason = response?.error?.description || response?.error?.reason || "Payment was declined or cancelled";
+          toast.error(`Payment failed: ${reason}`);
+          setPaying(false);
+        });
+      }
       rzp.open();
-    } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Could not start payment");
+    } catch (err: any) {
+      toast.error(err instanceof ApiError || err instanceof Error ? err.message : "Could not start payment");
       setPaying(false);
     }
   }

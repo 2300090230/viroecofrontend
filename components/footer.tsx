@@ -18,7 +18,6 @@ import {
   Globe,
   ChevronUp,
   ArrowUp,
-  Sparkles,
   Building2,
   ArrowUpRight,
   Truck,
@@ -120,7 +119,6 @@ export function Footer() {
           {/* Newsletter Input */}
           <div className="space-y-2 pt-2">
             <p className="text-xs font-semibold text-emerald-200 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               Subscribe for ESG Case Studies &amp; Pricing
             </p>
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2 max-w-sm">

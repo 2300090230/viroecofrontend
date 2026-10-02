@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { QuoteDialog } from "@/components/quote-dialog";
 import {
-  Sparkles,
   Search,
   ChevronDown,
   HelpCircle,

@@ -19,7 +19,6 @@ import {
   Pencil,
   Trash2,
   Leaf,
-  Sparkles,
 } from "lucide-react";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
@@ -37,6 +36,7 @@ import {
   getUserProfile,
   updateUserProfile,
   updateProfileImage,
+  removeProfileImage,
   changeUserPassword,
   getOrders,
 } from "@/lib/endpoints";
@@ -144,6 +144,21 @@ export default function ProfilePage() {
       if (fileRef.current) fileRef.current.value = "";
     }
   }
+
+  // Remove Photo Mutation
+  const removePhotoMut = useMutation({
+    mutationFn: async () => {
+      if (!session?.gmail) throw new Error("Not authenticated");
+      return await removeProfileImage(session.gmail);
+    },
+    onSuccess: (msg) => {
+      queryClient.invalidateQueries({ queryKey: ["userProfile", session?.gmail] });
+      toast.success(msg || "Profile photo removed successfully!");
+    },
+    onError: (err: any) => {
+      toast.error(err?.message || "Failed to remove photo.");
+    },
+  });
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
@@ -260,7 +275,7 @@ export default function ProfilePage() {
               {/* Avatar & Photo Upload */}
               <div className="flex flex-col items-center text-center">
                 <div className="relative group">
-                  <Avatar className="h-28 w-28 rounded-none border border-[#50644C]/25 shadow-xs">
+                  <Avatar className="h-28 w-28 rounded-none border border-[#50644C]/25 shadow-xs bg-[#EAE4D9]">
                     {user.imageUrl ? (
                       <AvatarImage src={user.imageUrl} alt={user.name || user.gmail} className="rounded-none object-cover" />
                     ) : null}
@@ -268,15 +283,31 @@ export default function ProfilePage() {
                       {initials}
                     </AvatarFallback>
                   </Avatar>
-                  <button
-                    onClick={() => fileRef.current?.click()}
-                    disabled={uploading}
-                    className="absolute bottom-0 right-0 p-2 bg-[#50644C] text-white shadow-xs hover:bg-[#384935] transition-transform hover:scale-105 cursor-pointer rounded-none border border-white/50"
-                    title="Change profile picture"
-                    aria-label="Upload new photo"
-                  >
-                    <Camera className="w-3.5 h-3.5" />
-                  </button>
+
+                  {/* Overlay Controls */}
+                  <div className="absolute bottom-0 right-0 flex items-center">
+                    <button
+                      onClick={() => fileRef.current?.click()}
+                      disabled={uploading || removePhotoMut.isPending}
+                      className="p-1.5 bg-[#50644C] text-white shadow-xs hover:bg-[#384935] transition-transform hover:scale-105 cursor-pointer rounded-none border border-white/50"
+                      title="Change profile picture"
+                      aria-label="Upload new photo"
+                    >
+                      <Camera className="w-3.5 h-3.5" />
+                    </button>
+                    {user.imageUrl && (
+                      <button
+                        onClick={() => removePhotoMut.mutate()}
+                        disabled={uploading || removePhotoMut.isPending}
+                        className="p-1.5 bg-red-600 text-white shadow-xs hover:bg-red-700 transition-transform hover:scale-105 cursor-pointer rounded-none border border-white/50 ml-0.5"
+                        title="Remove profile picture"
+                        aria-label="Remove photo"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+
                   <input
                     ref={fileRef}
                     type="file"
@@ -284,6 +315,34 @@ export default function ProfilePage() {
                     hidden
                     onChange={handleFileChange}
                   />
+                </div>
+
+                {/* Explicit Photo Action Buttons */}
+                <div className="mt-3 flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => fileRef.current?.click()}
+                    disabled={uploading || removePhotoMut.isPending}
+                    className="h-7 text-xs border-[#50644C]/30 text-[#243021] hover:bg-[#FAF9F5] cursor-pointer"
+                  >
+                    <Camera className="w-3 h-3 mr-1 text-[#50644C]" />
+                    {uploading ? "Uploading…" : user.imageUrl ? "Change" : "Upload Photo"}
+                  </Button>
+                  {user.imageUrl && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removePhotoMut.mutate()}
+                      disabled={uploading || removePhotoMut.isPending}
+                      className="h-7 text-xs border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 cursor-pointer"
+                    >
+                      <Trash2 className="w-3 h-3 mr-1" />
+                      {removePhotoMut.isPending ? "Removing…" : "Remove"}
+                    </Button>
+                  )}
                 </div>
 
                 <h2 className="mt-4 font-display text-xl font-bold text-[#17231C]">

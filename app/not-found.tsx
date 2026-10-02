@@ -12,7 +12,6 @@ import {
   Recycle,
   Search,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 
 export const metadata = {
@@ -82,7 +81,6 @@ export default function NotFound() {
               {/* Header Badge & 404 Visual */}
               <div className="text-center space-y-4">
                 <div className="inline-flex items-center gap-2 rounded-none border border-[#50644C]/15 bg-[#50644C]/5 px-3.5 py-1 text-xs font-semibold tracking-wide text-[#50644C] uppercase">
-                  <Sparkles className="w-3.5 h-3.5 text-[#94A478]" />
                   <span>404 · Page Not Found</span>
                 </div>
 

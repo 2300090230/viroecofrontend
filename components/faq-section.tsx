@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Container } from "@/components/container";
-import { Sparkles, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const FAQS = [
   {
@@ -36,7 +36,6 @@ export function FaqSection() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
           <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold inline-flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
             Technical &amp; Procurement FAQ
           </p>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[#50644C]">

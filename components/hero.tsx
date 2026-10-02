@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { QuoteDialog } from "@/components/quote-dialog";
 
 export function Hero() {
@@ -28,7 +28,6 @@ export function Hero() {
           {/* Left Hero Content */}
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-semibold tracking-wide uppercase">
-              <Sparkles className="w-3.5 h-3.5 text-[#50644C]" />
               100% Bamboo &amp; Rice Husk — Zero Fossil Plastic
             </div>
 

@@ -149,16 +149,16 @@ export interface UserSummary {
 }
 
 export interface PaymentOrder {
-  razorpayOrderId: string;
+  razorpayOrderId?: string | null;
   keyId: string;
   amount: number; // paise
   currency: string;
 }
 
 export interface PaymentVerifyRequest {
-  razorpayOrderId: string;
+  razorpayOrderId?: string;
   razorpayPaymentId: string;
-  razorpaySignature: string;
+  razorpaySignature?: string;
   addressId: number;
 }
 

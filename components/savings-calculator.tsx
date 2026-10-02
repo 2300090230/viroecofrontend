@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Trash2, CloudRain, ShieldCheck, Coins, FileText } from "lucide-react";
+import { Trash2, CloudRain, ShieldCheck, Coins, FileText } from "lucide-react";
 import { QuoteDialog } from "@/components/quote-dialog";
 import { toast } from "sonner";
 
@@ -33,7 +33,6 @@ export function SavingsCalculator() {
               {/* Left Column: Interactive Slider */}
               <div className="lg:col-span-5 space-y-6">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-semibold">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                   Enterprise Impact &amp; ESG Simulator
                 </div>
 
