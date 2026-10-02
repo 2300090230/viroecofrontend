@@ -106,11 +106,11 @@ export default function TermsOfServicePage() {
                 </p>
                 <div className="pt-2">
                   <a
-                    href="mailto:legal@viroeco.com"
+                    href="mailto:info@viroeco.com"
                     className="inline-flex items-center gap-2 text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-none transition-colors"
                   >
                     <Mail className="w-3.5 h-3.5 text-emerald-400" />
-                    legal@viroeco.com
+                    info@viroeco.com
                   </a>
                 </div>
               </div>
@@ -171,7 +171,7 @@ export default function TermsOfServicePage() {
                   <strong>Eligibility:</strong> You must be at least 18 years of age and possess full legal capacity to enter into binding contracts. If you are registering an account or executing purchase orders on behalf of a corporation, hospitality group, institution, or catering company, you warrant that you possess valid statutory or corporate authority to bind that entity to these Terms.
                 </p>
                 <p>
-                  <strong>Account Security:</strong> You are solely responsible for maintaining the confidentiality of your authentication credentials (including email verification, OAuth access, and password data). Any activity conducted under your authenticated session shall be deemed authorized by you. In the event of unauthorized access or compromised security, you must notify ViroEco Security immediately at <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">security@viroeco.com</code>.
+                  <strong>Account Security:</strong> You are solely responsible for maintaining the confidentiality of your authentication credentials (including email verification, OAuth access, and password data). Any activity conducted under your authenticated session shall be deemed authorized by you. In the event of unauthorized access or compromised security, you must notify ViroEco Security immediately at <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">info@viroeco.com</code>.
                 </p>
                 <p>
                   <strong>Corporate Tax &amp; GST Verification:</strong> Enterprise purchasers requesting GST tax invoices, B2B wholesale pricing, or input tax credit allocations must supply authentic and active GSTIN / Corporate Tax Identification credentials during checkout or onboarding.
@@ -308,7 +308,7 @@ export default function TermsOfServicePage() {
                 </p>
                 <ol className="list-decimal list-inside space-y-1.5 pl-2">
                   <li>Photograph and document the carton batch codes, tamper seals, and damaged units.</li>
-                  <li>Transmit notice to <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">claims@viroeco.com</code> referencing your Order ID / PO number within the 7-day window.</li>
+                  <li>Transmit notice to <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">info@viroeco.com</code> referencing your Order ID / PO number within the 7-day window.</li>
                   <li>Upon verification, ViroEco will issue either an immediate replacement shipment or a corresponding credit note/refund within 5 to 7 business days.</li>
                 </ol>
                 <p>
@@ -419,8 +419,8 @@ export default function TermsOfServicePage() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4 text-emerald-700 shrink-0" />
-                      <a href="mailto:legal@viroeco.com" className="text-[#50644C] underline font-medium">
-                        legal@viroeco.com
+                      <a href="mailto:info@viroeco.com" className="text-[#50644C] underline font-medium">
+                        info@viroeco.com
                       </a>
                     </div>
                     <div className="flex items-center gap-2">

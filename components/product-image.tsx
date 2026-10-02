@@ -19,17 +19,24 @@ export function normalizeImageUrls(images: unknown): string[] {
     return trimmed;
   };
 
+  const isValidUrl = (url: string) =>
+    url.length > 0 &&
+    (url.startsWith("http://") ||
+      url.startsWith("https://") ||
+      url.startsWith("/") ||
+      url.startsWith("data:image/"));
+
   if (Array.isArray(images)) {
     return images
       .flatMap((item) => (typeof item === "string" ? item.split(/[;,]/) : []))
       .map(cleanUrl)
-      .filter((url) => url.length > 0 && (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/")));
+      .filter(isValidUrl);
   }
   if (typeof images === "string") {
     return images
       .split(/[;,]/)
       .map(cleanUrl)
-      .filter((url) => url.length > 0 && (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/")));
+      .filter(isValidUrl);
   }
   return [];
 }

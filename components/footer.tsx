@@ -269,11 +269,11 @@ export function Footer() {
             </a>
 
             <a
-              href="mailto:enterprise@viroeco.com"
+              href="mailto:info@viroeco.com"
               className="flex items-center gap-2 text-white hover:text-emerald-300 transition-colors font-medium truncate"
             >
               <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              enterprise@viroeco.com
+              info@viroeco.com
             </a>
 
           </div>

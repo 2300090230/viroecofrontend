@@ -245,13 +245,13 @@ export default function ContactPage() {
                 </a>
 
                 <a
-                  href="mailto:enterprise@viroeco.com"
+                  href="mailto:info@viroeco.com"
                   className="flex items-center gap-3 p-3 bg-white/10 rounded-none hover:bg-white/20 transition-colors"
                 >
                   <Mail className="w-4 h-4 text-emerald-400" />
                   <div>
                     <p className="font-semibold text-white">Wholesale Inquiries</p>
-                    <p className="text-[11px] text-emerald-200">sales@viroeco.com</p>
+                    <p className="text-[11px] text-emerald-200">info@viroeco.com</p>
                   </div>
                 </a>
               </div>

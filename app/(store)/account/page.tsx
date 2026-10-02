@@ -12,7 +12,6 @@ import { AddressFormDialog } from "@/components/address-form-dialog";
 import { useAuth } from "@/providers/auth-provider";
 import { useAddresses } from "@/hooks/use-addresses";
 import { updateProfileImage, removeProfileImage } from "@/lib/endpoints";
-import { ApiError } from "@/lib/api";
 
 export default function AccountPage() {
   const { session } = useAuth();
@@ -28,7 +27,7 @@ export default function AccountPage() {
       await updateProfileImage(session.gmail, file);
       toast.success("Image uploaded successfully.");
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Image upload failed.");
+      toast.error(err instanceof Error ? err.message : "Image upload failed.");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";

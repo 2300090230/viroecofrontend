@@ -332,4 +332,4 @@ npm run dev
 - **Brand Website:** [https://viroeco.com](https://viroeco.com) (or local runtime `http://localhost:3000`)
 - **Headquarters:** Bengaluru, Karnataka, India
 - **Global Distribution Hubs:** Bengaluru (India), Delhi-NCR (India), Dubai JAFZA (UAE), London (UK)
-- **Enterprise Inquiries:** [enterprise@viroeco.com](mailto:enterprise@viroeco.com) / [support@viroeco.com](mailto:support@viroeco.com)
+- **Enterprise Inquiries:** [info@viroeco.com](mailto:info@viroeco.com)

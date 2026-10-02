@@ -1,4 +1,4 @@
-// Typed mirrors of the Viroeco Spring Boot DTOs. Field names match the JSON exactly.
+// Typed shapes used by the UI; lib/endpoints.ts maps Supabase rows into them.
 
 export interface DiscountTier {
   minQuantity: number;

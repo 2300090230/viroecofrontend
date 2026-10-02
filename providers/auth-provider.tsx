@@ -28,6 +28,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSessionState(getSession());
     setReady(true);
 
+    // Drop a stale profile cookie (e.g. from the old backend login) when Supabase Auth has no session.
+    ep.hasAuthSession().then((ok) => {
+      if (!ok && getSession()) clearSession();
+    });
+
     const handleSessionChange = () => {
       setSessionState(getSession());
     };
@@ -49,6 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOut = useCallback(() => {
+    void ep.logout();
     clearSession();
     setSessionState(null);
     queryClient.clear();

@@ -15,7 +15,6 @@ import { useAuth } from "@/providers/auth-provider";
 import { createPaymentOrder, verifyPayment } from "@/lib/endpoints";
 import { loadRazorpay } from "@/lib/razorpay";
 import { formatINR } from "@/lib/format";
-import { ApiError } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 export default function CheckoutPage() {
@@ -74,7 +73,7 @@ export default function CheckoutPage() {
             toast.success("Payment successful — your order is placed!");
             router.push("/orders");
           } catch (err: any) {
-            toast.error(err instanceof ApiError || err instanceof Error ? err.message : "Payment verification failed");
+            toast.error(err instanceof Error ? err.message : "Payment verification failed");
             setPaying(false);
           }
         },
@@ -94,7 +93,7 @@ export default function CheckoutPage() {
       }
       rzp.open();
     } catch (err: any) {
-      toast.error(err instanceof ApiError || err instanceof Error ? err.message : "Could not start payment");
+      toast.error(err instanceof Error ? err.message : "Could not start payment");
       setPaying(false);
     }
   }

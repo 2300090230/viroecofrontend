@@ -1,5 +1,6 @@
 import { createClient } from "./supabase/client";
 import { getSession, setSession, clearSession } from "./session";
+import { uploadManyToCloudinary, uploadToCloudinary } from "./cloudinary";
 import type {
   Address,
   AddressInput,
@@ -66,71 +67,169 @@ function mapProductRow(row: any, tiers: any[] = []): Product {
   };
 }
 
-// ---- Auth ----
+// ---- Auth (Supabase Auth; profile/role data lives in the `users` table) ----
+
+type ProfileSeed = Partial<Pick<RegisterRequest, "name" | "contactno" | "gender" | "dob" | "imageUrl">>;
+
+// cart/address/orders reference users(gmail), so every auth user needs a profile row.
+// Inserts only when missing; role is always USER here — admins are promoted in the database.
+async function ensureProfile(email: string, seed: ProfileSeed = {}): Promise<void> {
+  const { error } = await getSupabase()
+    .from("users")
+    .upsert(
+      {
+        gmail: email,
+        name: seed.name || email.split("@")[0],
+        password: "", // credentials are managed by Supabase Auth, never stored here
+        contactno: seed.contactno || null,
+        image_url: seed.imageUrl || "",
+        gender: seed.gender || "NA",
+        dob: seed.dob || "",
+        role: "USER",
+        enabled: true,
+      },
+      { onConflict: "gmail", ignoreDuplicates: true },
+    );
+  if (error) throw new Error(`Could not create your profile: ${error.message}`);
+}
+
+function authErrorMessage(error: any, fallback: string): string {
+  const msg: string = error?.message || "";
+  if (/invalid login credentials/i.test(msg)) return "Invalid email or password";
+  if (/email not confirmed/i.test(msg)) return "Please verify your email first — check your inbox for the code.";
+  if (/token has expired|otp.*(expired|invalid)|invalid.*otp/i.test(msg)) return "Invalid or expired verification code";
+  return msg || fallback;
+}
+
 export async function login(b: LoginRequest): Promise<LoginResponse> {
   const supabase = getSupabase();
-  const { data, error } = await supabase
+  const email = b.gmail.trim().toLowerCase();
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password: b.password });
+  if (error || !data?.session) throw new Error(authErrorMessage(error, "Invalid email or password"));
+
+  const meta = data.user?.user_metadata ?? {};
+  await ensureProfile(email, { name: meta.name, contactno: meta.contactno, gender: meta.gender, dob: meta.dob });
+
+  const { data: profile, error: profileErr } = await supabase
     .from("users")
     .select("*")
-    .eq("gmail", b.gmail.trim().toLowerCase())
+    .eq("gmail", email)
     .maybeSingle();
-
-  if (error || !data) {
-    throw new Error("Invalid email or password");
+  if (profileErr || !profile) {
+    await supabase.auth.signOut();
+    throw new Error(profileErr?.message || "Could not load your profile");
   }
-
-  // Check enabled status
-  if (data.enabled === false) {
+  if (profile.enabled === false) {
+    await supabase.auth.signOut();
     throw new Error("Account is disabled. Please contact support.");
   }
 
   const res: LoginResponse = {
-    token: `sb_tok_${data.gmail}_${Date.now()}`,
-    gmail: data.gmail,
-    name: data.name || data.gmail.split("@")[0],
-    contactno: data.contactno || "",
-    imageUrl: data.image_url || "",
-    gender: data.gender || "NA",
-    dob: data.dob || "1990-01-01",
-    role: (data.role as any) || "USER",
+    token: data.session.access_token,
+    gmail: profile.gmail,
+    name: profile.name || profile.gmail.split("@")[0],
+    contactno: profile.contactno || "",
+    imageUrl: profile.image_url || "",
+    gender: profile.gender || "NA",
+    dob: profile.dob || "",
+    role: (profile.role as any) || "USER",
   };
-
   setSession(res);
 
-  if (data.role === "ADMIN") {
+  if (res.role === "ADMIN") {
     await recordAuditLog(
       "ADMIN_LOGIN",
       "AUTH",
-      data.gmail,
-      `Admin user ${data.name || data.gmail} (${data.gmail}) authenticated successfully`
+      res.gmail,
+      `Admin user ${res.name || res.gmail} (${res.gmail}) authenticated successfully`
     );
   }
 
   return res;
 }
 
-export async function register(b: RegisterRequest): Promise<string> {
-  const supabase = getSupabase();
-  const { error } = await supabase.from("users").insert({
-    gmail: b.gmail.trim().toLowerCase(),
-    name: b.name,
-    password: b.password,
-    contactno: b.contactno,
-    image_url: b.imageUrl || "",
-    gender: b.gender || "NA",
-    dob: b.dob || "1990-01-01",
-    role: "USER",
-    enabled: true,
-  });
-
-  if (error) {
-    throw new Error(error.message || "Failed to register account");
-  }
-  return "Account created successfully!";
+export async function logout(): Promise<void> {
+  await getSupabase().auth.signOut();
+  clearSession();
 }
 
-export async function verifyOtp(gmail: string, otp: number): Promise<string> {
-  return "Verified successfully";
+// True when Supabase Auth holds a session for this browser.
+export async function hasAuthSession(): Promise<boolean> {
+  const { data } = await getSupabase().auth.getSession();
+  return !!data?.session;
+}
+
+// Creates the auth user; Supabase emails a verification code (the "Confirm signup"
+// email template must include {{ .Token }}).
+export async function register(b: RegisterRequest): Promise<string> {
+  const supabase = getSupabase();
+  const email = b.gmail.trim().toLowerCase();
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password: b.password,
+    options: { data: { name: b.name, contactno: b.contactno, gender: b.gender, dob: b.dob } },
+  });
+  if (error) throw new Error(authErrorMessage(error, "Failed to register account"));
+  // Supabase hides existing accounts by returning a user with no identities.
+  if (data?.user && (data.user.identities ?? []).length === 0) {
+    throw new Error("An account with this email already exists. Please sign in.");
+  }
+
+  // Email confirmation disabled in the project: the user is already signed in.
+  if (data?.session) {
+    await ensureProfile(email, b);
+    await supabase.auth.signOut();
+    return "Registration Successful";
+  }
+  return "Verification code sent to your email.";
+}
+
+export async function verifyOtp(gmail: string, otp: string, profile?: ProfileSeed): Promise<string> {
+  const supabase = getSupabase();
+  const email = gmail.trim().toLowerCase();
+
+  const { data, error } = await supabase.auth.verifyOtp({ email, token: otp.trim(), type: "email" });
+  if (error || !data?.user) throw new Error(authErrorMessage(error, "Invalid or expired verification code"));
+
+  const meta = data.user.user_metadata ?? {};
+  await ensureProfile(email, { name: meta.name, contactno: meta.contactno, gender: meta.gender, dob: meta.dob, ...profile });
+  await supabase.auth.signOut(); // the register page sends the user to sign in
+  return "Registration Successful";
+}
+
+// Emails a reset link that lands on /reset-password (that URL must be listed under
+// Supabase → Authentication → URL Configuration → Redirect URLs).
+export async function requestPasswordReset(gmail: string): Promise<void> {
+  const { error } = await getSupabase().auth.resetPasswordForEmail(gmail.trim().toLowerCase(), {
+    redirectTo: `${window.location.origin}/reset-password`,
+  });
+  if (error) throw new Error(authErrorMessage(error, "Could not send the reset email"));
+}
+
+// Called on /reset-password after the recovery link signed the user in.
+export async function completePasswordReset(newPassword: string): Promise<void> {
+  const supabase = getSupabase();
+  const { error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) throw new Error(error.message || "Failed to set the new password");
+  await supabase.auth.signOut();
+  clearSession();
+}
+
+// Establishes the recovery session from the emailed link (PKCE `?code=`), if present.
+export async function startPasswordRecovery(code: string | null): Promise<boolean> {
+  const supabase = getSupabase();
+  const { data } = await supabase.auth.getSession(); // also picks up a session already in the URL
+  if (data?.session) return true;
+  if (!code) return false;
+  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  return !error;
+}
+
+export async function resendVerificationCode(gmail: string): Promise<void> {
+  const { error } = await getSupabase().auth.resend({ type: "signup", email: gmail.trim().toLowerCase() });
+  if (error) throw new Error(authErrorMessage(error, "Could not resend the code"));
 }
 
 export async function getUserProfile(gmail: string): Promise<UserSummary> {
@@ -200,58 +299,34 @@ export async function changeUserPassword(
   payload: ChangePasswordRequest
 ): Promise<string> {
   const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from("users")
-    .select("password")
-    .eq("gmail", gmail.trim().toLowerCase())
-    .maybeSingle();
+  const email = gmail.trim().toLowerCase();
 
-  if (error || !data) {
-    throw new Error("User account not found");
-  }
+  // Re-authenticate to confirm the current password before changing it.
+  const { error: reauthErr } = await supabase.auth.signInWithPassword({
+    email,
+    password: payload.currentPassword,
+  });
+  if (reauthErr) throw new Error("Current password is incorrect");
 
-  if (data.password && data.password !== payload.currentPassword) {
-    throw new Error("Current password is incorrect");
-  }
-
-  const { error: updateError } = await supabase
-    .from("users")
-    .update({ password: payload.newPassword })
-    .eq("gmail", gmail.trim().toLowerCase());
-
-  if (updateError) {
-    throw new Error(updateError.message || "Failed to update password");
-  }
+  const { error } = await supabase.auth.updateUser({ password: payload.newPassword });
+  if (error) throw new Error(error.message || "Failed to update password");
 
   return "Password updated successfully";
 }
 
 export async function updateProfileImage(gmail: string, file: File): Promise<string> {
-  const supabase = getSupabase();
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      try {
-        const base64Url = reader.result as string;
-        const { error } = await supabase
-          .from("users")
-          .update({ image_url: base64Url })
-          .eq("gmail", gmail.trim().toLowerCase());
+  const imageUrl = await uploadToCloudinary(file, "avatar");
+  const { error } = await getSupabase()
+    .from("users")
+    .update({ image_url: imageUrl })
+    .eq("gmail", gmail.trim().toLowerCase());
+  if (error) throw new Error(error.message || "Failed to save profile picture");
 
-        if (error) throw error;
-
-        const currentSession = getSession();
-        if (currentSession && currentSession.gmail.toLowerCase() === gmail.toLowerCase()) {
-          setSession({ ...currentSession, imageUrl: base64Url });
-        }
-        resolve(base64Url);
-      } catch (e: any) {
-        reject(e instanceof Error ? e : new Error("Failed to save profile picture"));
-      }
-    };
-    reader.onerror = () => reject(new Error("Failed to read image file"));
-    reader.readAsDataURL(file);
-  });
+  const currentSession = getSession();
+  if (currentSession && currentSession.gmail.toLowerCase() === gmail.toLowerCase()) {
+    setSession({ ...currentSession, imageUrl });
+  }
+  return imageUrl;
 }
 
 export async function removeProfileImage(gmail: string): Promise<string> {
@@ -515,23 +590,34 @@ export async function deleteCategory(id: number): Promise<string> {
 }
 
 // ---- Cart (USER) ----
+async function getOrCreateCart(user: LoginResponse): Promise<{ id: number }> {
+  const supabase = getSupabase();
+  const { data: cart, error } = await supabase.from("cart").select("id").eq("gmail", user.gmail).maybeSingle();
+  if (error) throw new Error(error.message);
+  if (cart) return cart;
+
+  await ensureProfile(user.gmail.trim().toLowerCase(), user); // cart.gmail references users(gmail)
+  const { data: newCart, error: insertErr } = await supabase
+    .from("cart")
+    .insert({ gmail: user.gmail })
+    .select("id")
+    .single();
+  if (insertErr || !newCart) throw new Error(insertErr?.message || "Failed to initialize shopping cart");
+  return newCart;
+}
+
 export async function getCart(): Promise<Cart> {
   const user = getSession();
   if (!user) return { items: [] };
   const supabase = getSupabase();
 
-  // Find or create cart
-  let { data: cart } = await supabase.from("cart").select("id").eq("gmail", user.gmail).maybeSingle();
-  if (!cart) {
-    const { data: newCart } = await supabase.from("cart").insert({ gmail: user.gmail }).select().single();
-    cart = newCart;
-  }
-  if (!cart) return { items: [] };
+  const cart = await getOrCreateCart(user);
 
-  const { data: items } = await supabase
+  const { data: items, error: itemsErr } = await supabase
     .from("cart_item")
     .select("*, product(*, product_discount_tier(*))")
     .eq("cart_id", cart.id);
+  if (itemsErr) throw new Error(itemsErr.message);
 
   const cartItems: CartItem[] = (items || []).map((ci: any) => {
     const p = ci.product;
@@ -568,15 +654,7 @@ export async function addToCart(productId: number, quantity: number): Promise<Ca
   if (!user) throw new Error("Please log in to add items to cart");
   const supabase = getSupabase();
 
-  let { data: cart } = await supabase.from("cart").select("id").eq("gmail", user.gmail).maybeSingle();
-  if (!cart) {
-    const { data: newCart } = await supabase.from("cart").insert({ gmail: user.gmail }).select().single();
-    cart = newCart;
-  }
-
-  if (!cart) {
-    throw new Error("Failed to initialize shopping cart");
-  }
+  const cart = await getOrCreateCart(user);
 
   const { data: existing } = await supabase
     .from("cart_item")
@@ -585,18 +663,17 @@ export async function addToCart(productId: number, quantity: number): Promise<Ca
     .eq("product_id", productId)
     .maybeSingle();
 
-  if (existing) {
-    await supabase
-      .from("cart_item")
-      .update({ quantity: existing.quantity + quantity })
-      .eq("id", existing.id);
-  } else {
-    await supabase.from("cart_item").insert({
-      cart_id: cart.id,
-      product_id: productId,
-      quantity,
-    });
-  }
+  const { error } = existing
+    ? await supabase
+        .from("cart_item")
+        .update({ quantity: existing.quantity + quantity })
+        .eq("id", existing.id)
+    : await supabase.from("cart_item").insert({
+        cart_id: cart.id,
+        product_id: productId,
+        quantity,
+      });
+  if (error) throw new Error(error.message || "Failed to add item to cart");
 
   return getCart();
 }
@@ -608,15 +685,15 @@ export async function updateCartItem(productId: number, quantity: number): Promi
 
   const { data: cart } = await supabase.from("cart").select("id").eq("gmail", user.gmail).maybeSingle();
   if (cart) {
-    if (quantity <= 0) {
-      await supabase.from("cart_item").delete().eq("cart_id", cart.id).eq("product_id", productId);
-    } else {
-      await supabase
-        .from("cart_item")
-        .update({ quantity })
-        .eq("cart_id", cart.id)
-        .eq("product_id", productId);
-    }
+    const { error } =
+      quantity <= 0
+        ? await supabase.from("cart_item").delete().eq("cart_id", cart.id).eq("product_id", productId)
+        : await supabase
+            .from("cart_item")
+            .update({ quantity })
+            .eq("cart_id", cart.id)
+            .eq("product_id", productId);
+    if (error) throw new Error(error.message || "Failed to update cart");
   }
   return getCart();
 }
@@ -654,6 +731,7 @@ export async function createAddress(b: AddressInput): Promise<Address> {
   const user = getSession();
   if (!user) throw new Error("Please log in to add an address");
   const supabase = getSupabase();
+  await ensureProfile(user.gmail.trim().toLowerCase(), user); // address.gmail references users(gmail)
 
   const { data, error } = await supabase
     .from("address")
@@ -796,22 +874,27 @@ export async function placeOrder(addressId: number): Promise<Order> {
 
   if (error) throw new Error(error.message);
 
-  // Insert order items
-  for (const item of cart.items) {
-    await supabase.from("order_item").insert({
+  // Insert order items in one request; roll back the order if they fail so no empty order is left
+  const { error: itemsErr } = await supabase.from("order_item").insert(
+    cart.items.map((item) => ({
       order_id: order.id,
       product_id: item.productId,
       pname: item.pname,
       price: item.discountedPrice,
       quantity: item.quantity,
       discount_percent: item.discountPercent,
-    });
+    })),
+  );
+  if (itemsErr) {
+    await supabase.from("orders").delete().eq("id", order.id);
+    throw new Error(itemsErr.message || "Failed to save order items");
   }
 
   // Clear cart
   const { data: cartRow } = await supabase.from("cart").select("id").eq("gmail", user.gmail).maybeSingle();
   if (cartRow) {
-    await supabase.from("cart_item").delete().eq("cart_id", cartRow.id);
+    const { error: clearErr } = await supabase.from("cart_item").delete().eq("cart_id", cartRow.id);
+    if (clearErr) console.warn("Order placed but cart could not be cleared:", clearErr.message);
   }
 
   return getOrder(order.id);
@@ -1075,29 +1158,40 @@ export async function adminCreateAuditLog(b: {
   };
 }
 
-// ---- Admin: products (multipart / json) ----
+// ---- Admin: products (Supabase; images uploaded to Cloudinary) ----
+async function nextProductId(): Promise<number> {
+  const { data, error } = await getSupabase()
+    .from("product")
+    .select("product_id")
+    .order("product_id", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return Number(data?.product_id ?? 0) + 1;
+}
+
+// `images` is the final ordered gallery: existing image URLs to keep and new files to
+// upload. The first entry is the cover image. Returns the saved product's id.
 export async function adminSaveProduct(
   fields: Record<string, string>,
-  images: File[],
+  images: (string | File)[],
   id?: number,
-): Promise<string> {
+): Promise<number> {
   const supabase = getSupabase();
-  const productId = id || Date.now();
-
-  const productData: any = {
-    product_id: productId,
-    pname: fields.pname,
-    category: fields.category,
+  const quantity = Number(fields.quantity || 0);
+  const row: Record<string, unknown> = {
+    pname: fields.pname || "",
+    category: fields.category || "",
     size: fields.size || "",
     material: fields.material || "",
-    uv_protection: fields.uvProtection === "true" || fields.uvProtection === "1" ? 1 : 0,
+    uv_protection: fields.uvProtection === "true" || fields.uvProtection === "1" ? 1 : 0, // INT column
     product_usage: fields.usage || fields.productUsage || "",
     pack_size: fields.packSize || "",
     color: fields.color || "",
-    price: parseFloat(fields.price || "0"),
-    original_price: parseFloat(fields.originalPrice || fields.price || "0"),
-    quantity: parseInt(fields.quantity || "0", 10),
-    is_available: parseInt(fields.quantity || "0", 10) > 0 ? 1 : 0,
+    price: Number(fields.price || 0),
+    original_price: Number(fields.originalPrice || fields.price || 0),
+    quantity,
+    is_available: quantity > 0 ? 1 : 0, // INT column
     weight: fields.weight || "",
     length: fields.length || "",
     width: fields.width || "",
@@ -1107,78 +1201,94 @@ export async function adminSaveProduct(
     features: fields.features || "",
   };
 
-  if (fields.productImages) {
-    productData.product_images = fields.productImages;
-  }
+  // Upload new files first (order preserved) so a failed upload leaves the product untouched.
+  const newFiles = images.filter((img): img is File => typeof img !== "string");
+  const uploaded = newFiles.length > 0 ? await uploadManyToCloudinary(newFiles, "product") : [];
+  let next = 0;
+  const imageUrls = images.map((img) => (typeof img === "string" ? img : uploaded[next++]));
+  row.product_images = imageUrls.join(";");
 
+  let productId: number;
   if (id) {
-    const { error } = await supabase.from("product").update(productData).eq("product_id", id);
-    if (error) throw new Error(error.message);
-
-    await recordAuditLog(
-      "PRODUCT_UPDATED",
-      "PRODUCT",
-      String(id),
-      `Updated details for product '${fields.pname}' (Price: ₹${fields.price || "0"}, Stock: ${fields.quantity || "0"}, Category: ${fields.category || ""})`
-    );
-
-    return "Product updated successfully";
+    productId = id;
+    const { data, error } = await supabase
+      .from("product")
+      .update(row)
+      .eq("product_id", productId)
+      .select("product_id");
+    if (error) throw new Error(`Failed to update product: ${error.message}`);
+    if (!data?.length) throw new Error("Product not found, or you don't have permission to edit it.");
   } else {
-    const { error } = await supabase.from("product").insert(productData);
-    if (error) throw new Error(error.message);
-
-    await recordAuditLog(
-      "PRODUCT_CREATED",
-      "PRODUCT",
-      String(productId),
-      `Created new product '${fields.pname}' in category '${fields.category}' (Price: ₹${fields.price || "0"}, Stock: ${fields.quantity || "0"})`
-    );
-
-    return `Product created successfully with ID: ${productId}`;
+    productId = await nextProductId();
+    const { error } = await supabase.from("product").insert({ ...row, product_id: productId });
+    if (error) throw new Error(`Failed to create product: ${error.message}`);
   }
+
+  // Keep the product_image table in step with the gallery.
+  const { error: delErr } = await supabase.from("product_image").delete().eq("product_id", productId);
+  if (delErr) throw new Error(`Failed to update product images: ${delErr.message}`);
+  if (imageUrls.length > 0) {
+    const { error: imgErr } = await supabase
+      .from("product_image")
+      .insert(imageUrls.map((url) => ({ product_id: productId, image_url: url })));
+    if (imgErr) throw new Error(`Failed to save product images: ${imgErr.message}`);
+  }
+
+  await recordAuditLog(
+    id ? "PRODUCT_UPDATED" : "PRODUCT_CREATED",
+    "PRODUCT",
+    String(productId),
+    `${id ? "Updated details for product" : "Created new product"} '${fields.pname}' (Price: ₹${fields.price || "0"}, Stock: ${fields.quantity || "0"}, Category: ${fields.category || ""})`
+  );
+
+  return productId;
 }
 
 export async function adminDeleteProduct(id: number, reason?: string): Promise<string> {
-  const supabase = getSupabase();
-  const { data: prod } = await supabase.from("product").select("pname, category").eq("product_id", id).maybeSingle();
-  const prodName = prod?.pname || `SKU #${id}`;
-  const cat = prod?.category ? ` (Category: ${prod.category})` : "";
-  const reasonText = reason?.trim() ? ` [Reason: ${reason.trim()}]` : "";
-
-  // Delete associated tiers and images first
-  await supabase.from("product_discount_tier").delete().eq("product_id", id);
-  await supabase.from("product_image").delete().eq("product_id", id);
-  const { error } = await supabase.from("product").delete().eq("product_id", id);
-  if (error) throw new Error(error.message);
+  // product_image, product_discount_tier and cart_item rows cascade; order_item keeps history.
+  const { data, error } = await getSupabase()
+    .from("product")
+    .delete()
+    .eq("product_id", id)
+    .select("product_id");
+  if (error) throw new Error(`Failed to delete product: ${error.message}`);
+  if (!data?.length) throw new Error("Product not found, or you don't have permission to delete it.");
 
   await recordAuditLog(
     "PRODUCT_DELETED",
     "PRODUCT",
     String(id),
-    `Permanently deleted product '${prodName}' (SKU ID: ${id}${cat}).${reasonText}`
+    `Permanently deleted product SKU ID: ${id}.${reason?.trim() ? ` [Reason: ${reason.trim()}]` : ""}`
   );
 
-  return "Product deleted successfully";
+  return "Product Deleted Successfully";
 }
 
-export async function adminSetProductTiers(id: number, tiers: DiscountTier[]): Promise<DiscountTier[]> {
+export async function adminSetProductTiers(
+  productId: number,
+  tiers: DiscountTier[],
+): Promise<DiscountTier[]> {
   const supabase = getSupabase();
-  await supabase.from("product_discount_tier").delete().eq("product_id", id);
-  
-  for (const t of tiers) {
-    await supabase.from("product_discount_tier").insert({
-      product_id: id,
-      min_quantity: t.minQuantity,
-      discount_percent: t.discountPercent,
-    });
+  const { error: delErr } = await supabase.from("product_discount_tier").delete().eq("product_id", productId);
+  if (delErr) throw new Error(`Failed to update discount tiers: ${delErr.message}`);
+
+  if (tiers.length > 0) {
+    const { error } = await supabase.from("product_discount_tier").insert(
+      tiers.map((t) => ({
+        product_id: productId,
+        min_quantity: t.minQuantity,
+        discount_percent: t.discountPercent,
+      })),
+    );
+    if (error) throw new Error(`Failed to save discount tiers: ${error.message}`);
   }
 
   await recordAuditLog(
     "TIERS_UPDATED",
     "PRODUCT",
-    String(id),
-    `Updated volume discount pricing tiers for product SKU #${id} (${tiers.length} tiers configured)`
+    String(productId),
+    `Updated volume discount pricing tiers for product SKU #${productId} (${tiers.length} tiers configured)`
   );
 
-  return getProductTiers(id);
+  return tiers;
 }

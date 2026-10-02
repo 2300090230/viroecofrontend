@@ -29,11 +29,11 @@ export function TopAnnouncementBar() {
               +91 (800) 456-7890
             </a>
             <a
-              href="mailto:enterprise@viroeco.com"
+              href="mailto:info@viroeco.com"
               className="hidden sm:flex items-center gap-1 hover:text-white transition-colors"
             >
               <Mail className="w-3 h-3 text-emerald-400" />
-              enterprise@viroeco.com
+              info@viroeco.com
             </a>
             <button
               onClick={() => setQuoteOpen(true)}

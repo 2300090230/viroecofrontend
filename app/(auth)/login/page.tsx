@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/providers/auth-provider";
-import { ApiError } from "@/lib/api";
+import { requestPasswordReset } from "@/lib/endpoints";
 
 function LoginForm() {
   const { signIn } = useAuth();
@@ -29,7 +29,7 @@ function LoginForm() {
       const next = params.get("next");
       router.push(session.role === "ADMIN" ? "/admin" : next || "/");
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Invalid credentials.");
+      toast.error(err instanceof Error ? err.message : "Invalid credentials.");
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,18 @@ function LoginForm() {
             </Label>
             <button
               type="button"
-              onClick={() => toast.info("Password reset instructions will be sent to your email.")}
+              onClick={async () => {
+                if (!form.gmail.trim()) {
+                  toast.error("Enter your email address first.");
+                  return;
+                }
+                try {
+                  await requestPasswordReset(form.gmail);
+                  toast.success("Password reset link sent — check your email.");
+                } catch (err) {
+                  toast.error(err instanceof Error ? err.message : "Could not send the reset email.");
+                }
+              }}
               className="text-xs text-[#50644C] hover:underline font-medium cursor-pointer"
             >
               Forgot password?

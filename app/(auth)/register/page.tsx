@@ -27,8 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { register, verifyOtp } from "@/lib/endpoints";
-import { ApiError } from "@/lib/api";
+import { register, resendVerificationCode, verifyOtp } from "@/lib/endpoints";
 import type { RegisterRequest } from "@/lib/types";
 
 export default function RegisterPage() {
@@ -65,13 +64,16 @@ export default function RegisterPage() {
     }
     setLoading(true);
     try {
-      await register(form);
+      const res = await register(form);
+      if (res.toLowerCase().includes("successful")) {
+        toast.success("Account created! Please sign in.");
+        router.push("/login");
+        return;
+      }
       toast.success("Verification code sent to your email.");
       setStep("otp");
     } catch (err) {
-      // In offline / demo mode, allow progressing to OTP step smoothly
-      toast.info("Verification code prepared (Use code 123456 in demo mode)");
-      setStep("otp");
+      toast.error(err instanceof Error ? err.message : "Failed to register account");
     } finally {
       setLoading(false);
     }
@@ -81,21 +83,11 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await verifyOtp(form.gmail, Number(otp));
-      if (res.toLowerCase().includes("successful")) {
-        toast.success("Account verified successfully! Please sign in.");
-        router.push("/login");
-      } else {
-        toast.error(res);
-      }
+      await verifyOtp(form.gmail, otp, form);
+      toast.success("Account verified successfully! Please sign in.");
+      router.push("/login");
     } catch (err) {
-      // If offline demo code
-      if (otp === "123456" || otp.length === 6) {
-        toast.success("Account registered and verified! Please sign in.");
-        router.push("/login");
-      } else {
-        toast.error(err instanceof ApiError ? err.message : "Invalid verification code. Please check and try again.");
-      }
+      toast.error(err instanceof Error ? err.message : "Invalid verification code. Please check and try again.");
     } finally {
       setLoading(false);
     }
@@ -149,7 +141,7 @@ export default function RegisterPage() {
               Verify your email
             </h1>
             <p className="text-xs text-[#5A6659] leading-relaxed">
-              We&apos;ve dispatched a 6-digit verification code to{" "}
+              We&apos;ve sent a verification code to{" "}
               <strong className="text-[#17231C] font-semibold">{form.gmail}</strong>.
             </p>
           </div>
@@ -157,21 +149,32 @@ export default function RegisterPage() {
           <form onSubmit={submitOtp} className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="otp" className="text-xs font-bold text-[#17231C]">
-                6-Digit Verification Code
+                Verification Code
               </Label>
               <Input
                 id="otp"
                 inputMode="numeric"
                 required
                 autoFocus
-                placeholder="123456"
+                placeholder="Enter code"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
                 className="text-center text-2xl tracking-[0.4em] font-mono h-14 bg-[#FAF9F5] border-[#DFD5C6] focus-visible:ring-[#50644C] rounded-none font-bold text-[#50644C]"
-                maxLength={6}
+                maxLength={10}
               />
               <p className="text-[11px] text-[#5A6659] text-center">
-                For demo testing, enter <code className="bg-[#EDF2EB] px-1 py-0.5 rounded-none font-mono text-[#50644C]">123456</code>
+                Didn&apos;t get it?{" "}
+                <button
+                  type="button"
+                  className="cursor-pointer font-semibold text-[#50644C] underline"
+                  onClick={() =>
+                    resendVerificationCode(form.gmail)
+                      .then(() => toast.success("A new code has been sent."))
+                      .catch((err: Error) => toast.error(err.message))
+                  }
+                >
+                  Resend code
+                </button>
               </p>
             </div>
 

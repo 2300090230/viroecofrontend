@@ -32,12 +32,6 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
               <PanelLeft className="w-4 h-4" />
             </button>
 
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-semibold">
-              <span className="w-2 h-2 rounded-none bg-emerald-500 animate-pulse" />
-              <span className="hidden sm:inline">Catalog Live: 513 SKUs</span>
-              <span className="sm:hidden">513 SKUs</span>
-            </div>
-
             <div className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-[#FAF9F5] border border-[#DFD5C6] text-[11px] text-[#5A6659] font-medium">
               <span>Viroeco Biocomposites Active</span>
             </div>

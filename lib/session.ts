@@ -1,9 +1,7 @@
 import type { LoginResponse } from "./types";
 
-// ponytail: session stored in a JS-readable cookie (not httpOnly) because the backend
-// authenticates via the Authorization header, so the token must be reachable from JS.
-// The proxy (middleware) also reads this cookie to gate routes. Acceptable for this app;
-// upgrade path is a backend cookie-auth mode + httpOnly if XSS surface grows.
+// Profile snapshot (name, role, …) for the UI and the proxy's route gating. It is not an
+// authorization boundary: Supabase Auth holds the real session and RLS enforces access.
 export const SESSION_COOKIE = "ve_session";
 
 export type Session = LoginResponse;
@@ -32,7 +30,6 @@ export function getSession(): Session | null {
 export function setSession(session: Session) {
   if (typeof document === "undefined") return;
   const value = encodeURIComponent(JSON.stringify(session));
-  // 24h to match the backend JWT expiry
   document.cookie = `${SESSION_COOKIE}=${value}; path=/; max-age=${60 * 60 * 24}; samesite=lax`;
   if (typeof window !== "undefined") {
     window.dispatchEvent(new Event("ve_session_change"));
@@ -45,9 +42,5 @@ export function clearSession() {
   if (typeof window !== "undefined") {
     window.dispatchEvent(new Event("ve_session_change"));
   }
-}
-
-export function getToken(): string | null {
-  return getSession()?.token ?? null;
 }
 

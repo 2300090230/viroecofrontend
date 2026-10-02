@@ -24,7 +24,6 @@ import { Logo } from "@/components/logo";
 const LINKS = [
   { href: "/products", label: "Our Products" },
   { href: "/categories", label: "Categories" },
-  { href: "/impact", label: "Impact & Materials" },
   { href: "/calculator", label: "Savings Calculator" },
   { href: "/enterprise", label: "Enterprise Solutions" },
   { href: "/about", label: "Why Us" },

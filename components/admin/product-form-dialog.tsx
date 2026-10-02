@@ -15,11 +15,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Trash2 } from "lucide-react";
+import { ImagePlus, Star, Trash2, X } from "lucide-react";
 import { adminSaveProduct, adminSetProductTiers, getCategories } from "@/lib/endpoints";
+import { ProductImage } from "@/components/product-image";
 import type { Product, Category } from "@/lib/types";
 
 type TierRow = { minQuantity: string; discountPercent: string };
+
+const MAX_IMAGES = 10;
+
+// One gallery slot: an already-saved image URL, or a new file awaiting upload.
+type GalleryItem = { key: string; src: string; file?: File };
+
+function galleryFromProduct(p?: Product): GalleryItem[] {
+  return (p?.productImages ?? []).map((url, i) => ({ key: `saved-${i}-${url}`, src: url }));
+}
+
+function releasePreviews(items: GalleryItem[]) {
+  items.forEach((it) => it.file && URL.revokeObjectURL(it.src));
+}
 
 function tiersFromProduct(p?: Product): TierRow[] {
   return (p?.discountTiers ?? []).map((t) => ({
@@ -82,9 +96,38 @@ export function ProductFormDialog({
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<Fields>(fromProduct(product));
-  const [images, setImages] = useState<File[]>([]);
+  const [gallery, setGallery] = useState<GalleryItem[]>(galleryFromProduct(product));
   const [tiers, setTiers] = useState<TierRow[]>(tiersFromProduct(product));
   const set = (k: keyof Fields, v: string) => setForm((f) => ({ ...f, [k]: v }));
+  const addFiles = (files: File[]) => {
+    const room = MAX_IMAGES - gallery.length;
+    if (files.length > room) toast.error(`A product can have at most ${MAX_IMAGES} images.`);
+    const added = files.slice(0, Math.max(room, 0)).map((file) => ({
+      key: `new-${file.name}-${file.lastModified}-${Math.random()}`,
+      src: URL.createObjectURL(file),
+      file,
+    }));
+    setGallery((g) => [...g, ...added]);
+  };
+  const removeImage = (key: string) =>
+    setGallery((g) => {
+      releasePreviews(g.filter((it) => it.key === key));
+      return g.filter((it) => it.key !== key);
+    });
+  const makeCover = (key: string) =>
+    setGallery((g) => [...g.filter((it) => it.key === key), ...g.filter((it) => it.key !== key)]);
+  // Reopening the dialog starts from the product's current data.
+  const handleOpenChange = (next: boolean) => {
+    if (next) {
+      releasePreviews(gallery);
+      setGallery(galleryFromProduct(product));
+      if (product) {
+        setForm(fromProduct(product));
+        setTiers(tiersFromProduct(product));
+      }
+    }
+    setOpen(next);
+  };
   const setTier = (i: number, k: keyof TierRow, v: string) =>
     setTiers((rows) => rows.map((r, j) => (j === i ? { ...r, [k]: v } : r)));
 
@@ -103,19 +146,19 @@ export function ProductFormDialog({
 
   const save = useMutation({
     mutationFn: async () => {
-      const result = await adminSaveProduct(form, images, product?.productId);
-      // New products return "…with ID: <n>"; edits already have the id.
-      const id = product?.productId ?? Number(result.match(/ID:\s*(\d+)/)?.[1]);
-      if (id) {
-        const clean = tiers
-          .map((t) => ({
-            minQuantity: Number(t.minQuantity),
-            discountPercent: Number(t.discountPercent),
-          }))
-          .filter((t) => t.minQuantity > 0);
-        // Send even when empty so removing all tiers on an edit clears them.
-        if (clean.length > 0 || product) await adminSetProductTiers(id, clean);
-      }
+      const productId = await adminSaveProduct(
+        form,
+        gallery.map((it) => it.file ?? it.src),
+        product?.productId,
+      );
+      const clean = tiers
+        .map((t) => ({
+          minQuantity: Number(t.minQuantity),
+          discountPercent: Number(t.discountPercent),
+        }))
+        .filter((t) => t.minQuantity > 0);
+      // Send even when empty so removing all tiers on an edit clears them.
+      if (clean.length > 0 || product) await adminSetProductTiers(productId, clean);
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "products"] });
@@ -127,13 +170,14 @@ export function ProductFormDialog({
         setForm(fromProduct());
         setTiers([]);
       }
-      setImages([]);
+      releasePreviews(gallery);
+      setGallery([]);
     },
     onError: (e: Error) => toast.error(e.message || (product ? "Failed to update product." : "Failed to create product.")),
   });
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto bg-card sm:max-w-2xl">
         <DialogHeader>
@@ -294,20 +338,89 @@ export function ProductFormDialog({
             ))}
           </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="images">
-              Images {product ? "(uploading new ones replaces all existing)" : ""}
-            </Label>
-            <Input
-              id="images"
-              type="file"
-              accept="image/*"
-              multiple
-              className="cursor-pointer"
-              onChange={(e) => setImages(Array.from(e.target.files ?? []))}
-            />
-            {images.length > 0 && (
-              <p className="text-xs text-muted-foreground">{images.length} image(s) selected</p>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="images">
+                Images ({gallery.length}/{MAX_IMAGES})
+              </Label>
+              <label
+                htmlFor="images"
+                className={`inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium ${
+                  gallery.length >= MAX_IMAGES ? "pointer-events-none opacity-50" : "cursor-pointer hover:bg-muted"
+                }`}
+              >
+                <ImagePlus className="h-3.5 w-3.5" />
+                Add images
+              </label>
+              <input
+                id="images"
+                type="file"
+                accept="image/*"
+                multiple
+                className="sr-only"
+                disabled={gallery.length >= MAX_IMAGES}
+                onChange={(e) => {
+                  addFiles(Array.from(e.target.files ?? []));
+                  e.target.value = ""; // allow picking the same file again
+                }}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground">
+              The first image is the cover shown in the store. Use the star to make an image the cover.
+            </p>
+
+            {gallery.length === 0 ? (
+              <p className="rounded border border-dashed border-border py-6 text-center text-xs text-muted-foreground">
+                No images yet.
+              </p>
+            ) : (
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+                {gallery.map((it, idx) => (
+                  <div
+                    key={it.key}
+                    className="group relative aspect-square overflow-hidden rounded border border-border bg-muted/40"
+                  >
+                    {it.file ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={it.src} alt={`New image ${idx + 1}`} className="h-full w-full object-cover" />
+                    ) : (
+                      <ProductImage images={[it.src]} alt={`Product image ${idx + 1}`} className="h-full w-full" />
+                    )}
+                    {idx === 0 && (
+                      <span className="absolute left-1 top-1 rounded bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground">
+                        Cover
+                      </span>
+                    )}
+                    {it.file && (
+                      <span className="absolute bottom-1 left-1 rounded bg-background/90 px-1.5 py-0.5 text-[10px] font-medium">
+                        New
+                      </span>
+                    )}
+                    <div className="absolute right-1 top-1 flex gap-1">
+                      {idx !== 0 && (
+                        <button
+                          type="button"
+                          aria-label="Make cover image"
+                          title="Make cover"
+                          onClick={() => makeCover(it.key)}
+                          className="cursor-pointer rounded bg-background/90 p-1 hover:text-primary"
+                        >
+                          <Star className="h-3.5 w-3.5" />
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        aria-label="Remove image"
+                        title="Remove"
+                        onClick={() => removeImage(it.key)}
+                        className="cursor-pointer rounded bg-background/90 p-1 hover:text-destructive"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 

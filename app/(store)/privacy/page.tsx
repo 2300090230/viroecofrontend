@@ -107,11 +107,11 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <div className="pt-2">
                   <a
-                    href="mailto:privacy@viroeco.com"
+                    href="mailto:info@viroeco.com"
                     className="inline-flex items-center gap-2 text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-none transition-colors"
                   >
                     <Mail className="w-3.5 h-3.5 text-emerald-400" />
-                    privacy@viroeco.com
+                    info@viroeco.com
                   </a>
                 </div>
               </div>
@@ -374,7 +374,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Right to Data Portability:</strong> Receive your data in a structured, machine-readable JSON/CSV format.</li>
                 </ul>
                 <p>
-                  To exercise any of these rights, email our Data Protection Officer at <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">privacy@viroeco.com</code>. We respond to all authenticated requests within thirty (30) calendar days.
+                  To exercise any of these rights, email our Data Protection Officer at <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">info@viroeco.com</code>. We respond to all authenticated requests within thirty (30) calendar days.
                 </p>
               </div>
             </section>
@@ -430,8 +430,8 @@ export default function PrivacyPolicyPage() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4 text-emerald-700 shrink-0" />
-                      <a href="mailto:privacy@viroeco.com" className="text-[#50644C] underline font-medium">
-                        privacy@viroeco.com
+                      <a href="mailto:info@viroeco.com" className="text-[#50644C] underline font-medium">
+                        info@viroeco.com
                       </a>
                     </div>
                     <div className="flex items-center gap-2">
