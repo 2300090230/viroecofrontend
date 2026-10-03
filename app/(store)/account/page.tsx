@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { Pencil, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { Container } from "@/components/container";
@@ -10,8 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AddressFormDialog } from "@/components/address-form-dialog";
 import { useAuth } from "@/providers/auth-provider";
 import { useAddresses } from "@/hooks/use-addresses";
-import { updateProfileImage } from "@/lib/endpoints";
-import { ApiError } from "@/lib/api";
+import { updateProfileImage, removeProfileImage } from "@/lib/endpoints";
 
 export default function AccountPage() {
   const { session } = useAuth();
@@ -25,12 +25,25 @@ export default function AccountPage() {
     setUploading(true);
     try {
       await updateProfileImage(session.gmail, file);
-      toast.success("Profile photo updated — it'll show on next sign in.");
+      toast.success("Image uploaded successfully.");
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Upload failed");
+      toast.error(err instanceof Error ? err.message : "Image upload failed.");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
+  async function onRemovePhoto() {
+    if (!session) return;
+    setUploading(true);
+    try {
+      await removeProfileImage(session.gmail);
+      toast.success("Profile photo removed.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to remove photo.");
+    } finally {
+      setUploading(false);
     }
   }
 
@@ -41,7 +54,12 @@ export default function AccountPage() {
   return (
     <div className="pt-24">
       <Container className="py-10">
-        <h1 className="font-display text-4xl tracking-tight sm:text-5xl">Account</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h1 className="font-display text-4xl tracking-tight sm:text-5xl">Account &amp; Addresses</h1>
+          <Button asChild className="bg-[#50644C] hover:bg-[#384935] text-white self-start sm:self-auto">
+            <Link href="/profile">View &amp; Edit My Profile →</Link>
+          </Button>
+        </div>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[20rem_1fr]">
           <section className="h-fit border border-border bg-card p-6">
@@ -53,15 +71,28 @@ export default function AccountPage() {
               <p className="mt-4 font-display text-xl">{session.name}</p>
               <p className="text-sm text-muted-foreground">{session.gmail}</p>
               <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-4 cursor-pointer"
-                disabled={uploading}
-                onClick={() => fileRef.current?.click()}
-              >
-                <Upload className="mr-1 h-4 w-4" /> {uploading ? "Uploading…" : "Change photo"}
-              </Button>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="cursor-pointer text-xs"
+                  disabled={uploading}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  <Upload className="mr-1 h-3.5 w-3.5" /> {uploading ? "Uploading…" : "Change photo"}
+                </Button>
+                {session.imageUrl && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer border-red-200 text-red-600 hover:bg-red-50 text-xs"
+                    disabled={uploading}
+                    onClick={onRemovePhoto}
+                  >
+                    <Trash2 className="mr-1 h-3.5 w-3.5" /> Remove
+                  </Button>
+                )}
+              </div>
             </div>
 
             <dl className="mt-6 space-y-3 border-t border-border pt-6 text-sm">

@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { clearSession, getSession, setSession, type Session } from "@/lib/session";
 import * as ep from "@/lib/endpoints";
 import type { LoginRequest } from "@/lib/types";
@@ -26,6 +27,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setSessionState(getSession());
     setReady(true);
+
+    // Drop a stale profile cookie (e.g. from the old backend login) when Supabase Auth has no session.
+    ep.hasAuthSession().then((ok) => {
+      if (!ok && getSession()) clearSession();
+    });
+
+    const handleSessionChange = () => {
+      setSessionState(getSession());
+    };
+
+    window.addEventListener("ve_session_change", handleSessionChange);
+    window.addEventListener("storage", handleSessionChange);
+
+    return () => {
+      window.removeEventListener("ve_session_change", handleSessionChange);
+      window.removeEventListener("storage", handleSessionChange);
+    };
   }, []);
 
   const signIn = useCallback(async (creds: LoginRequest) => {
@@ -36,9 +54,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOut = useCallback(() => {
+    void ep.logout();
     clearSession();
     setSessionState(null);
     queryClient.clear();
+    toast.success("Logout successful.");
     router.push("/");
   }, [queryClient, router]);
 

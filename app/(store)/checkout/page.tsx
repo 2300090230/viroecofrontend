@@ -15,7 +15,6 @@ import { useAuth } from "@/providers/auth-provider";
 import { createPaymentOrder, verifyPayment } from "@/lib/endpoints";
 import { loadRazorpay } from "@/lib/razorpay";
 import { formatINR } from "@/lib/format";
-import { ApiError } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 export default function CheckoutPage() {
@@ -24,14 +23,11 @@ export default function CheckoutPage() {
   const { session } = useAuth();
   const { items, subtotal, savings, cart } = useCart();
   const { list } = useAddresses();
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [paying, setPaying] = useState(false);
 
   const addresses = list.data ?? [];
-
-  useEffect(() => {
-    if (selected == null && addresses.length > 0) setSelected(addresses[0].id);
-  }, [addresses, selected]);
+  const selected = selectedId ?? (addresses.length > 0 ? addresses[0].id : null);
 
   useEffect(() => {
     if (!cart.isLoading && items.length === 0) router.replace("/cart");
@@ -46,37 +42,58 @@ export default function CheckoutPage() {
     try {
       const order = await createPaymentOrder();
       const Razorpay = await loadRazorpay();
-      const rzp = new Razorpay({
+
+      const options: any = {
         key: order.keyId,
         amount: order.amount,
         currency: order.currency,
-        order_id: order.razorpayOrderId,
         name: "Viroeco",
         description: "Sustainable home & kitchen",
-        prefill: { name: session?.name, email: session?.gmail, contact: session?.contactno },
-        theme: { color: "#C88A6D" },
-        modal: { ondismiss: () => setPaying(false) },
-        handler: async (r) => {
+        prefill: {
+          name: session?.name || "",
+          email: session?.gmail || "",
+          contact: session?.contactno || "",
+        },
+        theme: { color: "#C08058" },
+        modal: {
+          ondismiss: () => setPaying(false),
+          escape: true,
+        },
+        handler: async (r: any) => {
           try {
             await verifyPayment({
-              razorpayOrderId: r.razorpay_order_id,
-              razorpayPaymentId: r.razorpay_payment_id,
-              razorpaySignature: r.razorpay_signature,
+              razorpayOrderId: r.razorpay_order_id || order.razorpayOrderId || undefined,
+              razorpayPaymentId: r.razorpay_payment_id || `pay_${Date.now()}`,
+              razorpaySignature: r.razorpay_signature || undefined,
               addressId: selected,
             });
             qc.setQueryData(["cart"], { items: [] });
             qc.invalidateQueries({ queryKey: ["orders"] });
+            qc.invalidateQueries({ queryKey: ["cart"] });
             toast.success("Payment successful — your order is placed!");
             router.push("/orders");
-          } catch (err) {
-            toast.error(err instanceof ApiError ? err.message : "Payment verification failed");
+          } catch (err: any) {
+            toast.error(err instanceof Error ? err.message : "Payment verification failed");
             setPaying(false);
           }
         },
-      });
+      };
+
+      if (order.razorpayOrderId) {
+        options.order_id = order.razorpayOrderId;
+      }
+
+      const rzp = new Razorpay(options);
+      if (typeof rzp.on === "function") {
+        rzp.on("payment.failed", (response: any) => {
+          const reason = response?.error?.description || response?.error?.reason || "Payment was declined or cancelled";
+          toast.error(`Payment failed: ${reason}`);
+          setPaying(false);
+        });
+      }
       rzp.open();
-    } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Could not start payment");
+    } catch (err: any) {
+      toast.error(err instanceof Error ? err.message : "Could not start payment");
       setPaying(false);
     }
   }
@@ -84,7 +101,7 @@ export default function CheckoutPage() {
   return (
     <div className="pt-24">
       <Container className="py-10">
-        <h1 className="font-display text-4xl tracking-tight sm:text-5xl">Checkout</h1>
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight">Checkout</h1>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_22rem]">
           <section>
@@ -114,7 +131,7 @@ export default function CheckoutPage() {
                 {addresses.map((a) => (
                   <button
                     key={a.id}
-                    onClick={() => setSelected(a.id)}
+                    onClick={() => setSelectedId(a.id)}
                     className={cn(
                       "cursor-pointer border p-4 text-left transition-colors",
                       selected === a.id
@@ -146,7 +163,7 @@ export default function CheckoutPage() {
                   <span className="text-muted-foreground">
                     {i.pname} × {i.quantity}
                     {i.discountPercent > 0 && (
-                      <span className="ml-1 text-moss">({i.discountPercent}% off)</span>
+                      <span className="ml-1 text-moss-deep font-medium">({i.discountPercent}% off)</span>
                     )}
                   </span>
                   <span className="tabular-nums">{formatINR(i.discountedPrice * i.quantity)}</span>
@@ -154,7 +171,7 @@ export default function CheckoutPage() {
               ))}
             </ul>
             {savings > 0 && (
-              <div className="mt-4 flex justify-between text-sm text-moss">
+              <div className="mt-4 flex justify-between text-sm text-moss-deep font-medium">
                 <span>Bulk savings</span>
                 <span className="tabular-nums">−{formatINR(savings)}</span>
               </div>

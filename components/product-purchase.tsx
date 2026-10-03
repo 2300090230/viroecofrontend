@@ -46,13 +46,13 @@ export function ProductPurchase({
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center border border-border">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="flex items-center justify-between sm:justify-start border border-border w-full sm:w-auto">
           <button
             type="button"
             aria-label="Decrease quantity"
             onClick={() => setQty((q) => clamp(q - 1))}
-            className="flex h-11 w-11 cursor-pointer items-center justify-center hover:bg-accent"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center hover:bg-accent shrink-0"
           >
             <Minus className="h-4 w-4" />
           </button>
@@ -63,22 +63,22 @@ export function ProductPurchase({
             value={qty}
             aria-label="Quantity"
             onChange={(e) => setQty(clamp(Number(e.target.value) || 1))}
-            className="w-16 border-x border-border bg-transparent py-2.5 text-center tabular-nums outline-none"
+            className="flex-1 sm:w-16 border-x border-border bg-transparent py-2.5 text-center tabular-nums outline-none"
           />
           <button
             type="button"
             aria-label="Increase quantity"
             onClick={() => setQty((q) => clamp(q + 1))}
-            className="flex h-11 w-11 cursor-pointer items-center justify-center hover:bg-accent"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center hover:bg-accent shrink-0"
           >
             <Plus className="h-4 w-4" />
           </button>
         </div>
-        <AddToCartButton productId={productId} quantity={qty} size="lg" className="min-w-40 flex-1" />
+        <AddToCartButton productId={productId} quantity={qty} size="lg" className="w-full sm:min-w-40 sm:flex-1" />
       </div>
 
       {percent > 0 && (
-        <p className="text-sm text-moss">
+        <p className="text-sm text-moss-deep font-medium">
           {percent}% bulk discount applied — {formatINR(discountedUnit)} each ·{" "}
           {formatINR(discountedUnit * qty)} total
         </p>
