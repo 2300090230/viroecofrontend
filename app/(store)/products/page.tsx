@@ -1,29 +1,39 @@
+import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Container } from "@/components/container";
 import { Catalog } from "@/components/catalog";
+import { PageHeader, type Crumb } from "@/components/page-header";
+import { describeCollection } from "@/lib/collections";
+import { parseCatalogFilters } from "@/lib/catalog-filters";
 
-export const metadata = { title: "Shop" };
+export const metadata: Metadata = { title: "Shop" };
 
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ query?: string; category?: string; page?: string; size?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const sp = await searchParams;
+  const raw = await searchParams;
+  const params = new URLSearchParams();
+  for (const [k, v] of Object.entries(raw)) if (typeof v === "string") params.set(k, v);
+  const filters = parseCatalogFilters(params);
+
+  const crumbs: Crumb[] = [{ label: "Home", href: "/" }, { label: "Shop", href: filters.category ? "/products" : undefined }];
+  if (filters.category) crumbs.push({ label: filters.category });
+
+  const title = filters.category || (filters.query ? `Results for “${filters.query}”` : "All products");
+  const subtitle = filters.category
+    ? describeCollection(filters.category)
+    : "Everyday essentials made from rice husk and bamboo composites — for homes, kitchens, gardens and businesses.";
 
   return (
-    <div className="pt-24">
-      <Container>
-        <header className="py-8">
-          <p className="text-xs uppercase tracking-[0.25em] text-terra-deep">Shop</p>
-          <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-5xl">The collection</h1>
-        </header>
-        <Catalog
-          initialQuery={sp.query ?? ""}
-          initialCategory={sp.category ?? ""}
-          initialPage={sp.page ? Number(sp.page) : 0}
-          initialPageSize={sp.size ? Number(sp.size) : 12}
-        />
+    <>
+      <PageHeader title={title} subtitle={subtitle} crumbs={crumbs} />
+      <Container className="py-8 sm:py-10">
+        <Suspense>
+          <Catalog />
+        </Suspense>
       </Container>
-    </div>
+    </>
   );
 }

@@ -37,30 +37,30 @@ const SECTIONS = [
 
 export default function TermsOfServicePage() {
   return (
-    <div className="pt-24 pb-20 bg-[#FAF9F5] min-h-screen text-[#17231C]">
+    <div className="pb-20 bg-cream min-h-screen text-ink">
       {/* Hero Header */}
-      <section className="border-b border-[#DFD5C6] bg-white py-14 lg:py-16">
+      <section className="border-b border-line bg-gradient-to-r from-sand via-cream to-sage-wash py-14 lg:py-16">
         <Container>
           <div className="max-w-4xl">
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-xs font-semibold bg-[#EDF2EB] text-[#50644C] border border-[#50644C]/10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-sage-wash text-forest border border-forest/10">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
                 Official Corporate Policy
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-xs font-medium bg-[#FAF9F5] text-[#5A6659] border border-[#DFD5C6]">
-                <Calendar className="w-3.5 h-3.5 text-[#5A6659]" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium bg-cream text-muted-foreground border border-line">
+                <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                 Version 2.4 — Effective January 1, 2026
               </span>
-              <span className="text-xs text-[#5A6659]">
+              <span className="text-xs text-muted-foreground">
                 Last Revised: September 2026
               </span>
             </div>
 
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#50644C] leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-forest leading-tight">
               Terms of Service &amp; Commercial Conditions
             </h1>
 
-            <p className="mt-4 text-base sm:text-lg text-[#5A6659] leading-relaxed max-w-3xl">
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl">
               These official Terms of Service constitute a legally binding agreement between you
               (whether as an individual buyer, institutional purchaser, or enterprise procurement entity)
               and <strong>ViroEco Global Inc.</strong> governing your access to our commerce platform,
@@ -70,13 +70,13 @@ export default function TermsOfServicePage() {
             <div className="mt-6 flex flex-wrap gap-4 pt-2">
               <Link
                 href="/privacy"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#50644C] hover:underline"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-forest hover:underline"
               >
                 View Privacy Policy <ChevronRight className="w-3.5 h-3.5" />
               </Link>
               <ScrollToButton
                 targetId="updates-contact"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#5A6659] hover:text-[#50644C] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-forest transition-colors cursor-pointer"
               >
                 Legal Department Inquiries <ChevronRight className="w-3.5 h-3.5" />
               </ScrollToButton>
@@ -94,7 +94,7 @@ export default function TermsOfServicePage() {
               <LegalToc title="Table of Contents" sections={SECTIONS} />
 
               {/* Quick Legal Support Box */}
-              <div className="bg-[#50644C] text-white rounded-none p-6 space-y-3">
+              <div className="bg-forest text-white rounded-md p-6 space-y-3">
                 <p className="text-xs uppercase tracking-widest text-emerald-300 font-semibold">
                   Corporate Counsel
                 </p>
@@ -107,7 +107,7 @@ export default function TermsOfServicePage() {
                 <div className="pt-2">
                   <a
                     href="mailto:info@viroeco.com"
-                    className="inline-flex items-center gap-2 text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-none transition-colors"
+                    className="inline-flex items-center gap-2 text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-md transition-colors"
                   >
                     <Mail className="w-3.5 h-3.5 text-emerald-400" />
                     info@viroeco.com
@@ -120,12 +120,12 @@ export default function TermsOfServicePage() {
           {/* Main Legal Clauses (8 Cols) */}
           <main className="lg:col-span-8 space-y-12">
             {/* Executive Highlights Callout */}
-            <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-none p-6 space-y-3">
-              <div className="flex items-center gap-2 text-[#50644C] font-semibold text-sm">
+            <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-md p-6 space-y-3">
+              <div className="flex items-center gap-2 text-forest font-semibold text-sm">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700" />
                 Key Commercial Takeaways for Buyers
               </div>
-              <ul className="text-xs text-[#2A4434] space-y-1.5 leading-relaxed list-disc list-inside">
+              <ul className="text-xs text-forest-light space-y-1.5 leading-relaxed list-disc list-inside">
                 <li>
                   <strong>100% Certified Bio-Origin:</strong> All dinnerware and packaging are manufactured from agricultural residues without synthetic binder polymers or intentionally added fluorochemicals (PFAS).
                 </li>
@@ -142,18 +142,18 @@ export default function TermsOfServicePage() {
             </div>
 
             {/* Section 1 */}
-            <section id="entity-acceptance" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="entity-acceptance" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 1. Corporate Entity &amp; Acceptance of Terms
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   This website, application, procurement portal, and digital commerce interface are owned and operated by{" "}
                   <strong>ViroEco Global Inc.</strong> (together with its subsidiaries, affiliates, and manufacturing arms, herein referenced as &ldquo;<strong>ViroEco</strong>&rdquo;, &ldquo;<strong>we</strong>&rdquo;, &ldquo;<strong>us</strong>&rdquo;, or &ldquo;<strong>our</strong>&rdquo;), registered at 42 Industrial Agro Park, Whitefield, Bengaluru, Karnataka 560066, India, with international supply hubs in Dubai JAFZA and London, United Kingdom.
                 </p>
                 <p>
                   By creating an account, browsing our catalog, placing a wholesale or retail order, requesting custom mold quotes, or authorizing electronic payment, you explicitly acknowledge that you have read, understood, and agreed to be legally bound by these Terms of Service, our{" "}
-                  <Link href="/privacy" className="text-[#50644C] underline font-medium">
+                  <Link href="/privacy" className="text-forest underline font-medium">
                     Privacy Policy
                   </Link>
                   , and all referenced operating guidelines. If you do not accept these terms in their entirety, you must immediately discontinue use of the platform and refrain from placing transactions.
@@ -162,16 +162,16 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 2 */}
-            <section id="eligibility-accounts" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="eligibility-accounts" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 2. Account Registration &amp; Commercial Eligibility
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>Eligibility:</strong> You must be at least 18 years of age and possess full legal capacity to enter into binding contracts. If you are registering an account or executing purchase orders on behalf of a corporation, hospitality group, institution, or catering company, you warrant that you possess valid statutory or corporate authority to bind that entity to these Terms.
                 </p>
                 <p>
-                  <strong>Account Security:</strong> You are solely responsible for maintaining the confidentiality of your authentication credentials (including email verification, OAuth access, and password data). Any activity conducted under your authenticated session shall be deemed authorized by you. In the event of unauthorized access or compromised security, you must notify ViroEco Security immediately at <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">info@viroeco.com</code>.
+                  <strong>Account Security:</strong> You are solely responsible for maintaining the confidentiality of your authentication credentials (including email verification, OAuth access, and password data). Any activity conducted under your authenticated session shall be deemed authorized by you. In the event of unauthorized access or compromised security, you must notify ViroEco Security immediately at <code className="bg-cream px-1.5 py-0.5 rounded-md text-forest border border-line">info@viroeco.com</code>.
                 </p>
                 <p>
                   <strong>Corporate Tax &amp; GST Verification:</strong> Enterprise purchasers requesting GST tax invoices, B2B wholesale pricing, or input tax credit allocations must supply authentic and active GSTIN / Corporate Tax Identification credentials during checkout or onboarding.
@@ -180,11 +180,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 3 */}
-            <section id="product-specs" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="product-specs" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 3. Material Specifications, Natural Tolerances &amp; Standards
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   ViroEco manufactures eco-friendly tableware, dinnerware, food containers, and cutlery primarily from natural agricultural residues, including:
                 </p>
@@ -206,41 +206,41 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 4 */}
-            <section id="certifications-safety" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="certifications-safety" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 4. Food Contact Safety &amp; PFAS-Free Certifications
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   ViroEco adheres to the highest international statutory standards for direct food contact:
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  <div className="p-3 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none">
-                    <p className="font-semibold text-xs text-[#50644C]">US FDA 21 CFR 176.170</p>
-                    <p className="text-xs text-[#5A6659] mt-0.5">Complies with aqueous and fatty food contact migration limits.</p>
+                  <div className="p-3 bg-cream border border-line rounded-md">
+                    <p className="font-semibold text-xs text-forest">US FDA 21 CFR 176.170</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Complies with aqueous and fatty food contact migration limits.</p>
                   </div>
-                  <div className="p-3 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none">
-                    <p className="font-semibold text-xs text-[#50644C]">EU Regulation (EC) 1935/2004</p>
-                    <p className="text-xs text-[#5A6659] mt-0.5">Certified non-transfer of chemical constituents into foodstuffs.</p>
+                  <div className="p-3 bg-cream border border-line rounded-md">
+                    <p className="font-semibold text-xs text-forest">EU Regulation (EC) 1935/2004</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Certified non-transfer of chemical constituents into foodstuffs.</p>
                   </div>
-                  <div className="p-3 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none">
-                    <p className="font-semibold text-xs text-[#50644C]">100% Total Fluorine (PFAS) Free</p>
-                    <p className="text-xs text-[#5A6659] mt-0.5">Third-party lab tested below detectable threshold (&lt;10 ppm).</p>
+                  <div className="p-3 bg-cream border border-line rounded-md">
+                    <p className="font-semibold text-xs text-forest">100% Total Fluorine (PFAS) Free</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Third-party lab tested below detectable threshold (&lt;10 ppm).</p>
                   </div>
-                  <div className="p-3 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none">
-                    <p className="font-semibold text-xs text-[#50644C]">EN 13432 &amp; ASTM D6400</p>
-                    <p className="text-xs text-[#5A6659] mt-0.5">Industrial &amp; backyard home compostable within 60-90 days.</p>
+                  <div className="p-3 bg-cream border border-line rounded-md">
+                    <p className="font-semibold text-xs text-forest">EN 13432 &amp; ASTM D6400</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Industrial &amp; backyard home compostable within 60-90 days.</p>
                   </div>
                 </div>
               </div>
             </section>
 
             {/* Section 5 */}
-            <section id="orders-quotations" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="orders-quotations" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 5. Orders, Wholesale Quotations &amp; Custom Tooling
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>Order Acceptance:</strong> Placement of an order online or via purchase order (PO) represents an offer to purchase. An order is deemed formally accepted only upon transmission of an official Order Confirmation email and dispatch docket from ViroEco.
                 </p>
@@ -259,11 +259,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 6 */}
-            <section id="pricing-payments" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="pricing-payments" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 6. Pricing, Taxes, Invoicing &amp; Payment Terms
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>Currency &amp; Taxes:</strong> All prices displayed for domestic orders in India are denominated in Indian Rupees (INR, ₹) and are inclusive or exclusive of GST as indicated at checkout. For international export quotes, prices are denominated in USD ($) or EUR (€) under agreed Incoterms.
                 </p>
@@ -277,11 +277,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 7 */}
-            <section id="shipping-logistics" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="shipping-logistics" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 7. Shipping, International Freight &amp; Risk of Loss
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>Fulfillment &amp; Hubs:</strong> Dispatches originate from our logistics facilities in Bengaluru (HQ), Delhi-NCR, or international distribution hubs (Dubai JAFZA, London).
                 </p>
@@ -295,11 +295,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 8 */}
-            <section id="inspection-returns" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="inspection-returns" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 8. Quality Inspection, Claims, Returns &amp; Refunds
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>7-Day Mandatory Inspection Period:</strong> Commercial buyers must inspect all delivered cartons and pallets within seven (7) business days of physical receipt.
                 </p>
@@ -308,7 +308,7 @@ export default function TermsOfServicePage() {
                 </p>
                 <ol className="list-decimal list-inside space-y-1.5 pl-2">
                   <li>Photograph and document the carton batch codes, tamper seals, and damaged units.</li>
-                  <li>Transmit notice to <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">info@viroeco.com</code> referencing your Order ID / PO number within the 7-day window.</li>
+                  <li>Transmit notice to <code className="bg-cream px-1.5 py-0.5 rounded-md text-forest border border-line">info@viroeco.com</code> referencing your Order ID / PO number within the 7-day window.</li>
                   <li>Upon verification, ViroEco will issue either an immediate replacement shipment or a corresponding credit note/refund within 5 to 7 business days.</li>
                 </ol>
                 <p>
@@ -318,11 +318,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 9 */}
-            <section id="intellectual-property" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="intellectual-property" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 9. Intellectual Property &amp; Proprietary Molds
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   All software, user interface design, logos, trademarks (&ldquo;ViroEco&rdquo;), product photography, technical spec sheets, and proprietary thermoforming algorithms are the exclusive intellectual property of ViroEco Global Inc.
                 </p>
@@ -333,11 +333,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 10 */}
-            <section id="environmental-claims" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="environmental-claims" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 10. Environmental Impact &amp; ESG Assertions
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   All carbon offset metrics, plastic replacement calculations, and Life Cycle Assessment (LCA) figures provided in your dashboard or impact certificates are calculated based on peer-reviewed ISO 14040/14044 methodologies and agricultural bio-locking models.
                 </p>
@@ -348,11 +348,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 11 */}
-            <section id="liability-disclaimers" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="liability-disclaimers" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 11. Warranties, Disclaimers &amp; Limitation of Liability
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>Warranty of Material Quality:</strong> ViroEco warrants that all goods shipped strictly conform to published technical data sheets and food contact certifications for a period of 24 months from the date of manufacture when stored under standard dry warehouse conditions (temperature 15°C–30°C, RH &lt; 65%).
                 </p>
@@ -363,11 +363,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 12 */}
-            <section id="force-majeure" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="force-majeure" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 12. Force Majeure &amp; Agricultural Feedstock Events
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   Neither party shall be held liable for failure or delay in performance resulting from causes beyond reasonable control, including but not limited to acts of God, floods, droughts, severe agricultural crop failures, extreme monsoons impacting palm shed harvests, pandemics, maritime port blockades, customs strikes, or government trade embargoes.
                 </p>
@@ -375,11 +375,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 13 */}
-            <section id="governing-law" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="governing-law" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 13. Governing Law &amp; Dispute Resolution
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>Governing Law:</strong> These Terms and any dispute arising from them shall be governed by and construed in accordance with the substantive laws of India, without regard to its conflict of law principles.
                 </p>
@@ -390,11 +390,11 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Section 14 */}
-            <section id="updates-contact" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="updates-contact" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 14. Amendments, Severability &amp; Legal Notices
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>Amendments:</strong> ViroEco reserves the right to update or modify these Terms of Service periodically. Changes take effect immediately upon publication on this URL. Continued use of our services following revision constitutes binding agreement to the amended terms.
                 </p>
@@ -404,13 +404,13 @@ export default function TermsOfServicePage() {
               </div>
 
               {/* Official Corporate Contact Card */}
-              <div className="mt-6 pt-6 border-t border-[#DFD5C6] bg-[#FAF9F5] rounded-none p-5 space-y-3">
-                <p className="font-display font-bold text-sm text-[#50644C]">Official Legal Notices &amp; Communications</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-[#5A6659]">
+              <div className="mt-6 pt-6 border-t border-line bg-cream rounded-md p-5 space-y-3">
+                <p className="font-display font-bold text-sm text-forest">Official Legal Notices &amp; Communications</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-muted-foreground">
                   <div className="flex items-start gap-2">
                     <Building2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-[#17231C]">ViroEco Global Inc.</strong><br />
+                      <strong className="text-ink">ViroEco Global Inc.</strong><br />
                       Attn: Office of the General Counsel<br />
                       42 Industrial Agro Park, Whitefield<br />
                       Bengaluru, Karnataka 560066, India
@@ -419,7 +419,7 @@ export default function TermsOfServicePage() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4 text-emerald-700 shrink-0" />
-                      <a href="mailto:info@viroeco.com" className="text-[#50644C] underline font-medium">
+                      <a href="mailto:info@viroeco.com" className="text-forest underline font-medium">
                         info@viroeco.com
                       </a>
                     </div>

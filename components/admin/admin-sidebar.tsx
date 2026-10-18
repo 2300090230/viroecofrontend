@@ -53,7 +53,7 @@ export function AdminSidebar() {
             ) : (
               <div className="flex items-center gap-2">
                 <Logo variant="light" size="sm" href="/admin" imageClassName="h-8 w-auto" />
-                <span className="text-[9px] bg-[#CCAC88]/20 text-[#CCAC88] font-bold px-1.5 py-0.5 rounded-none border border-[#CCAC88]/30 uppercase tracking-wider">
+                <span className="text-[9px] bg-camel/20 text-camel font-bold px-1.5 py-0.5 rounded-md border border-camel/30 uppercase tracking-wider">
                   ADMIN
                 </span>
               </div>
@@ -63,7 +63,7 @@ export function AdminSidebar() {
           {/* Mobile close button */}
           <button
             onClick={closeMobile}
-            className="lg:hidden p-1.5 rounded-none text-emerald-300/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            className="lg:hidden p-1.5 rounded-md text-emerald-300/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             aria-label="Close sidebar"
           >
             <X className="w-5 h-5" />
@@ -87,7 +87,7 @@ export function AdminSidebar() {
                     href={href}
                     title={isCollapsed ? label : undefined}
                     className={cn(
-                      "flex cursor-pointer items-center rounded-none text-xs font-medium transition-all group relative",
+                      "flex cursor-pointer items-center rounded-md text-xs font-medium transition-all group relative",
                       isCollapsed
                         ? "justify-center p-2.5 h-10 w-10 mx-auto"
                         : "justify-between px-3.5 py-2.5",
@@ -109,7 +109,7 @@ export function AdminSidebar() {
                     {!isCollapsed && badge && (
                       <span
                         className={cn(
-                          "text-[10px] px-2 py-0.5 rounded-none font-bold",
+                          "text-[10px] px-2 py-0.5 rounded-md font-bold",
                           active
                             ? "bg-white/20 text-white"
                             : "bg-white/10 text-emerald-300 group-hover:bg-white/15"
@@ -122,7 +122,7 @@ export function AdminSidebar() {
                     {isCollapsed && badge && (
                       <span
                         className={cn(
-                          "absolute top-1.5 right-1.5 w-2 h-2 rounded-none",
+                          "absolute top-1.5 right-1.5 w-2 h-2 rounded-md",
                           active ? "bg-white" : "bg-emerald-400"
                         )}
                       />
@@ -136,10 +136,10 @@ export function AdminSidebar() {
       </div>
 
       {/* User Session Card & Quick Actions */}
-      <div className={cn("border-t border-white/10 transition-all duration-300 bg-[#1A2418]", isCollapsed ? "p-2.5 space-y-2" : "p-4 space-y-2")}>
+      <div className={cn("border-t border-white/10 transition-all duration-300 bg-forest-dark", isCollapsed ? "p-2.5 space-y-2" : "p-4 space-y-2")}>
         <div className={cn("flex items-center gap-3", isCollapsed ? "justify-center" : "px-2 py-1")}>
           <div
-            className="w-8 h-8 rounded-none bg-emerald-700 border border-emerald-500/40 flex items-center justify-center text-xs font-bold text-white shrink-0"
+            className="w-8 h-8 rounded-md bg-emerald-700 border border-emerald-500/40 flex items-center justify-center text-xs font-bold text-white shrink-0"
             title={session?.name || "Administrator"}
           >
             {session?.name ? session.name.charAt(0).toUpperCase() : "A"}
@@ -158,7 +158,7 @@ export function AdminSidebar() {
             target="_blank"
             title="Open Storefront"
             className={cn(
-              "flex items-center justify-center rounded-none bg-white/5 hover:bg-white/10 text-emerald-200 font-medium transition-colors",
+              "flex items-center justify-center rounded-md bg-white/5 hover:bg-white/10 text-emerald-200 font-medium transition-colors",
               isCollapsed ? "h-8 w-8 p-0" : "gap-1.5 py-2 px-2.5 text-[11px]"
             )}
           >
@@ -169,7 +169,7 @@ export function AdminSidebar() {
             onClick={signOut}
             title="Sign out"
             className={cn(
-              "flex items-center justify-center rounded-none bg-red-500/10 hover:bg-red-500/20 text-red-300 font-medium transition-colors cursor-pointer",
+              "flex items-center justify-center rounded-md bg-red-500/10 hover:bg-red-500/20 text-red-300 font-medium transition-colors cursor-pointer",
               isCollapsed ? "h-8 w-8 p-0" : "gap-1.5 py-2 px-2.5 text-[11px]"
             )}
           >
@@ -195,7 +195,7 @@ export function AdminSidebar() {
       {/* Mobile Drawer (Slide in from left) */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-72 bg-[#243021] text-white transition-transform duration-300 ease-in-out border-r border-[#DFD5C6]/20 lg:hidden shadow-2xl",
+          "fixed inset-y-0 left-0 z-50 w-72 bg-forest-dark text-white transition-transform duration-300 ease-in-out border-r border-line/20 lg:hidden shadow-2xl",
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -205,7 +205,7 @@ export function AdminSidebar() {
       {/* Desktop Sticky Sidebar */}
       <aside
         className={cn(
-          "sticky top-0 hidden lg:flex h-screen shrink-0 flex-col border-r border-[#DFD5C6] bg-[#243021] text-white transition-all duration-300 ease-in-out",
+          "sticky top-0 hidden lg:flex h-screen shrink-0 flex-col border-r border-line bg-forest-dark text-white transition-all duration-300 ease-in-out",
           isCollapsed ? "w-20" : "w-64"
         )}
       >

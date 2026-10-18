@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+!.env.template
+
+# Supabase CLI cache / OS junk
+supabase/.temp/
+.DS_Store

@@ -41,43 +41,43 @@ const SECTIONS = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="pt-24 pb-20 bg-[#FAF9F5] min-h-screen text-[#17231C]">
+    <div className="pb-20 bg-cream min-h-screen text-ink">
       {/* Hero Header */}
-      <section className="border-b border-[#DFD5C6] bg-white py-14 lg:py-16">
+      <section className="border-b border-line bg-gradient-to-r from-sand via-cream to-sage-wash py-14 lg:py-16">
         <Container>
           <div className="max-w-4xl">
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-xs font-semibold bg-[#EDF2EB] text-[#50644C] border border-[#50644C]/10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-sage-wash text-forest border border-forest/10">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
                 Data Protection &amp; Privacy Charter
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-xs font-medium bg-[#FAF9F5] text-[#5A6659] border border-[#DFD5C6]">
-                <Calendar className="w-3.5 h-3.5 text-[#5A6659]" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium bg-cream text-muted-foreground border border-line">
+                <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                 Version 2.4 — Effective January 1, 2026
               </span>
-              <span className="text-xs text-[#5A6659]">
+              <span className="text-xs text-muted-foreground">
                 Compliance: GDPR, DPDPA 2023, CCPA/CPRA
               </span>
             </div>
 
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#50644C] leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-forest leading-tight">
               Privacy Policy &amp; Data Governance
             </h1>
 
-            <p className="mt-4 text-base sm:text-lg text-[#5A6659] leading-relaxed max-w-3xl">
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl">
               At <strong>ViroEco Global Inc.</strong>, we consider data stewardship and transparency as foundational to our mission as circular sustainability. This policy details how we collect, safeguard, process, and respect your enterprise and personal data when you interact with our digital platforms, catalog, and supply chain services.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-4 pt-2">
               <Link
                 href="/terms"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#50644C] hover:underline"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-forest hover:underline"
               >
                 View Terms of Service <ChevronRight className="w-3.5 h-3.5" />
               </Link>
               <ScrollToButton
                 targetId="dpo-grievance"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#5A6659] hover:text-[#50644C] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-forest transition-colors cursor-pointer"
               >
                 Contact Data Protection Officer <ChevronRight className="w-3.5 h-3.5" />
               </ScrollToButton>
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
               <LegalToc title="Policy Contents" sections={SECTIONS} />
 
               {/* Privacy Officer Contact */}
-              <div className="bg-[#50644C] text-white rounded-none p-6 space-y-3">
+              <div className="bg-forest text-white rounded-md p-6 space-y-3">
                 <p className="text-xs uppercase tracking-widest text-emerald-300 font-semibold">
                   Privacy Office
                 </p>
@@ -108,7 +108,7 @@ export default function PrivacyPolicyPage() {
                 <div className="pt-2">
                   <a
                     href="mailto:info@viroeco.com"
-                    className="inline-flex items-center gap-2 text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-none transition-colors"
+                    className="inline-flex items-center gap-2 text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-md transition-colors"
                   >
                     <Mail className="w-3.5 h-3.5 text-emerald-400" />
                     info@viroeco.com
@@ -121,12 +121,12 @@ export default function PrivacyPolicyPage() {
           {/* Main Content Clauses (8 Cols) */}
           <main className="lg:col-span-8 space-y-12">
             {/* Privacy Commitments Callout */}
-            <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-none p-6 space-y-3">
-              <div className="flex items-center gap-2 text-[#50644C] font-semibold text-sm">
+            <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-md p-6 space-y-3">
+              <div className="flex items-center gap-2 text-forest font-semibold text-sm">
                 <Lock className="w-4 h-4 text-emerald-700" />
                 Our Core Privacy Promises
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-[#2A4434] pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-forest-light pt-1">
                 <div className="flex items-start gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0 mt-0.5" />
                   <span><strong>Zero Data Monetization:</strong> We never sell, rent, or trade your personal or business data.</span>
@@ -147,11 +147,11 @@ export default function PrivacyPolicyPage() {
             </div>
 
             {/* Section 1 */}
-            <section id="overview-scope" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="overview-scope" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 1. Overview &amp; Data Governance Scope
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   This Privacy Policy applies to all personal, commercial, and technical information collected by{" "}
                   <strong>ViroEco Global Inc.</strong> (&ldquo;<strong>ViroEco</strong>&rdquo;, &ldquo;<strong>we</strong>&rdquo;, &ldquo;<strong>us</strong>&rdquo;, or &ldquo;<strong>our</strong>&rdquo;) through our website, mobile interfaces, enterprise quotation tooling, electronic order workflows, customer service channels, and physical supply chain touchpoints.
@@ -163,38 +163,38 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 2 */}
-            <section id="information-collected" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="information-collected" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 2. Categories of Information We Collect
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   We collect information strictly necessary to deliver high-quality eco-friendly products, manage wholesale accounts, and fulfill statutory obligations:
                 </p>
                 <div className="space-y-3 pt-1">
-                  <div className="p-4 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none space-y-1">
-                    <p className="font-semibold text-xs text-[#50644C] flex items-center gap-1.5">
+                  <div className="p-4 bg-cream border border-line rounded-md space-y-1">
+                    <p className="font-semibold text-xs text-forest flex items-center gap-1.5">
                       <UserCheck className="w-3.5 h-3.5 text-emerald-700" /> Identity &amp; Contact Details
                     </p>
-                    <p className="text-xs text-[#5A6659]">
+                    <p className="text-xs text-muted-foreground">
                       Full name, business email address, phone number, physical billing and dispatch addresses, corporate entity name, job designation, and company tax/GST numbers.
                     </p>
                   </div>
 
-                  <div className="p-4 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none space-y-1">
-                    <p className="font-semibold text-xs text-[#50644C] flex items-center gap-1.5">
+                  <div className="p-4 bg-cream border border-line rounded-md space-y-1">
+                    <p className="font-semibold text-xs text-forest flex items-center gap-1.5">
                       <Database className="w-3.5 h-3.5 text-emerald-700" /> Commercial &amp; Transactional Data
                     </p>
-                    <p className="text-xs text-[#5A6659]">
+                    <p className="text-xs text-muted-foreground">
                       Purchase orders, carton quantities, custom mold specifications, quotation history, delivery status, shipping airway bills (AWB), and carbon offset verification certificates.
                     </p>
                   </div>
 
-                  <div className="p-4 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none space-y-1">
-                    <p className="font-semibold text-xs text-[#50644C] flex items-center gap-1.5">
+                  <div className="p-4 bg-cream border border-line rounded-md space-y-1">
+                    <p className="font-semibold text-xs text-forest flex items-center gap-1.5">
                       <Server className="w-3.5 h-3.5 text-emerald-700" /> Device, Telemetry &amp; Technical Logs
                     </p>
-                    <p className="text-xs text-[#5A6659]">
+                    <p className="text-xs text-muted-foreground">
                       IP address, approximate location, browser user-agent, operating system, referral URL paths, page interaction latencies, error logs, and session tokens.
                     </p>
                   </div>
@@ -203,11 +203,11 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 3 */}
-            <section id="processing-purposes" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="processing-purposes" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 3. Purposes &amp; Legal Bases for Data Processing
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   We process data under lawful legal grounds recognized across international regulations:
                 </p>
@@ -229,11 +229,11 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 4 */}
-            <section id="payment-security" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="payment-security" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 4. Payment Processing &amp; Financial Tokenization
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   All online payments executed on ViroEco are transmitted directly through certified <strong>PCI-DSS Level 1</strong> compliant payment service providers (e.g., Razorpay, Stripe, and authorized banking gateways).
                 </p>
@@ -244,33 +244,33 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 5 */}
-            <section id="cookies-tracking" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="cookies-tracking" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 5. Cookies, Telemetry &amp; Local Session Storage
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   Our web application utilizes lightweight cookies and browser local storage strictly for functional operations:
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div className="p-3 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none">
-                    <p className="font-semibold text-xs text-[#50644C]">Strictly Necessary Cookies</p>
-                    <p className="text-xs text-[#5A6659] mt-0.5">Maintain your authenticated session, CSRF security tokens, and active cart items across page navigations.</p>
+                  <div className="p-3 bg-cream border border-line rounded-md">
+                    <p className="font-semibold text-xs text-forest">Strictly Necessary Cookies</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Maintain your authenticated session, CSRF security tokens, and active cart items across page navigations.</p>
                   </div>
-                  <div className="p-3 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none">
-                    <p className="font-semibold text-xs text-[#50644C]">Performance &amp; Diagnostics</p>
-                    <p className="text-xs text-[#5A6659] mt-0.5">Aggregate anonymous metrics on page load speeds, catalog filter usage, and technical error monitoring.</p>
+                  <div className="p-3 bg-cream border border-line rounded-md">
+                    <p className="font-semibold text-xs text-forest">Performance &amp; Diagnostics</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Aggregate anonymous metrics on page load speeds, catalog filter usage, and technical error monitoring.</p>
                   </div>
                 </div>
               </div>
             </section>
 
             {/* Section 6 */}
-            <section id="disclosure-sharing" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="disclosure-sharing" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 6. Third-Party Sharing &amp; Freight Logistics Disclosures
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   We share your data strictly with vetted third-party service providers bound by comprehensive Data Processing Agreements (DPAs):
                 </p>
@@ -283,11 +283,11 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 7 */}
-            <section id="no-sell-pledge" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="no-sell-pledge" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 7. Zero-Sale of Data Commitment
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   <strong>We do not sell, rent, lease, or trade your personal information or business transaction records to third-party data brokers, advertising networks, or marketing syndicates.</strong>
                 </p>
@@ -298,11 +298,11 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 8 */}
-            <section id="international-transfers" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="international-transfers" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 8. Cross-Border Data Transfers &amp; Adequacy
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   Because ViroEco operates international manufacturing and distribution hubs spanning India, the United Arab Emirates, the United Kingdom, and the United States, your information may be processed across these jurisdictions.
                 </p>
@@ -313,11 +313,11 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 9 */}
-            <section id="data-retention" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="data-retention" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 9. Data Retention &amp; Erasure Protocols
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   We retain personal data only for the duration necessary to satisfy the purposes set forth in this policy:
                 </p>
@@ -330,27 +330,27 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 10 */}
-            <section id="security-safeguards" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="security-safeguards" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 10. Technical &amp; Organizational Security Safeguards
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   We deploy robust defense-in-depth security measures to protect your data against unauthorized access, alteration, disclosure, or destruction:
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div className="p-3 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none flex items-start gap-2.5">
+                  <div className="p-3 bg-cream border border-line rounded-md flex items-start gap-2.5">
                     <KeyRound className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-xs text-[#50644C]">Encryption in Transit &amp; at Rest</p>
-                      <p className="text-xs text-[#5A6659]">TLS 1.3 encryption across all network channels and AES-256 database disk encryption.</p>
+                      <p className="font-semibold text-xs text-forest">Encryption in Transit &amp; at Rest</p>
+                      <p className="text-xs text-muted-foreground">TLS 1.3 encryption across all network channels and AES-256 database disk encryption.</p>
                     </div>
                   </div>
-                  <div className="p-3 bg-[#FAF9F5] border border-[#DFD5C6] rounded-none flex items-start gap-2.5">
+                  <div className="p-3 bg-cream border border-line rounded-md flex items-start gap-2.5">
                     <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-xs text-[#50644C]">Role-Based Access Controls</p>
-                      <p className="text-xs text-[#5A6659]">Strict principle of least privilege with mandatory multi-factor authentication (MFA) for administrative access.</p>
+                      <p className="font-semibold text-xs text-forest">Role-Based Access Controls</p>
+                      <p className="text-xs text-muted-foreground">Strict principle of least privilege with mandatory multi-factor authentication (MFA) for administrative access.</p>
                     </div>
                   </div>
                 </div>
@@ -358,11 +358,11 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 11 */}
-            <section id="user-rights" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="user-rights" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 11. Your Statutory Privacy Rights (GDPR / DPDPA / CCPA)
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   Depending on your jurisdiction, you possess the following statutory rights regarding your personal information:
                 </p>
@@ -374,17 +374,17 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Right to Data Portability:</strong> Receive your data in a structured, machine-readable JSON/CSV format.</li>
                 </ul>
                 <p>
-                  To exercise any of these rights, email our Data Protection Officer at <code className="bg-[#FAF9F5] px-1.5 py-0.5 rounded-none text-[#50644C] border border-[#DFD5C6]">info@viroeco.com</code>. We respond to all authenticated requests within thirty (30) calendar days.
+                  To exercise any of these rights, email our Data Protection Officer at <code className="bg-cream px-1.5 py-0.5 rounded-md text-forest border border-line">info@viroeco.com</code>. We respond to all authenticated requests within thirty (30) calendar days.
                 </p>
               </div>
             </section>
 
             {/* Section 12 */}
-            <section id="children-privacy" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="children-privacy" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 12. Children&apos;s Privacy Notice
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   Our services and wholesale platforms are directed exclusively toward adults and commercial enterprises. We do not knowingly solicit or collect personal information from individuals under 18 years of age. If we learn that personal data of a minor has been collected without verifiable parental consent, we will promptly delete that data.
                 </p>
@@ -392,11 +392,11 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 13 */}
-            <section id="policy-amendments" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="policy-amendments" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 13. Updates to this Privacy Policy
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   ViroEco reserves the right to update this policy to reflect changes in regulatory standards or system functionality. The latest effective date will always be visible at the top of this document. Material modifications will be communicated via prominent notice on our website or email notification to active account holders.
                 </p>
@@ -404,24 +404,24 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 14 */}
-            <section id="dpo-grievance" className="scroll-mt-28 space-y-4 bg-white border border-[#DFD5C6] rounded-none p-6 sm:p-8">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#50644C]">
+            <section id="dpo-grievance" className="scroll-mt-28 space-y-4 bg-white border border-line rounded-md p-6 sm:p-8">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-forest">
                 14. Data Protection Officer (DPO) &amp; Grievance Redressal
               </h2>
-              <div className="text-xs sm:text-sm text-[#5A6659] leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
                   In compliance with the Digital Personal Data Protection Act (DPDPA 2023) and GDPR Article 37, ViroEco has appointed a designated Grievance Officer and Data Protection Officer to address inquiries, grievances, and rights requests:
                 </p>
               </div>
 
               {/* Official Corporate Contact Card */}
-              <div className="mt-4 pt-6 border-t border-[#DFD5C6] bg-[#FAF9F5] rounded-none p-5 space-y-3">
-                <p className="font-display font-bold text-sm text-[#50644C]">Office of the Data Protection Officer</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-[#5A6659]">
+              <div className="mt-4 pt-6 border-t border-line bg-cream rounded-md p-5 space-y-3">
+                <p className="font-display font-bold text-sm text-forest">Office of the Data Protection Officer</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-muted-foreground">
                   <div className="flex items-start gap-2">
                     <Building2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                     <span>
-                      <strong className="text-[#17231C]">ViroEco Global Inc.</strong><br />
+                      <strong className="text-ink">ViroEco Global Inc.</strong><br />
                       Attn: Data Protection Officer / Grievance Redressal<br />
                       42 Industrial Agro Park, Whitefield<br />
                       Bengaluru, Karnataka 560066, India
@@ -430,7 +430,7 @@ export default function PrivacyPolicyPage() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4 text-emerald-700 shrink-0" />
-                      <a href="mailto:info@viroeco.com" className="text-[#50644C] underline font-medium">
+                      <a href="mailto:info@viroeco.com" className="text-forest underline font-medium">
                         info@viroeco.com
                       </a>
                     </div>

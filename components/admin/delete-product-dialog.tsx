@@ -71,7 +71,7 @@ export function DeleteProductDialog({
       <DialogTrigger asChild>
         {trigger ?? (
           <button
-            className="cursor-pointer p-2 text-muted-foreground hover:text-destructive transition-colors rounded-none hover:bg-destructive/10"
+            className="cursor-pointer p-2 text-muted-foreground hover:text-destructive transition-colors rounded-md hover:bg-destructive/10"
             aria-label={`Delete ${product.pname}`}
             title="Delete Product"
           >
@@ -80,15 +80,15 @@ export function DeleteProductDialog({
         )}
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-lg border-destructive/20 bg-white p-0 overflow-hidden shadow-2xl rounded-none">
+      <DialogContent className="sm:max-w-lg border-destructive/20 bg-white p-0 overflow-hidden shadow-2xl rounded-md">
         {/* Official Warning Header Banner */}
         <div className="bg-gradient-to-r from-red-600 to-rose-700 p-5 text-white flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-none bg-white/20 backdrop-blur-xs flex items-center justify-center shrink-0 border border-white/30 text-white shadow-inner">
+          <div className="w-10 h-10 rounded-md bg-white/20 backdrop-blur-xs flex items-center justify-center shrink-0 border border-white/30 text-white shadow-inner">
             <ShieldAlert className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest bg-white/20 text-white px-2 py-0.5 rounded-none">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest bg-white/20 text-white px-2 py-0.5 rounded-md">
                 ADMIN AUDIT REQUIRED
               </span>
             </div>
@@ -99,21 +99,21 @@ export function DeleteProductDialog({
         </div>
 
         <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
-          <DialogDescription className="text-xs text-[#5A6659] leading-relaxed">
+          <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
             You are about to permanently purge this SKU from the active Viroeco catalog. An official audit event will record your administrator email, timestamp, and the justification reason specified below.
           </DialogDescription>
 
           {/* Product Identification Card */}
-          <div className="rounded-none border border-[#DFD5C6] bg-[#FAF9F5] p-3.5 flex items-center gap-3">
+          <div className="rounded-md border border-line bg-cream p-3.5 flex items-center gap-3">
             <ProductImage
               images={product.productImages}
               alt={product.pname}
-              className="h-14 w-14 shrink-0 border border-[#DFD5C6] object-cover rounded-none bg-white"
+              className="h-14 w-14 shrink-0 border border-line object-cover rounded-md bg-white"
               sizes="56px"
             />
             <div className="min-w-0 flex-1">
-              <p className="font-bold text-xs text-[#17231C] truncate">{product.pname}</p>
-              <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px] text-[#5A6659]">
+              <p className="font-bold text-xs text-ink truncate">{product.pname}</p>
+              <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px] text-muted-foreground">
                 <span className="font-mono font-medium text-emerald-800">SKU #{product.productId}</span>
                 <span>•</span>
                 <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 font-normal bg-white">
@@ -129,8 +129,8 @@ export function DeleteProductDialog({
           </div>
 
           {/* Audit Reason Justification Selector */}
-          <div className="rounded-none border border-[#DFD5C6] bg-white p-4 space-y-3">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-[#17231C]">
+          <div className="rounded-md border border-line bg-white p-4 space-y-3">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-ink">
               <FileText className="w-3.5 h-3.5 text-emerald-700" />
               <span>Audit Log Justification (Required)</span>
             </div>
@@ -141,10 +141,10 @@ export function DeleteProductDialog({
                   key={preset}
                   type="button"
                   onClick={() => setSelectedPreset(preset)}
-                  className={`text-[11px] px-2.5 py-1 rounded-none border font-medium transition-all cursor-pointer ${
+                  className={`text-[11px] px-2.5 py-1 rounded-md border font-medium transition-all cursor-pointer ${
                     selectedPreset === preset
-                      ? "bg-[#50644C] text-white border-[#50644C] shadow-xs"
-                      : "bg-[#FAF9F5] text-[#5A6659] border-[#DFD5C6] hover:bg-gray-100"
+                      ? "bg-forest text-white border-forest shadow-xs"
+                      : "bg-cream text-muted-foreground border-line hover:bg-gray-100"
                   }`}
                 >
                   {preset}
@@ -153,7 +153,7 @@ export function DeleteProductDialog({
             </div>
 
             <div>
-              <label className="text-[11px] text-[#5A6659] block mb-1">
+              <label className="text-[11px] text-muted-foreground block mb-1">
                 {selectedPreset === "Custom Reason"
                   ? "Describe the specific reason for deleting this SKU:"
                   : "Additional details / note for the audit log (Optional):"}
@@ -167,13 +167,13 @@ export function DeleteProductDialog({
                     ? "Explain why this item is being permanently removed..."
                     : "Add any context, authorization notes, or replacement details..."
                 }
-                className="w-full rounded-none border border-[#DFD5C6] bg-[#FAF9F5] p-2.5 text-xs text-[#17231C] placeholder:text-[#5A6659]/60 focus:outline-hidden focus:ring-2 focus:ring-[#50644C] resize-none"
+                className="w-full rounded-md border border-line bg-cream p-2.5 text-xs text-ink placeholder:text-muted-foreground/60 focus:outline-hidden focus:ring-2 focus:ring-forest resize-none"
               />
             </div>
           </div>
 
           {/* Warning Impact Checklist */}
-          <div className="rounded-none bg-red-50/80 border border-red-200/80 p-3 text-[11px] text-red-900 space-y-1">
+          <div className="rounded-md bg-red-50/80 border border-red-200/80 p-3 text-[11px] text-red-900 space-y-1">
             <div className="flex items-center gap-1.5 font-bold text-red-950">
               <AlertTriangle className="w-3.5 h-3.5 text-red-600 shrink-0" />
               <span>Important Deletion Consequences:</span>
@@ -187,14 +187,14 @@ export function DeleteProductDialog({
         </div>
 
         {/* Action Footer */}
-        <DialogFooter className="px-6 py-4 bg-[#FAF9F5] border-t border-[#DFD5C6] flex flex-row items-center justify-end gap-2.5">
+        <DialogFooter className="px-6 py-4 bg-cream border-t border-line flex flex-row items-center justify-end gap-2.5">
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={() => setOpen(false)}
             disabled={isDeleting}
-            className="cursor-pointer border-[#DFD5C6] text-xs font-semibold rounded-none"
+            className="cursor-pointer border-line text-xs font-semibold rounded-md"
           >
             Cancel
           </Button>
@@ -205,7 +205,7 @@ export function DeleteProductDialog({
             size="sm"
             onClick={handleDelete}
             disabled={isDeleting}
-            className="cursor-pointer bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-none shadow-xs gap-1.5"
+            className="cursor-pointer bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-md shadow-xs gap-1.5"
           >
             {isDeleting ? (
               <>

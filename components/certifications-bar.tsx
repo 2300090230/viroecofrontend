@@ -12,16 +12,16 @@ const CERTS = [
 
 export function CertificationsBar() {
   return (
-    <section className="py-12 bg-[#FAF9F5] border-b border-[#DFD5C6]">
+    <section className="py-12 bg-cream border-b border-line">
       <Container>
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
           <div className="flex items-center gap-2">
-            <Award className="w-5 h-5 text-[#50644C]" />
-            <h3 className="font-display text-lg font-bold text-[#50644C]">
+            <Award className="w-5 h-5 text-forest" />
+            <h3 className="font-display text-lg font-bold text-forest">
               Certified &amp; Tested Across Global Standards
             </h3>
           </div>
-          <p className="text-xs text-[#5A6659]">
+          <p className="text-xs text-muted-foreground">
             Independent laboratory certificates available upon request for B2B export audits.
           </p>
         </div>
@@ -30,14 +30,14 @@ export function CertificationsBar() {
           {CERTS.map((c) => (
             <div
               key={c.code}
-              className="bg-white border border-[#DFD5C6] rounded-none p-3.5 space-y-1 text-center shadow-2xs hover:border-[#50644C]/30 transition-colors"
+              className="bg-white border border-line rounded-md p-3.5 space-y-1 text-center shadow-2xs hover:border-forest/30 transition-colors"
             >
-              <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#50644C]">
+              <div className="inline-flex items-center gap-1 text-[11px] font-bold text-forest">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                 {c.code}
               </div>
-              <p className="text-[11px] font-semibold text-[#17231C]">{c.name}</p>
-              <p className="text-[10px] text-[#5A6659] leading-tight">{c.desc}</p>
+              <p className="text-[11px] font-semibold text-ink">{c.name}</p>
+              <p className="text-[10px] text-muted-foreground leading-tight">{c.desc}</p>
             </div>
           ))}
         </div>

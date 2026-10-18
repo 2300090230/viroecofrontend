@@ -35,17 +35,17 @@ const STEPS = [
 
 export function CircularProcess() {
   return (
-    <section id="materials" className="py-20 bg-white border-y border-[#DFD5C6] scroll-mt-20">
+    <section id="materials" className="py-20 bg-white border-y border-line scroll-mt-20">
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold inline-flex items-center gap-1.5">
+          <p className="text-xs uppercase tracking-[0.25em] text-forest font-bold inline-flex items-center gap-1.5">
             Transparent Circular Supply Chain
           </p>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[#50644C]">
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest">
             How Agri-Waste Becomes Luxury Dinnerware
           </h2>
-          <p className="text-sm text-[#5A6659] leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             A zero-petroleum, zero-deforestation process that converts discarded agricultural
             byproducts into premium high-tensile foodservice packaging.
           </p>
@@ -56,22 +56,22 @@ export function CircularProcess() {
           {STEPS.map((s, idx) => (
             <div
               key={s.step}
-              className="relative bg-[#FAF9F5] border border-[#DFD5C6] rounded-none p-6 flex flex-col justify-between space-y-4 hover:border-[#50644C]/40 hover:shadow-xs transition-all"
+              className="relative bg-cream border border-line rounded-md p-6 flex flex-col justify-between space-y-4 hover:border-forest/40 hover:shadow-xs transition-all"
             >
               <div className="space-y-3">
-                <span className="font-display text-2xl font-bold text-[#50644C]">
+                <span className="font-display text-2xl font-bold text-forest">
                   {s.step}
                 </span>
-                <h3 className="font-display text-base font-semibold text-[#17231C] leading-snug">
+                <h3 className="font-display text-base font-semibold text-ink leading-snug">
                   {s.title}
                 </h3>
-                <p className="text-xs text-[#5A6659] leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {s.description}
                 </p>
               </div>
 
               {idx < STEPS.length - 1 && (
-                <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-none bg-white border border-[#DFD5C6] text-[#50644C] flex items-center justify-center text-[10px] shadow-xs">
+                <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-md bg-white border border-line text-forest flex items-center justify-center text-[10px] shadow-xs">
                   →
                 </div>
               )}

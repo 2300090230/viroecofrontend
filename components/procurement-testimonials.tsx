@@ -30,21 +30,21 @@ const REVIEWS = [
 
 export function ProcurementTestimonials() {
   return (
-    <section className="py-20 bg-white border-b border-[#DFD5C6]">
+    <section className="py-20 bg-white border-b border-line">
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold inline-flex items-center gap-1.5">
+          <p className="text-xs uppercase tracking-[0.25em] text-forest font-bold inline-flex items-center gap-1.5">
             Verified Customer Reviews
           </p>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[#50644C]">
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-forest">
             What Global Procurement Leaders Say
           </h2>
           <div className="flex items-center justify-center gap-1 text-amber-500">
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-4 h-4 fill-current" />
             ))}
-            <span className="text-xs font-semibold text-[#17231C] ml-2">
+            <span className="text-xs font-semibold text-ink ml-2">
               4.98 / 5.0 from 500+ Enterprise Audits
             </span>
           </div>
@@ -55,7 +55,7 @@ export function ProcurementTestimonials() {
           {REVIEWS.map((r) => (
             <div
               key={r.author}
-              className="bg-[#FAF9F5] border border-[#DFD5C6] rounded-none p-7 flex flex-col justify-between space-y-6 shadow-xs hover:border-[#50644C]/30 transition-colors"
+              className="bg-cream border border-line rounded-md p-7 flex flex-col justify-between space-y-6 shadow-xs hover:border-forest/30 transition-colors"
             >
               <div className="space-y-4">
                 <div className="flex items-center gap-1 text-amber-500">
@@ -63,20 +63,20 @@ export function ProcurementTestimonials() {
                     <Star key={i} className="w-3.5 h-3.5 fill-current" />
                   ))}
                 </div>
-                <p className="text-xs sm:text-sm text-[#17231C] leading-relaxed italic">
+                <p className="text-xs sm:text-sm text-ink leading-relaxed italic">
                   &ldquo;{r.quote}&rdquo;
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-[#DFD5C6] flex items-center justify-between">
+              <div className="pt-4 border-t border-line flex items-center justify-between">
                 <div>
-                  <h4 className="font-display text-sm font-bold text-[#50644C]">
+                  <h4 className="font-display text-sm font-bold text-forest">
                     {r.author}
                   </h4>
-                  <p className="text-[11px] text-[#5A6659]">{r.role}</p>
-                  <p className="text-[11px] font-medium text-[#17231C]">{r.company}</p>
+                  <p className="text-[11px] text-muted-foreground">{r.role}</p>
+                  <p className="text-[11px] font-medium text-ink">{r.company}</p>
                 </div>
-                <div className="flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-[#EDF2EB] px-2 py-0.5 rounded-none shrink-0">
+                <div className="flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-sage-wash px-2 py-0.5 rounded-md shrink-0">
                   <CheckCircle2 className="w-3 h-3" />
                   {r.verified}
                 </div>

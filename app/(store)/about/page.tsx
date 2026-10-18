@@ -49,29 +49,29 @@ const VALUES = [
 
 export default function AboutPage() {
   return (
-    <div className="pt-8 pb-20 bg-[#FAF9F5] min-h-screen text-[#17231C]">
+    <div className="pb-20 bg-cream min-h-screen text-ink">
       {/* Hero Header */}
-      <section className="border-b border-[#DFD5C6] bg-white py-14 lg:py-16">
+      <section className="border-b border-line bg-gradient-to-r from-sand via-cream to-sage-wash py-14 lg:py-16">
         <Container>
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-wash text-forest text-xs font-bold uppercase tracking-wider">
               Our Mission &amp; Purpose
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#50644C] leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-forest leading-tight">
               Redefining Single-Use Through Agricultural Circularity
             </h1>
-            <p className="text-base sm:text-lg text-[#5A6659] leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
               Founded on the belief that everyday convenience should never come at the expense of our planet,
               ViroEco crafts durable, elegant tableware and home goods that regenerate the earth instead of polluting it.
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Button asChild className="bg-[#50644C] hover:bg-[#243021] text-white rounded-none px-6 cursor-pointer">
+              <Button asChild className="bg-forest hover:bg-forest-dark text-white rounded-md px-6 cursor-pointer">
                 <Link href="/products">
                   Explore Products
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="border-[#50644C]/20 text-[#50644C] hover:bg-[#EDF2EB] rounded-none px-6 cursor-pointer">
+              <Button asChild variant="outline" className="border-forest/20 text-forest hover:bg-sage-wash rounded-md px-6 cursor-pointer">
                 <Link href="/impact">
                   Read Impact Report
                 </Link>
@@ -90,14 +90,14 @@ export default function AboutPage() {
       {/* 4 Core Pillars of Values */}
       <Container className="py-16 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold inline-flex items-center gap-1.5">
+          <span className="text-xs uppercase tracking-[0.25em] text-forest font-bold inline-flex items-center gap-1.5">
             <Target className="w-3.5 h-3.5 text-emerald-600" />
             Core Values
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#50644C]">
+          <h2 className="font-display text-3xl sm:text-4xl font-bold text-forest">
             Our Foundational Commitments
           </h2>
-          <p className="text-xs sm:text-sm text-[#5A6659]">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             How we maintain unmatched product quality while delivering authentic ecological and socio-economic impact.
           </p>
         </div>
@@ -108,16 +108,16 @@ export default function AboutPage() {
             return (
               <div
                 key={v.title}
-                className="bg-white border border-[#DFD5C6] rounded-none p-8 space-y-3 shadow-xs hover:border-[#50644C]/40 hover:shadow-md transition-all flex flex-col justify-between"
+                className="bg-white border border-line rounded-md p-8 space-y-3 shadow-xs hover:border-forest/40 hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div className="space-y-3">
-                  <div className="w-11 h-11 rounded-none bg-[#EDF2EB] text-[#50644C] flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-[#50644C]" />
+                  <div className="w-11 h-11 rounded-md bg-sage-wash text-forest flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-forest" />
                   </div>
-                  <h3 className="font-display text-xl font-bold text-[#50644C]">
+                  <h3 className="font-display text-xl font-bold text-forest">
                     {v.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#5A6659] leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     {v.description}
                   </p>
                 </div>

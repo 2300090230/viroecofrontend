@@ -469,17 +469,17 @@ export default function AdminAnalysisPage() {
     <div className="space-y-8 print:p-0 print:space-y-4">
       <AdminBreadcrumb items={[{ label: "Analysis" }]} />
       {/* 1. Header & Controls */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#DFD5C6] pb-6">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-line pb-6">
         <div>
           <div className="flex flex-wrap items-center gap-2.5">
-            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#17231C]">
+            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-ink">
               Executive Analysis &amp; Intelligence
             </h1>
-            <Badge className="bg-[#50644C] text-white font-mono text-[10px] uppercase tracking-wider">
+            <Badge className="bg-forest text-white font-mono text-[10px] uppercase tracking-wider">
               PRO ANALYTICS
             </Badge>
           </div>
-          <p className="text-xs sm:text-sm text-[#5A6659] mt-1 max-w-2xl">
+          <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-2xl">
             Mathematical modeling, revenue velocity, circularity carbon metrics, inventory asset health, and unit economics across the ViroEco platform.
           </p>
         </div>
@@ -487,7 +487,7 @@ export default function AdminAnalysisPage() {
         {/* Toolbar & Timeframe Filters */}
         <div className="flex flex-wrap items-center gap-2 print:hidden">
           {/* Time Window Buttons */}
-          <div className="inline-flex items-center rounded-none bg-white border border-[#DFD5C6] p-1 shadow-2xs">
+          <div className="inline-flex items-center rounded-md bg-white border border-line p-1 shadow-2xs">
             {[
               { label: "7D", val: 7 },
               { label: "14D", val: 14 },
@@ -498,10 +498,10 @@ export default function AdminAnalysisPage() {
               <button
                 key={btn.label}
                 onClick={() => setTimeWindow(btn.val)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-none transition-all cursor-pointer ${
+                className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer ${
                   timeWindow === btn.val
-                    ? "bg-[#50644C] text-white shadow-2xs"
-                    : "text-[#5A6659] hover:text-[#17231C] hover:bg-[#FAF9F5]"
+                    ? "bg-forest text-white shadow-2xs"
+                    : "text-muted-foreground hover:text-ink hover:bg-cream"
                 }`}
               >
                 {btn.label}
@@ -517,7 +517,7 @@ export default function AdminAnalysisPage() {
             }}
             variant="outline"
             size="sm"
-            className="border-[#DFD5C6] hover:bg-[#FAF9F5] text-xs font-semibold rounded-none"
+            className="border-line hover:bg-cream text-xs font-semibold rounded-md"
             title="Refresh Analysis"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${analyticsQuery.isFetching ? "animate-spin" : ""}`} />
@@ -527,7 +527,7 @@ export default function AdminAnalysisPage() {
             onClick={handleExportCSV}
             variant="outline"
             size="sm"
-            className="border-[#DFD5C6] hover:bg-[#FAF9F5] text-xs font-semibold rounded-none"
+            className="border-line hover:bg-cream text-xs font-semibold rounded-md"
           >
             <Download className="mr-1.5 h-3.5 w-3.5 text-emerald-700" /> Export CSV
           </Button>
@@ -536,7 +536,7 @@ export default function AdminAnalysisPage() {
             onClick={() => window.print()}
             variant="outline"
             size="sm"
-            className="border-[#DFD5C6] hover:bg-[#FAF9F5] text-xs font-semibold rounded-none"
+            className="border-line hover:bg-cream text-xs font-semibold rounded-md"
           >
             <Printer className="mr-1.5 h-3.5 w-3.5" /> Print Summary
           </Button>
@@ -546,17 +546,17 @@ export default function AdminAnalysisPage() {
       {/* 2. Top-Level Executive KPI Grid (6 Metric Cards) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5 sm:gap-4">
         {/* Card 1: Total Gross Revenue */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
+        <div className="rounded-md border border-line bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A6659]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                 Gross Revenue
               </span>
-              <div className="w-7 h-7 rounded-none bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-md bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0">
                 <IndianRupee className="w-3.5 h-3.5" />
               </div>
             </div>
-            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-[#17231C] tracking-tight truncate" title={formatINR(data.totalGrossRevenue)}>
+            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-ink tracking-tight truncate" title={formatINR(data.totalGrossRevenue)}>
               {formatINR(data.totalGrossRevenue)}
             </p>
           </div>
@@ -567,17 +567,17 @@ export default function AdminAnalysisPage() {
         </div>
 
         {/* Card 2: Net Realized Revenue */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
+        <div className="rounded-md border border-line bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A6659]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                 Net Realized
               </span>
-              <div className="w-7 h-7 rounded-none bg-blue-50 text-blue-800 flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-800 flex items-center justify-center shrink-0">
                 <CheckCircle2 className="w-3.5 h-3.5" />
               </div>
             </div>
-            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-[#17231C] tracking-tight truncate" title={formatINR(data.totalNetRevenue)}>
+            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-ink tracking-tight truncate" title={formatINR(data.totalNetRevenue)}>
               {formatINR(data.totalNetRevenue)}
             </p>
           </div>
@@ -588,17 +588,17 @@ export default function AdminAnalysisPage() {
         </div>
 
         {/* Card 3: Average Order Value (AOV) */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
+        <div className="rounded-md border border-line bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A6659]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                 Average AOV
               </span>
-              <div className="w-7 h-7 rounded-none bg-amber-50 text-amber-800 flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-md bg-amber-50 text-amber-800 flex items-center justify-center shrink-0">
                 <ShoppingCart className="w-3.5 h-3.5" />
               </div>
             </div>
-            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-[#17231C] tracking-tight truncate" title={formatINR(data.averageOrderValue)}>
+            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-ink tracking-tight truncate" title={formatINR(data.averageOrderValue)}>
               {formatINR(data.averageOrderValue)}
             </p>
           </div>
@@ -609,17 +609,17 @@ export default function AdminAnalysisPage() {
         </div>
 
         {/* Card 4: Bulk Tier Discounts Saved */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
+        <div className="rounded-md border border-line bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A6659]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                 Tier Discounts
               </span>
-              <div className="w-7 h-7 rounded-none bg-purple-50 text-purple-800 flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-md bg-purple-50 text-purple-800 flex items-center justify-center shrink-0">
                 <Percent className="w-3.5 h-3.5" />
               </div>
             </div>
-            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-[#17231C] tracking-tight truncate" title={formatINR(data.totalDiscountsGiven)}>
+            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-ink tracking-tight truncate" title={formatINR(data.totalDiscountsGiven)}>
               {formatINR(data.totalDiscountsGiven)}
             </p>
           </div>
@@ -629,38 +629,38 @@ export default function AdminAnalysisPage() {
         </div>
 
         {/* Card 5: Inventory Valuation */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
+        <div className="rounded-md border border-line bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A6659]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                 Warehouse Asset
               </span>
-              <div className="w-7 h-7 rounded-none bg-teal-50 text-teal-800 flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-md bg-teal-50 text-teal-800 flex items-center justify-center shrink-0">
                 <Box className="w-3.5 h-3.5" />
               </div>
             </div>
-            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-[#17231C] tracking-tight truncate" title={formatINR(data.totalInventoryValuation)}>
+            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-ink tracking-tight truncate" title={formatINR(data.totalInventoryValuation)}>
               {formatINR(data.totalInventoryValuation)}
             </p>
           </div>
           <div className="mt-2 flex items-center gap-1 text-[11px] text-teal-700 font-medium truncate">
             <Layers className="w-3 h-3 shrink-0" />
-            <span className="truncate">{data.totalInventoryUnits.toLocaleString()} units</span>
+            <span className="truncate">{data.totalInventoryUnits.toLocaleString("en-IN")} units</span>
           </div>
         </div>
 
         {/* Card 6: Repeat Buyer Loyalty */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
+        <div className="rounded-md border border-line bg-white p-4.5 sm:p-5 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between min-w-0">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A6659]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                 Repeat Buyers
               </span>
-              <div className="w-7 h-7 rounded-none bg-rose-50 text-rose-800 flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-md bg-rose-50 text-rose-800 flex items-center justify-center shrink-0">
                 <Users className="w-3.5 h-3.5" />
               </div>
             </div>
-            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-[#17231C] tracking-tight truncate" title={`${data.repeatCustomerRate.toFixed(1)}%`}>
+            <p className="mt-2.5 font-display text-xl sm:text-2xl xl:text-lg 2xl:text-2xl font-bold text-ink tracking-tight truncate" title={`${data.repeatCustomerRate.toFixed(1)}%`}>
               {data.repeatCustomerRate.toFixed(1)}%
             </p>
           </div>
@@ -674,28 +674,28 @@ export default function AdminAnalysisPage() {
       {/* 3. Interactive Chart & Velocity Timeline */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Cols: Revenue Velocity Chart */}
-        <div className="lg:col-span-2 rounded-none border border-[#DFD5C6] bg-white p-6 sm:p-8 space-y-6 shadow-xs">
+        <div className="lg:col-span-2 rounded-md border border-line bg-white p-6 sm:p-8 space-y-6 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-[#50644C]" />
-                <h2 className="font-display text-xl font-bold text-[#17231C]">
+                <BarChart3 className="w-5 h-5 text-forest" />
+                <h2 className="font-display text-xl font-bold text-ink">
                   Revenue &amp; Sales Velocity Timeline
                 </h2>
               </div>
-              <p className="text-xs text-[#5A6659] mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Daily timeline tracking sales revenue (₹) and volume of customer checkouts.
               </p>
             </div>
 
             {/* Live Chart stats pill */}
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5 text-xs text-[#17231C] font-semibold">
-                <span className="w-3 h-3 rounded-none bg-[#50644C]" />
+              <div className="flex items-center gap-1.5 text-xs text-ink font-semibold">
+                <span className="w-3 h-3 rounded-md bg-forest" />
                 <span>Revenue</span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-[#5A6659] font-semibold">
-                <span className="w-3 h-3 rounded-none bg-emerald-300" />
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-semibold">
+                <span className="w-3 h-3 rounded-md bg-emerald-300" />
                 <span>Order Count</span>
               </div>
             </div>
@@ -704,19 +704,19 @@ export default function AdminAnalysisPage() {
           {/* Interactive Responsive SVG Area & Bar Visualizer */}
           <div className="relative pt-6 pb-2">
             {data.timeSeries.length === 0 || data.totalOrders === 0 ? (
-              <div className="h-56 flex flex-col items-center justify-center text-center p-6 rounded-none bg-[#FAF9F5] border border-dashed border-[#DFD5C6]">
-                <div className="w-10 h-10 rounded-none bg-emerald-100/60 text-emerald-800 flex items-center justify-center mb-2.5">
+              <div className="h-56 flex flex-col items-center justify-center text-center p-6 rounded-md bg-cream border border-dashed border-line">
+                <div className="w-10 h-10 rounded-md bg-emerald-100/60 text-emerald-800 flex items-center justify-center mb-2.5">
                   <Activity className="w-5 h-5" />
                 </div>
-                <p className="text-sm font-semibold text-[#17231C]">No transaction velocity recorded for this period</p>
-                <p className="text-xs text-[#5A6659] mt-1 max-w-sm">
+                <p className="text-sm font-semibold text-ink">No transaction velocity recorded for this period</p>
+                <p className="text-xs text-muted-foreground mt-1 max-w-sm">
                   Orders placed by retail customers or B2B enterprise partners will automatically chart real-time revenue and volume here.
                 </p>
               </div>
             ) : (
               <div className="space-y-3">
                 {/* SVG Graph */}
-                <div className="relative h-56 w-full flex items-end justify-between gap-1 sm:gap-2 px-2 border-b border-[#DFD5C6]">
+                <div className="relative h-56 w-full flex items-end justify-between gap-1 sm:gap-2 px-2 border-b border-line">
                   {data.timeSeries.map((pt, idx) => {
                     const heightPercent = maxRevenue > 0 ? (pt.revenue / maxRevenue) * 85 : 0;
                     const orderHeightPercent = maxOrders > 0 ? (pt.orderCount / maxOrders) * 60 : 0;
@@ -731,7 +731,7 @@ export default function AdminAnalysisPage() {
                       >
                         {/* Tooltip on hover */}
                         {isHovered && (
-                          <div className="absolute -top-16 z-30 bg-[#243021] text-white p-2.5 rounded-none shadow-xl text-left pointer-events-none min-w-[140px] animate-in fade-in zoom-in-95 duration-150">
+                          <div className="absolute -top-16 z-30 bg-forest-dark text-white p-2.5 rounded-md shadow-xl text-left pointer-events-none min-w-[140px] animate-in fade-in zoom-in-95 duration-150">
                             <p className="text-[10px] text-emerald-300 font-mono font-semibold">{pt.date}</p>
                             <p className="text-xs font-bold text-white mt-0.5">{formatINR(pt.revenue)}</p>
                             <p className="text-[10px] text-emerald-100/75">
@@ -743,7 +743,7 @@ export default function AdminAnalysisPage() {
                         {/* Order Count secondary bar */}
                         <div
                           style={{ height: `${Math.max(4, orderHeightPercent)}%` }}
-                          className={`w-full max-w-[10px] rounded-none transition-all duration-300 ${
+                          className={`w-full max-w-[10px] rounded-md transition-all duration-300 ${
                             isHovered ? "bg-emerald-400" : "bg-emerald-200/80"
                           }`}
                         />
@@ -751,10 +751,10 @@ export default function AdminAnalysisPage() {
                         {/* Revenue Primary bar */}
                         <div
                           style={{ height: `${Math.max(6, heightPercent)}%` }}
-                          className={`w-full max-w-[18px] rounded-none transition-all duration-300 ${
+                          className={`w-full max-w-[18px] rounded-md transition-all duration-300 ${
                             isHovered
                               ? "bg-emerald-600 scale-105 shadow-md shadow-emerald-700/20"
-                              : "bg-[#50644C] hover:bg-emerald-800"
+                              : "bg-forest hover:bg-emerald-800"
                           }`}
                         />
                       </div>
@@ -763,7 +763,7 @@ export default function AdminAnalysisPage() {
                 </div>
 
                 {/* X Axis dates label */}
-                <div className="flex items-center justify-between text-[10px] font-mono text-[#5A6659] px-2">
+                <div className="flex items-center justify-between text-[10px] font-mono text-muted-foreground px-2">
                   <span>{data.timeSeries[0]?.date}</span>
                   <span className="hidden sm:inline">
                     {data.timeSeries[Math.floor(data.timeSeries.length / 2)]?.date}
@@ -775,38 +775,38 @@ export default function AdminAnalysisPage() {
           </div>
 
           {/* Timeframe Summary Highlights */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-[#DFD5C6]">
-            <div className="p-3 rounded-none bg-[#FAF9F5] border border-[#DFD5C6]">
-              <p className="text-[10px] font-bold uppercase text-[#5A6659]">Daily Average</p>
-              <p className="text-sm font-bold text-[#17231C] mt-0.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-line">
+            <div className="p-3 rounded-md bg-cream border border-line">
+              <p className="text-[10px] font-bold uppercase text-muted-foreground">Daily Average</p>
+              <p className="text-sm font-bold text-ink mt-0.5">
                 {formatINR(data.totalGrossRevenue / Math.max(1, data.timeSeries.length))}
               </p>
             </div>
-            <div className="p-3 rounded-none bg-[#FAF9F5] border border-[#DFD5C6]">
-              <p className="text-[10px] font-bold uppercase text-[#5A6659]">Peak Single Day</p>
+            <div className="p-3 rounded-md bg-cream border border-line">
+              <p className="text-[10px] font-bold uppercase text-muted-foreground">Peak Single Day</p>
               <p className="text-sm font-bold text-emerald-800 mt-0.5">{formatINR(maxRevenue)}</p>
             </div>
-            <div className="p-3 rounded-none bg-[#FAF9F5] border border-[#DFD5C6]">
-              <p className="text-[10px] font-bold uppercase text-[#5A6659]">Fulfillment Ratio</p>
-              <p className="text-sm font-bold text-[#17231C] mt-0.5">{data.fulfillmentRate.toFixed(1)}%</p>
+            <div className="p-3 rounded-md bg-cream border border-line">
+              <p className="text-[10px] font-bold uppercase text-muted-foreground">Fulfillment Ratio</p>
+              <p className="text-sm font-bold text-ink mt-0.5">{data.fulfillmentRate.toFixed(1)}%</p>
             </div>
-            <div className="p-3 rounded-none bg-[#FAF9F5] border border-[#DFD5C6]">
-              <p className="text-[10px] font-bold uppercase text-[#5A6659]">Order Rejection Rate</p>
+            <div className="p-3 rounded-md bg-cream border border-line">
+              <p className="text-[10px] font-bold uppercase text-muted-foreground">Order Rejection Rate</p>
               <p className="text-sm font-bold text-rose-700 mt-0.5">{data.cancellationRate.toFixed(1)}%</p>
             </div>
           </div>
         </div>
 
         {/* Right 1 Col: Order Pipeline & Funnel Breakdown */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-6 sm:p-8 space-y-6 flex flex-col justify-between shadow-xs">
+        <div className="rounded-md border border-line bg-white p-6 sm:p-8 space-y-6 flex flex-col justify-between shadow-xs">
           <div>
             <div className="flex items-center gap-2">
-              <PieChart className="w-5 h-5 text-[#50644C]" />
-              <h2 className="font-display text-xl font-bold text-[#17231C]">
+              <PieChart className="w-5 h-5 text-forest" />
+              <h2 className="font-display text-xl font-bold text-ink">
                 Fulfillment Funnel
               </h2>
             </div>
-            <p className="text-xs text-[#5A6659] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Live operational lifecycle of all client orders.
             </p>
 
@@ -855,17 +855,17 @@ export default function AdminAnalysisPage() {
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <div className="flex items-center gap-2">
                         <stage.icon className={`w-3.5 h-3.5 ${stage.textColor}`} />
-                        <span className="text-[#17231C]">{stage.label}</span>
+                        <span className="text-ink">{stage.label}</span>
                       </div>
                       <div className="flex items-center gap-2 font-mono">
-                        <span className="text-[#17231C]">{stage.count}</span>
-                        <span className="text-[11px] text-[#5A6659]">({pct.toFixed(0)}%)</span>
+                        <span className="text-ink">{stage.count}</span>
+                        <span className="text-[11px] text-muted-foreground">({pct.toFixed(0)}%)</span>
                       </div>
                     </div>
-                    <div className="h-2 w-full rounded-none bg-[#DFD5C6]/50 overflow-hidden">
+                    <div className="h-2 w-full rounded-md bg-line/50 overflow-hidden">
                       <div
                         style={{ width: `${pct}%` }}
-                        className={`h-full rounded-none transition-all duration-500 ${stage.color}`}
+                        className={`h-full rounded-md transition-all duration-500 ${stage.color}`}
                       />
                     </div>
                   </div>
@@ -874,16 +874,16 @@ export default function AdminAnalysisPage() {
             </div>
           </div>
 
-          <div className="p-4 rounded-none bg-[#FAF9F5] border border-[#DFD5C6] space-y-2">
+          <div className="p-4 rounded-md bg-cream border border-line space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-[#5A6659] font-medium">Pending Pipeline Value:</span>
-              <span className="font-bold text-[#17231C] font-mono">{formatINR(data.pendingRevenue)}</span>
+              <span className="text-muted-foreground font-medium">Pending Pipeline Value:</span>
+              <span className="font-bold text-ink font-mono">{formatINR(data.pendingRevenue)}</span>
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-[#5A6659] font-medium">Cancelled Volume:</span>
+              <span className="text-muted-foreground font-medium">Cancelled Volume:</span>
               <span className="font-bold text-rose-700 font-mono">{formatINR(data.cancelledRevenue)}</span>
             </div>
-            <Button asChild size="sm" variant="ghost" className="w-full text-xs font-bold text-[#50644C] mt-2">
+            <Button asChild size="sm" variant="ghost" className="w-full text-xs font-bold text-forest mt-2">
               <Link href="/admin/orders" className="flex items-center justify-center gap-1">
                 Manage Live Orders <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
@@ -893,10 +893,10 @@ export default function AdminAnalysisPage() {
       </div>
 
       {/* 4. Circular Economy & Sustainability Environmental Scorecard */}
-      <div className="rounded-none border border-[#50644C]/20 bg-gradient-to-br from-[#243021] via-[#50644C] to-[#1A2418] text-white p-6 sm:p-8 shadow-md">
+      <div className="rounded-md border border-forest/20 bg-gradient-to-br from-forest-dark via-forest to-forest-dark text-white p-6 sm:p-8 shadow-md">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-white/10 text-emerald-300 border border-white/15 text-xs font-semibold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/10 text-emerald-300 border border-white/15 text-xs font-semibold uppercase tracking-wider">
               <Leaf className="w-3.5 h-3.5" />
               ViroEco Circularity &amp; Carbon Accounting
             </div>
@@ -918,63 +918,63 @@ export default function AdminAnalysisPage() {
 
         {/* 4 Carbon Impact Dials */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          <div className="rounded-none bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors">
+          <div className="rounded-md bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300">
                 Virgin Plastic Displaced
               </span>
-              <div className="w-8 h-8 rounded-none bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-md bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
                 <Box className="w-4 h-4" />
               </div>
             </div>
             <p className="mt-3 font-display text-3xl font-bold text-white tracking-tight">
-              {data.plasticDisplacedKg.toLocaleString()} <span className="text-lg font-normal text-emerald-300">kg</span>
+              {data.plasticDisplacedKg.toLocaleString("en-IN")} <span className="text-lg font-normal text-emerald-300">kg</span>
             </p>
             <p className="text-xs text-emerald-100/70 mt-1">
-              Prevented ~{Math.round(data.plasticDisplacedKg * 22).toLocaleString()} petroleum single-use containers from landfills.
+              Prevented ~{Math.round(data.plasticDisplacedKg * 22).toLocaleString("en-IN")} petroleum single-use containers from landfills.
             </p>
           </div>
 
-          <div className="rounded-none bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors">
+          <div className="rounded-md bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300">
                 CO₂e Emissions Neutralized
               </span>
-              <div className="w-8 h-8 rounded-none bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-md bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
                 <TreePine className="w-4 h-4" />
               </div>
             </div>
             <p className="mt-3 font-display text-3xl font-bold text-white tracking-tight">
-              {data.co2NeutralizedKg.toLocaleString()} <span className="text-lg font-normal text-emerald-300">kg</span>
+              {data.co2NeutralizedKg.toLocaleString("en-IN")} <span className="text-lg font-normal text-emerald-300">kg</span>
             </p>
             <p className="text-xs text-emerald-100/70 mt-1">
               Equivalent to the annual carbon sequestration of {data.treesEquivalent} mature trees.
             </p>
           </div>
 
-          <div className="rounded-none bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors">
+          <div className="rounded-md bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300">
                 Crop Stubble Upcycled
               </span>
-              <div className="w-8 h-8 rounded-none bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-md bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
                 <Flame className="w-4 h-4" />
               </div>
             </div>
             <p className="mt-3 font-display text-3xl font-bold text-white tracking-tight">
-              {data.cropResidueUpcycledKg.toLocaleString()} <span className="text-lg font-normal text-emerald-300">kg</span>
+              {data.cropResidueUpcycledKg.toLocaleString("en-IN")} <span className="text-lg font-normal text-emerald-300">kg</span>
             </p>
             <p className="text-xs text-emerald-100/70 mt-1">
               Rice husks and bagasse diverted from hazardous open-field incineration.
             </p>
           </div>
 
-          <div className="rounded-none bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors">
+          <div className="rounded-md bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300">
                 PFAS &amp; Toxic Chemicals
               </span>
-              <div className="w-8 h-8 rounded-none bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-md bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
                 <ShieldCheck className="w-4 h-4" />
               </div>
             </div>
@@ -991,13 +991,13 @@ export default function AdminAnalysisPage() {
       {/* 5. Category Performance & Biocomposite Material Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Category Breakdown */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-6 sm:p-8 space-y-5 shadow-xs">
+        <div className="rounded-md border border-line bg-white p-6 sm:p-8 space-y-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-display text-lg font-bold text-[#17231C]">
+              <h3 className="font-display text-lg font-bold text-ink">
                 Category Revenue Distribution
               </h3>
-              <p className="text-xs text-[#5A6659] mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Financial contribution across product lines.
               </p>
             </div>
@@ -1007,25 +1007,25 @@ export default function AdminAnalysisPage() {
           </div>
 
           {data.categoryMetrics.length === 0 ? (
-            <p className="text-xs text-[#5A6659] py-8 text-center">No category sales recorded.</p>
+            <p className="text-xs text-muted-foreground py-8 text-center">No category sales recorded.</p>
           ) : (
             <div className="space-y-3.5">
               {data.categoryMetrics.slice(0, 6).map((c) => (
                 <div key={c.category} className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-[#17231C]">{c.category}</span>
+                    <span className="font-semibold text-ink">{c.category}</span>
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-[#5A6659]">{c.unitsSold} units</span>
-                      <span className="font-bold text-[#17231C] font-mono">{formatINR(c.revenue)}</span>
+                      <span className="font-mono text-muted-foreground">{c.unitsSold} units</span>
+                      <span className="font-bold text-ink font-mono">{formatINR(c.revenue)}</span>
                       <span className="text-[11px] font-bold text-emerald-700 w-12 text-right">
                         {c.percentageShare}%
                       </span>
                     </div>
                   </div>
-                  <div className="h-2 w-full rounded-none bg-[#FAF9F5] border border-[#DFD5C6]/60 overflow-hidden">
+                  <div className="h-2 w-full rounded-md bg-cream border border-line/60 overflow-hidden">
                     <div
                       style={{ width: `${Math.min(100, c.percentageShare)}%` }}
-                      className="h-full bg-[#50644C] rounded-none transition-all duration-500"
+                      className="h-full bg-forest rounded-md transition-all duration-500"
                     />
                   </div>
                 </div>
@@ -1035,13 +1035,13 @@ export default function AdminAnalysisPage() {
         </div>
 
         {/* Biocomposite Materials Performance */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-6 sm:p-8 space-y-5 shadow-xs">
+        <div className="rounded-md border border-line bg-white p-6 sm:p-8 space-y-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-display text-lg font-bold text-[#17231C]">
+              <h3 className="font-display text-lg font-bold text-ink">
                 Material Formulation Performance
               </h3>
-              <p className="text-xs text-[#5A6659] mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Sales by agricultural feedstock composition.
               </p>
             </div>
@@ -1051,25 +1051,25 @@ export default function AdminAnalysisPage() {
           </div>
 
           {data.materialMetrics.length === 0 ? (
-            <p className="text-xs text-[#5A6659] py-8 text-center">No material data recorded.</p>
+            <p className="text-xs text-muted-foreground py-8 text-center">No material data recorded.</p>
           ) : (
             <div className="space-y-3.5">
               {data.materialMetrics.slice(0, 6).map((m) => (
                 <div key={m.material} className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-[#17231C]">{m.material}</span>
+                    <span className="font-semibold text-ink">{m.material}</span>
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-[#5A6659]">{m.unitsSold} units</span>
-                      <span className="font-bold text-[#17231C] font-mono">{formatINR(m.revenue)}</span>
+                      <span className="font-mono text-muted-foreground">{m.unitsSold} units</span>
+                      <span className="font-bold text-ink font-mono">{formatINR(m.revenue)}</span>
                       <span className="text-[11px] font-bold text-emerald-700 w-12 text-right">
                         {m.percentageShare}%
                       </span>
                     </div>
                   </div>
-                  <div className="h-2 w-full rounded-none bg-[#FAF9F5] border border-[#DFD5C6]/60 overflow-hidden">
+                  <div className="h-2 w-full rounded-md bg-cream border border-line/60 overflow-hidden">
                     <div
                       style={{ width: `${Math.min(100, m.percentageShare)}%` }}
-                      className="h-full bg-emerald-600 rounded-none transition-all duration-500"
+                      className="h-full bg-emerald-600 rounded-md transition-all duration-500"
                     />
                   </div>
                 </div>
@@ -1080,17 +1080,17 @@ export default function AdminAnalysisPage() {
       </div>
 
       {/* 6. Top Selling SKUs & High Velocity Table */}
-      <div className="rounded-none border border-[#DFD5C6] bg-white p-6 sm:p-8 space-y-5 shadow-xs">
+      <div className="rounded-md border border-line bg-white p-6 sm:p-8 space-y-5 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 className="font-display text-xl font-bold text-[#17231C]">
+            <h2 className="font-display text-xl font-bold text-ink">
               Top Revenue Driving SKUs
             </h2>
-            <p className="text-xs text-[#5A6659] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Ranked list of highest-velocity biocomposite products.
             </p>
           </div>
-          <Button asChild variant="outline" size="sm" className="text-xs font-semibold rounded-none">
+          <Button asChild variant="outline" size="sm" className="text-xs font-semibold rounded-md">
             <Link href="/admin/products" className="flex items-center gap-1">
               Catalog Manager <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
@@ -1098,34 +1098,34 @@ export default function AdminAnalysisPage() {
         </div>
 
         {data.topSellingProducts.length === 0 ? (
-          <p className="text-xs text-[#5A6659] py-8 text-center">No product orders recorded yet.</p>
+          <p className="text-xs text-muted-foreground py-8 text-center">No product orders recorded yet.</p>
         ) : (
-          <div className="overflow-x-auto border border-[#DFD5C6] rounded-none">
+          <div className="overflow-x-auto border border-line rounded-md">
             <table className="w-full min-w-[720px] text-sm">
-              <thead className="bg-[#FAF9F5] text-left">
+              <thead className="bg-cream text-left">
                 <tr>
-                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659]">Rank</th>
-                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659]">SKU Name</th>
-                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659]">Category</th>
-                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659]">Material</th>
-                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659] text-right">Units Sold</th>
-                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659] text-right">Gross Sales</th>
-                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659] text-right">Warehouse Stock</th>
+                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Rank</th>
+                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">SKU Name</th>
+                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Category</th>
+                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Material</th>
+                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground text-right">Units Sold</th>
+                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground text-right">Gross Sales</th>
+                  <th className="px-4 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground text-right">Warehouse Stock</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#DFD5C6]">
+              <tbody className="divide-y divide-line">
                 {data.topSellingProducts.map((p, idx) => (
-                  <tr key={p.productId} className="hover:bg-[#FAF9F5]/60 transition-colors">
-                    <td className="px-4 py-3.5 font-mono text-xs font-bold text-[#50644C]">
+                  <tr key={p.productId} className="hover:bg-cream/60 transition-colors">
+                    <td className="px-4 py-3.5 font-mono text-xs font-bold text-forest">
                       #{idx + 1}
                     </td>
                     <td className="px-4 py-3.5">
-                      <p className="font-semibold text-xs text-[#17231C]">{p.pname}</p>
-                      <p className="text-[10px] text-[#5A6659] font-mono">ID: {p.productId}</p>
+                      <p className="font-semibold text-xs text-ink">{p.pname}</p>
+                      <p className="text-[10px] text-muted-foreground font-mono">ID: {p.productId}</p>
                     </td>
-                    <td className="px-4 py-3.5 text-xs text-[#5A6659]">{p.category}</td>
-                    <td className="px-4 py-3.5 text-xs text-[#5A6659] max-w-[150px] truncate">{p.material}</td>
-                    <td className="px-4 py-3.5 text-right font-mono text-xs font-bold text-[#17231C]">
+                    <td className="px-4 py-3.5 text-xs text-muted-foreground">{p.category}</td>
+                    <td className="px-4 py-3.5 text-xs text-muted-foreground max-w-[150px] truncate">{p.material}</td>
+                    <td className="px-4 py-3.5 text-right font-mono text-xs font-bold text-ink">
                       {p.unitsSold}
                     </td>
                     <td className="px-4 py-3.5 text-right font-mono text-xs font-bold text-emerald-800">
@@ -1133,7 +1133,7 @@ export default function AdminAnalysisPage() {
                     </td>
                     <td className="px-4 py-3.5 text-right">
                       <span
-                        className={`inline-flex px-2 py-0.5 rounded-none text-[10px] font-bold ${
+                        className={`inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold ${
                           p.currentStock <= 0
                             ? "bg-rose-100 text-rose-800"
                             : p.currentStock <= 15
@@ -1155,18 +1155,18 @@ export default function AdminAnalysisPage() {
       {/* 7. Inventory Health & Urgent Low-Stock Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Inventory Balance Card */}
-        <div className="rounded-none border border-[#DFD5C6] bg-white p-6 sm:p-8 space-y-5 shadow-xs">
+        <div className="rounded-md border border-line bg-white p-6 sm:p-8 space-y-5 shadow-xs">
           <div>
-            <h3 className="font-display text-lg font-bold text-[#17231C]">
+            <h3 className="font-display text-lg font-bold text-ink">
               Inventory Health Ratio
             </h3>
-            <p className="text-xs text-[#5A6659] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Live stock levels across all {data.totalProducts} active SKUs.
             </p>
           </div>
 
           <div className="space-y-4 pt-2">
-            <div className="flex items-center justify-between p-3.5 rounded-none bg-emerald-50/60 border border-emerald-200/60">
+            <div className="flex items-center justify-between p-3.5 rounded-md bg-emerald-50/60 border border-emerald-200/60">
               <div className="flex items-center gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700" />
                 <span className="text-xs font-semibold text-emerald-950">Healthy Stock (&gt;15 units)</span>
@@ -1176,7 +1176,7 @@ export default function AdminAnalysisPage() {
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-3.5 rounded-none bg-amber-50/60 border border-amber-200/60">
+            <div className="flex items-center justify-between p-3.5 rounded-md bg-amber-50/60 border border-amber-200/60">
               <div className="flex items-center gap-2.5">
                 <AlertTriangle className="w-4 h-4 text-amber-700" />
                 <span className="text-xs font-semibold text-amber-950">Low Stock Warning (1–15 units)</span>
@@ -1186,7 +1186,7 @@ export default function AdminAnalysisPage() {
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-3.5 rounded-none bg-rose-50/60 border border-rose-200/60">
+            <div className="flex items-center justify-between p-3.5 rounded-md bg-rose-50/60 border border-rose-200/60">
               <div className="flex items-center gap-2.5">
                 <XCircle className="w-4 h-4 text-rose-700" />
                 <span className="text-xs font-semibold text-rose-950">Out of Stock (0 units)</span>
@@ -1199,13 +1199,13 @@ export default function AdminAnalysisPage() {
         </div>
 
         {/* Low Stock Alert Table */}
-        <div className="lg:col-span-2 rounded-none border border-[#DFD5C6] bg-white p-6 sm:p-8 space-y-4 shadow-xs">
+        <div className="lg:col-span-2 rounded-md border border-line bg-white p-6 sm:p-8 space-y-4 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-display text-lg font-bold text-[#17231C]">
+              <h3 className="font-display text-lg font-bold text-ink">
                 Critical Restock Actions
               </h3>
-              <p className="text-xs text-[#5A6659] mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 SKUs requiring warehouse replenishment.
               </p>
             </div>
@@ -1219,24 +1219,24 @@ export default function AdminAnalysisPage() {
               ✓ All products are adequately stocked above reserve thresholds.
             </p>
           ) : (
-            <div className="overflow-x-auto border border-[#DFD5C6] rounded-none max-h-72 overflow-y-auto">
+            <div className="overflow-x-auto border border-line rounded-md max-h-72 overflow-y-auto">
               <table className="w-full min-w-[500px] text-sm">
-                <thead className="bg-[#FAF9F5] text-left sticky top-0">
+                <thead className="bg-cream text-left sticky top-0">
                   <tr>
-                    <th className="px-4 py-3 text-[11px] font-bold uppercase text-[#5A6659]">Product</th>
-                    <th className="px-4 py-3 text-[11px] font-bold uppercase text-[#5A6659]">Category</th>
-                    <th className="px-4 py-3 text-[11px] font-bold uppercase text-[#5A6659] text-right">Current Stock</th>
-                    <th className="px-4 py-3 text-[11px] font-bold uppercase text-[#5A6659] text-right">Price</th>
+                    <th className="px-4 py-3 text-[11px] font-bold uppercase text-muted-foreground">Product</th>
+                    <th className="px-4 py-3 text-[11px] font-bold uppercase text-muted-foreground">Category</th>
+                    <th className="px-4 py-3 text-[11px] font-bold uppercase text-muted-foreground text-right">Current Stock</th>
+                    <th className="px-4 py-3 text-[11px] font-bold uppercase text-muted-foreground text-right">Price</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#DFD5C6]">
+                <tbody className="divide-y divide-line">
                   {data.lowStockAlerts.slice(0, 8).map((it) => (
-                    <tr key={it.productId} className="hover:bg-[#FAF9F5]/60 transition-colors">
+                    <tr key={it.productId} className="hover:bg-cream/60 transition-colors">
                       <td className="px-4 py-3">
-                        <p className="font-semibold text-xs text-[#17231C]">{it.pname}</p>
-                        <p className="text-[10px] text-[#5A6659] font-mono">SKU #{it.productId}</p>
+                        <p className="font-semibold text-xs text-ink">{it.pname}</p>
+                        <p className="text-[10px] text-muted-foreground font-mono">SKU #{it.productId}</p>
                       </td>
-                      <td className="px-4 py-3 text-xs text-[#5A6659]">{it.category}</td>
+                      <td className="px-4 py-3 text-xs text-muted-foreground">{it.category}</td>
                       <td className="px-4 py-3 text-right">
                         <span
                           className={`font-mono font-bold text-xs ${
@@ -1246,7 +1246,7 @@ export default function AdminAnalysisPage() {
                           {it.quantity} left
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right font-mono text-xs text-[#17231C]">
+                      <td className="px-4 py-3 text-right font-mono text-xs text-ink">
                         {formatINR(it.price)}
                       </td>
                     </tr>
@@ -1259,17 +1259,17 @@ export default function AdminAnalysisPage() {
       </div>
 
       {/* 8. Top Purchasing Enterprise & Retail Clients */}
-      <div className="rounded-none border border-[#DFD5C6] bg-white p-6 sm:p-8 space-y-5 shadow-xs">
+      <div className="rounded-md border border-line bg-white p-6 sm:p-8 space-y-5 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 className="font-display text-xl font-bold text-[#17231C]">
+            <h2 className="font-display text-xl font-bold text-ink">
               Enterprise &amp; VIP Customer Spend Matrix
             </h2>
-            <p className="text-xs text-[#5A6659] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Client lifetime volume, order cadence, and average basket size.
             </p>
           </div>
-          <Button asChild variant="outline" size="sm" className="text-xs font-semibold rounded-none">
+          <Button asChild variant="outline" size="sm" className="text-xs font-semibold rounded-md">
             <Link href="/admin/customers" className="flex items-center gap-1">
               Customer Accounts <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
@@ -1277,36 +1277,36 @@ export default function AdminAnalysisPage() {
         </div>
 
         {data.topCustomers.length === 0 ? (
-          <p className="text-xs text-[#5A6659] py-8 text-center">No customer order data recorded yet.</p>
+          <p className="text-xs text-muted-foreground py-8 text-center">No customer order data recorded yet.</p>
         ) : (
-          <div className="overflow-x-auto border border-[#DFD5C6] rounded-none">
+          <div className="overflow-x-auto border border-line rounded-md">
             <table className="w-full min-w-[700px] text-sm">
-              <thead className="bg-[#FAF9F5] text-left">
+              <thead className="bg-cream text-left">
                 <tr>
-                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659]">Customer</th>
-                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659] text-right">Orders</th>
-                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659] text-right">Total Spend</th>
-                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659] text-right">Average Order Value</th>
-                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[#5A6659] text-right">Last Purchase</th>
+                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Customer</th>
+                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground text-right">Orders</th>
+                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground text-right">Total Spend</th>
+                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground text-right">Average Order Value</th>
+                  <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground text-right">Last Purchase</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#DFD5C6]">
+              <tbody className="divide-y divide-line">
                 {data.topCustomers.map((c) => (
-                  <tr key={c.gmail} className="hover:bg-[#FAF9F5]/60 transition-colors">
+                  <tr key={c.gmail} className="hover:bg-cream/60 transition-colors">
                     <td className="px-5 py-3.5">
-                      <p className="font-semibold text-xs text-[#17231C]">{c.name}</p>
-                      <p className="text-[11px] text-[#5A6659] font-mono">{c.gmail}</p>
+                      <p className="font-semibold text-xs text-ink">{c.name}</p>
+                      <p className="text-[11px] text-muted-foreground font-mono">{c.gmail}</p>
                     </td>
-                    <td className="px-5 py-3.5 text-right font-mono text-xs font-bold text-[#17231C]">
+                    <td className="px-5 py-3.5 text-right font-mono text-xs font-bold text-ink">
                       {c.totalOrders}
                     </td>
                     <td className="px-5 py-3.5 text-right font-mono text-xs font-bold text-emerald-800">
                       {formatINR(c.totalSpend)}
                     </td>
-                    <td className="px-5 py-3.5 text-right font-mono text-xs text-[#5A6659]">
+                    <td className="px-5 py-3.5 text-right font-mono text-xs text-muted-foreground">
                       {formatINR(c.averageSpend)}
                     </td>
-                    <td className="px-5 py-3.5 text-right font-mono text-xs text-[#5A6659]">
+                    <td className="px-5 py-3.5 text-right font-mono text-xs text-muted-foreground">
                       {c.lastOrderDate || "Recent"}
                     </td>
                   </tr>

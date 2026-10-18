@@ -5,7 +5,7 @@ const STYLES: Record<string, string> = {
   PLACED: "bg-moss/20 text-moss-deep border-transparent",
   CONFIRMED: "bg-moss/20 text-moss-deep border-transparent",
   SHIPPED: "bg-terra/20 text-terra-deep border-transparent",
-  DELIVERED: "bg-moss text-[#21281f] border-transparent",
+  DELIVERED: "bg-moss text-forest-dark border-transparent",
   CANCELLED: "bg-destructive/15 text-destructive border-transparent",
 };
 

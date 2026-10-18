@@ -58,7 +58,7 @@ export function Logo({
           <span
             className={cn(
               "text-[10px] uppercase font-bold tracking-widest leading-none",
-              isLight ? "text-emerald-200/80" : "text-[#50644C]"
+              isLight ? "text-emerald-200/80" : "text-forest"
             )}
           >
             {tagline}

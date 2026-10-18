@@ -21,8 +21,8 @@ export function LegalToc({ title = "Table of Contents", sections }: LegalTocProp
   };
 
   return (
-    <div className="bg-white border border-[#DFD5C6] rounded-none p-6 shadow-xs">
-      <h3 className="text-xs font-bold uppercase tracking-wider text-[#50644C] flex items-center gap-2 mb-4">
+    <div className="bg-white border border-line rounded-md p-6 shadow-xs">
+      <h3 className="text-xs font-bold uppercase tracking-wider text-forest flex items-center gap-2 mb-4">
         <FileText className="w-4 h-4 text-emerald-700" />
         {title}
       </h3>
@@ -32,7 +32,7 @@ export function LegalToc({ title = "Table of Contents", sections }: LegalTocProp
             key={section.id}
             type="button"
             onClick={() => scrollToSection(section.id)}
-            className="w-full text-left block py-1.5 px-2.5 rounded-none text-[#5A6659] hover:text-[#50644C] hover:bg-[#EDF2EB]/50 transition-colors font-medium cursor-pointer"
+            className="w-full text-left block py-1.5 px-2.5 rounded-md text-muted-foreground hover:text-forest hover:bg-sage-wash/50 transition-colors font-medium cursor-pointer"
           >
             {section.title}
           </button>

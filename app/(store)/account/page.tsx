@@ -52,11 +52,11 @@ export default function AccountPage() {
   const addresses = list.data ?? [];
 
   return (
-    <div className="pt-24">
+    <div className="bg-cream">
       <Container className="py-10">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h1 className="font-display text-4xl tracking-tight sm:text-5xl">Account &amp; Addresses</h1>
-          <Button asChild className="bg-[#50644C] hover:bg-[#384935] text-white self-start sm:self-auto">
+          <Button asChild className="bg-forest hover:bg-forest-dark text-white self-start sm:self-auto">
             <Link href="/profile">View &amp; Edit My Profile →</Link>
           </Button>
         </div>

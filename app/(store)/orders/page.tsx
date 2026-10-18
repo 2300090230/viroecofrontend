@@ -25,7 +25,7 @@ export default function OrdersPage() {
   }, [list, page, pageSize]);
 
   return (
-    <div className="pt-24">
+    <div className="bg-cream">
       <Container className="py-10">
         <h1 className="font-display text-4xl tracking-tight sm:text-5xl">Your orders</h1>
 

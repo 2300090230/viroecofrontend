@@ -42,18 +42,18 @@ const METHODOLOGIES = [
 
 export default function CalculatorPage() {
   return (
-    <div className="pt-8 pb-20 bg-[#FAF9F5] min-h-screen text-[#17231C]">
+    <div className="pb-20 bg-cream min-h-screen text-ink">
       {/* Hero Header */}
-      <section className="border-b border-[#DFD5C6] bg-white py-14 lg:py-16">
+      <section className="border-b border-line bg-gradient-to-r from-sand via-cream to-sage-wash py-14 lg:py-16">
         <Container>
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-wash text-forest text-xs font-bold uppercase tracking-wider">
               ESG &amp; Carbon Accounting Tool
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#50644C] leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-forest leading-tight">
               Annual Circular Savings &amp; ESG Simulator
             </h1>
-            <p className="text-base sm:text-lg text-[#5A6659] leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
               Model your annual sustainability metrics, plastic reduction tonnage, and Scope 3 emissions
               reductions before procuring. Trusted by enterprise sustainability officers and procurement directors worldwide.
             </p>
@@ -67,14 +67,14 @@ export default function CalculatorPage() {
       {/* Methodology Section */}
       <Container className="py-14 space-y-8">
         <div className="max-w-2xl space-y-3">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold flex items-center gap-1.5">
+          <span className="text-xs uppercase tracking-[0.25em] text-forest font-bold flex items-center gap-1.5">
             <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
             Audit Standards
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#50644C]">
+          <h2 className="font-display text-3xl sm:text-4xl font-bold text-forest">
             Simulation Methodologies &amp; Scientific Baselines
           </h2>
-          <p className="text-xs sm:text-sm text-[#5A6659]">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Our carbon accounting formulas adhere to ISO 14040/14044 Life Cycle Assessment guidelines and the Greenhouse Gas Protocol Corporate Value Chain (Scope 3) Standard.
           </p>
         </div>
@@ -83,12 +83,12 @@ export default function CalculatorPage() {
           {METHODOLOGIES.map((m) => (
             <div
               key={m.title}
-              className="bg-white border border-[#DFD5C6] rounded-none p-6 space-y-2 hover:border-[#50644C]/30 transition-colors"
+              className="bg-white border border-line rounded-md p-6 space-y-2 hover:border-forest/30 transition-colors"
             >
-              <h3 className="font-display text-lg font-bold text-[#50644C]">
+              <h3 className="font-display text-lg font-bold text-forest">
                 {m.title}
               </h3>
-              <p className="text-xs sm:text-sm text-[#5A6659] leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 {m.description}
               </p>
             </div>
@@ -96,7 +96,7 @@ export default function CalculatorPage() {
         </div>
 
         {/* Enterprise Callout */}
-        <div className="bg-[#243021] text-white rounded-none p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+        <div className="bg-forest-dark text-white rounded-md p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
           <div className="space-y-2 max-w-xl">
             <div className="flex items-center gap-2 text-emerald-300 text-xs font-semibold uppercase tracking-wider">
               <Building2 className="w-4 h-4" /> Customized Auditing for Enterprises
@@ -111,7 +111,7 @@ export default function CalculatorPage() {
           <div className="shrink-0 flex flex-col sm:flex-row gap-3">
             <Link
               href="/enterprise"
-              className="bg-emerald-400 hover:bg-emerald-300 text-[#243021] font-bold text-xs px-6 py-3.5 rounded-none inline-flex items-center justify-center gap-2 transition-colors shadow-xs"
+              className="bg-emerald-400 hover:bg-emerald-300 text-forest-dark font-bold text-xs px-6 py-3.5 rounded-md inline-flex items-center justify-center gap-2 transition-colors shadow-xs"
             >
               Enterprise Solutions
               <ArrowRight className="w-3.5 h-3.5" />

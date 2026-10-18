@@ -1,68 +1,108 @@
-import { Hero } from "@/components/hero";
-import { MetricsPartners } from "@/components/metrics-partners";
-import { CategoryShowcase } from "@/components/category-showcase";
-import { EnterpriseInventory } from "@/components/enterprise-inventory";
-import { WhyChooseUs } from "@/components/why-choose-us";
-import { CircularProcess } from "@/components/circular-process";
-import { SavingsCalculator } from "@/components/savings-calculator";
-import { IndustryScale } from "@/components/industry-scale";
-import { CertificationsBar } from "@/components/certifications-bar";
-import { ProcurementTestimonials } from "@/components/procurement-testimonials";
-import { FaqSection } from "@/components/faq-section";
-import { CtaBanner } from "@/components/cta-banner";
-import { getAllProducts } from "@/lib/endpoints";
-import type { Product } from "@/lib/types";
+import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel";
+import { TrendingProducts } from "@/components/home/trending-products";
+import {
+  BusinessCtas,
+  CollectionsGrid,
+  ProcessStrip,
+  PromoBanners,
+  TrustStrip,
+  UseCases,
+  WhyChoose,
+  type PromoBanner,
+} from "@/components/home/sections";
+import { getAllProducts, getCategories } from "@/lib/endpoints";
+import { buildCollections, describeCollection, imagesOf, type Collection } from "@/lib/collections";
+import { discountPct } from "@/lib/format";
+import type { Category, Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+async function loadCatalog(): Promise<{ products: Product[]; categories: Category[] }> {
+  const [products, categories] = await Promise.allSettled([getAllProducts(), getCategories()]);
+  return {
+    products: products.status === "fulfilled" && Array.isArray(products.value) ? products.value : [],
+    categories: categories.status === "fulfilled" && Array.isArray(categories.value) ? categories.value : [],
+  };
+}
+
+function buildSlides(products: Product[], collections: Collection[]): HeroSlide[] {
+  const featured = collections.filter((c) => c.images.length > 0).slice(0, 3);
+  return [
+    {
+      id: "brand",
+      eyebrow: "Rice husk & bamboo",
+      title: "Everyday essentials, made from nature",
+      text: "Durable drinkware, tableware, planters and storage made from plant-based composites — a more sustainable choice for every day.",
+      cta: { label: "Shop now", href: "/products" },
+      // One photo per leading collection, so the opening slide shows the range
+      images: collections.flatMap((c) => c.images.slice(0, 1)).slice(0, 3),
+    },
+    ...featured.map((c) => ({
+      id: `collection-${c.name}`,
+      eyebrow: "Collection",
+      title: c.name,
+      text: describeCollection(c.name),
+      cta: { label: `Shop ${c.name.toLowerCase()}`, href: c.href },
+      images: c.images,
+    })),
+    {
+      id: "bulk",
+      eyebrow: "Bulk & corporate",
+      title: "Buying for your business?",
+      text: "Volume pricing for restaurants, cafés, events, retailers and corporate gifting — with tailored quotes.",
+      cta: { label: "Request a quote", href: "/enterprise" },
+      images: [],
+    },
+  ];
+}
+
+function buildBanners(products: Product[]): PromoBanner[] {
+  const byMaterial = (re: RegExp) => products.filter((p) => re.test(p.material ?? ""));
+  return [
+    {
+      title: "Rice husk collection",
+      text: "Sturdy, lightweight pieces made with agricultural rice husk.",
+      href: "/products?query=rice%20husk",
+      cta: "Shop collection",
+      images: imagesOf(byMaterial(/rice/i), 2),
+    },
+    {
+      title: "Bamboo collection",
+      text: "Natural bamboo-fibre products for dining, storage and gifting.",
+      href: "/products?query=bamboo",
+      cta: "Shop collection",
+      images: imagesOf(byMaterial(/bamboo/i), 2),
+    },
+  ].filter((b) => b.images.length > 0);
+}
+
+function buildTrending(products: Product[]) {
+  const available = products.filter((p) => p.isAvailable);
+  const off = (p: Product) => discountPct(p.price, p.originalPrice);
+  return {
+    // Highest ids were added most recently
+    newArrivals: [...available].sort((a, b) => b.productId - a.productId).slice(0, 12),
+    offers: available.filter((p) => off(p) > 0).sort((a, b) => off(b) - off(a)).slice(0, 12),
+  };
+}
+
 export default async function HomePage() {
-  let products: Product[] = [];
-  try {
-    const fetched = await getAllProducts();
-    if (fetched && Array.isArray(fetched)) {
-      products = fetched;
-    }
-  } catch {
-    products = [];
-  }
+  const { products, categories } = await loadCatalog();
+  const collections = buildCollections(categories, products);
+  // Offset into the catalogue so the business cards don't repeat the hero photos
+  const businessImages = imagesOf(products.slice(6), 2);
 
   return (
     <>
-      {/* 1. Hero Section */}
-      <Hero />
-
-      {/* 2. Metrics & Enterprise Partners Ticker */}
-      <MetricsPartners />
-
-      {/* 3. High-Craft Ecological Categories */}
-      <CategoryShowcase />
-
-      {/* 4. Enterprise Inventory Highlights (Dynamic Real-Time Products) */}
-      <EnterpriseInventory products={products} />
-
-      {/* 5. Why Visionary Brands Choose Viro Eco */}
-      <WhyChooseUs />
-
-      {/* 6. Transparent Circular Supply Chain */}
-      <CircularProcess />
-
-      {/* 7. Interactive Annual Circular Savings Calculator */}
-      <SavingsCalculator />
-
-      {/* 8. Engineered for High-Pressure Scale (Industry Segments) */}
-      <IndustryScale />
-
-      {/* 9. Certifications & Global Compliance Badges */}
-      <CertificationsBar />
-
-      {/* 10. Procurement Leaders Testimonials */}
-      <ProcurementTestimonials />
-
-      {/* 11. Frequently Addressed Inquiries */}
-      <FaqSection />
-
-      {/* 12. Bottom Conversion CTA Banner */}
-      <CtaBanner />
+      <HeroCarousel slides={buildSlides(products, collections)} />
+      <TrustStrip />
+      <CollectionsGrid collections={collections} />
+      <ProcessStrip />
+      <TrendingProducts {...buildTrending(products)} />
+      <PromoBanners banners={buildBanners(products)} />
+      <UseCases />
+      <WhyChoose />
+      <BusinessCtas images={businessImages} />
     </>
   );
 }

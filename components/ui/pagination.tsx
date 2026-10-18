@@ -70,9 +70,9 @@ function PaginationLink({
         }),
         "cursor-pointer transition-all",
         isActive &&
-          "border-[#50644C] bg-[#50644C] text-white font-semibold shadow-xs hover:bg-[#243021] hover:text-white dark:border-[#94A478] dark:bg-[#50644C]",
+          "border-forest bg-forest text-white font-semibold shadow-xs hover:bg-forest-dark hover:text-white dark:border-sage dark:bg-forest",
         !isActive &&
-          "text-[#5A6659] hover:bg-[#EDF2EB] hover:text-[#50644C]",
+          "text-muted-foreground hover:bg-sage-wash hover:text-forest",
         className
       )}
       {...props}
@@ -91,7 +91,7 @@ function PaginationPrevious({
       size="default"
       disabled={disabled}
       className={cn(
-        "gap-1 px-2.5 sm:px-3 border border-[#DFD5C6] bg-white text-xs font-semibold text-[#17231C] disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#50644C]/40 hover:bg-[#FAF9F5]",
+        "gap-1 px-2.5 sm:px-3 border border-line bg-white text-xs font-semibold text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:border-forest/40 hover:bg-cream",
         className
       )}
       {...props}
@@ -113,7 +113,7 @@ function PaginationNext({
       size="default"
       disabled={disabled}
       className={cn(
-        "gap-1 px-2.5 sm:px-3 border border-[#DFD5C6] bg-white text-xs font-semibold text-[#17231C] disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#50644C]/40 hover:bg-[#FAF9F5]",
+        "gap-1 px-2.5 sm:px-3 border border-line bg-white text-xs font-semibold text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:border-forest/40 hover:bg-cream",
         className
       )}
       {...props}
@@ -135,7 +135,7 @@ function PaginationFirst({
       size="icon"
       disabled={disabled}
       className={cn(
-        "border border-[#DFD5C6] bg-white text-[#17231C] disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#50644C]/40 hover:bg-[#FAF9F5]",
+        "border border-line bg-white text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:border-forest/40 hover:bg-cream",
         className
       )}
       {...props}
@@ -156,7 +156,7 @@ function PaginationLast({
       size="icon"
       disabled={disabled}
       className={cn(
-        "border border-[#DFD5C6] bg-white text-[#17231C] disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#50644C]/40 hover:bg-[#FAF9F5]",
+        "border border-line bg-white text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:border-forest/40 hover:bg-cream",
         className
       )}
       {...props}
@@ -174,7 +174,7 @@ function PaginationEllipsis({
     <span
       aria-hidden
       data-slot="pagination-ellipsis"
-      className={cn("flex size-8 items-center justify-center text-[#5A6659]", className)}
+      className={cn("flex size-8 items-center justify-center text-muted-foreground", className)}
       {...props}
     >
       <MoreHorizontalIcon className="size-4" />
@@ -281,13 +281,13 @@ export function DataTablePagination({
       )}
     >
       {/* Items count summary & page size selector */}
-      <div className="flex flex-wrap items-center gap-4 text-xs text-[#5A6659]">
+      <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
         {showItemCount && totalItems !== undefined && totalItems > 0 && (
           <span>
-            Showing <strong className="font-semibold text-[#17231C]">{startItem}</strong>
+            Showing <strong className="font-semibold text-ink">{startItem}</strong>
             –
-            <strong className="font-semibold text-[#17231C]">{endItem}</strong> of{" "}
-            <strong className="font-semibold text-[#17231C]">{totalItems}</strong> {itemLabel}
+            <strong className="font-semibold text-ink">{endItem}</strong> of{" "}
+            <strong className="font-semibold text-ink">{totalItems}</strong> {itemLabel}
           </span>
         )}
 
@@ -301,7 +301,7 @@ export function DataTablePagination({
                 onPageChange(0)
               }}
             >
-              <SelectTrigger size="sm" className="h-7 w-16 text-xs bg-white border-[#DFD5C6] rounded-none">
+              <SelectTrigger size="sm" className="h-7 w-16 text-xs bg-white border-line rounded-md">
                 <SelectValue placeholder={String(pageSize)} />
               </SelectTrigger>
               <SelectContent>
@@ -349,7 +349,7 @@ export function DataTablePagination({
                   <PaginationLink
                     isActive={isCurrent}
                     size="sm"
-                    className="size-8 rounded-none text-xs"
+                    className="size-8 rounded-md text-xs"
                     onClick={() => onPageChange((pageNumber as number) - 1)}
                   >
                     {pageNumber}

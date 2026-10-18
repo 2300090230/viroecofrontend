@@ -1,4 +1,4 @@
-// Typed shapes used by the UI; lib/endpoints.ts maps Supabase rows into them.
+// Typed shapes returned by the Spring Boot API (see lib/endpoints.ts).
 
 export interface DiscountTier {
   minQuantity: number;
@@ -40,8 +40,8 @@ export interface ProductPage {
 
 export type Role = "USER" | "ADMIN";
 
+/** The signed-in user, as returned by the backend's /api/auth endpoints. Never includes a token. */
 export interface LoginResponse {
-  token: string;
   gmail: string;
   name: string;
   contactno: string;
@@ -61,9 +61,8 @@ export interface RegisterRequest {
   name: string;
   password: string;
   contactno: string;
-  imageUrl: string;
-  gender: string;
-  dob: string;
+  gender?: string;
+  dob?: string;
 }
 
 export interface UpdateProfileRequest {
@@ -91,6 +90,9 @@ export interface CartItem {
   quantity: number;
   discountPercent: number;    // bulk tier applied (0 if none)
   discountedPrice: number;    // unit price after discount — what's actually charged
+  image?: string;             // primary product photo (display only)
+  size?: string;
+  inStock?: boolean;
 }
 
 export interface Cart {
@@ -113,9 +115,10 @@ export type AddressInput = Omit<Address, "id">;
 export interface OrderItem {
   productId: number;
   pname: string;
-  price: number;
+  price: number; // original unit price
   quantity: number;
-  discountPercent: number;
+  discountPercent: number; // bulk tier applied
+  discountedPrice: number; // unit price actually charged
 }
 
 export interface Order {
@@ -149,16 +152,16 @@ export interface UserSummary {
 }
 
 export interface PaymentOrder {
-  razorpayOrderId?: string | null;
+  razorpayOrderId: string;
   keyId: string;
   amount: number; // paise
   currency: string;
 }
 
 export interface PaymentVerifyRequest {
-  razorpayOrderId?: string;
+  razorpayOrderId: string;
   razorpayPaymentId: string;
-  razorpaySignature?: string;
+  razorpaySignature: string;
   addressId: number;
 }
 

@@ -1,8 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
 import { AddToCartButton } from "@/components/add-to-cart-button";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/hooks/use-cart";
+import { useAuth } from "@/providers/auth-provider";
 import { formatINR } from "@/lib/format";
 import type { DiscountTier } from "@/lib/types";
 
@@ -30,13 +36,16 @@ export function ProductPurchase({
   tiers?: DiscountTier[];
 }) {
   const [qty, setQty] = useState(1);
+  const router = useRouter();
+  const { session, ready } = useAuth();
+  const { add } = useCart();
   const ceiling = Math.max(1, maxQty || 1); // bulk-friendly: capped by stock, not an arbitrary 10
   const clamp = (n: number) => Math.max(1, Math.min(ceiling, n));
 
   if (!available) {
     return (
-      <div className="border border-border bg-card p-4 text-sm text-muted-foreground">
-        This piece is currently out of stock.
+      <div className="rounded-lg border border-line bg-sand p-4 text-sm text-muted-foreground">
+        This product is currently out of stock. <Link href="/contact" className="font-medium text-forest underline">Contact us</Link> for availability.
       </div>
     );
   }
@@ -44,45 +53,78 @@ export function ProductPurchase({
   const percent = discountFor(tiers, qty);
   const discountedUnit = Math.round(unitPrice * (1 - percent / 100) * 100) / 100;
 
+  const buyNow = () => {
+    if (!session) {
+      router.push(`/login?next=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+    if (session.role === "ADMIN") {
+      toast.error("Shopping is available on customer accounts.");
+      return;
+    }
+    add.mutate({ productId, quantity: qty }, { onSuccess: () => router.push("/checkout") });
+  };
+
   return (
-    <div className="space-y-3">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <div className="flex items-center justify-between sm:justify-start border border-border w-full sm:w-auto">
-          <button
-            type="button"
-            aria-label="Decrease quantity"
-            onClick={() => setQty((q) => clamp(q - 1))}
-            className="flex h-11 w-11 cursor-pointer items-center justify-center hover:bg-accent shrink-0"
-          >
-            <Minus className="h-4 w-4" />
-          </button>
-          <input
-            type="number"
-            min={1}
-            max={ceiling}
-            value={qty}
-            aria-label="Quantity"
-            onChange={(e) => setQty(clamp(Number(e.target.value) || 1))}
-            className="flex-1 sm:w-16 border-x border-border bg-transparent py-2.5 text-center tabular-nums outline-none"
-          />
-          <button
-            type="button"
-            aria-label="Increase quantity"
-            onClick={() => setQty((q) => clamp(q + 1))}
-            className="flex h-11 w-11 cursor-pointer items-center justify-center hover:bg-accent shrink-0"
-          >
-            <Plus className="h-4 w-4" />
-          </button>
+    <div className="space-y-4">
+      <div>
+        <p className="mb-2 text-sm font-medium text-ink">Quantity</p>
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex h-11 items-center overflow-hidden rounded-md border border-input bg-white">
+            <button
+              type="button"
+              aria-label="Decrease quantity"
+              onClick={() => setQty((q) => clamp(q - 1))}
+              className="flex h-full w-11 items-center justify-center text-ink hover:bg-sand disabled:opacity-40"
+              disabled={qty <= 1}
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+            <input
+              type="number"
+              min={1}
+              max={ceiling}
+              value={qty}
+              aria-label="Quantity"
+              onChange={(e) => setQty(clamp(Number(e.target.value) || 1))}
+              className="h-full w-16 border-x border-input bg-transparent text-center text-sm tabular-nums outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+            />
+            <button
+              type="button"
+              aria-label="Increase quantity"
+              onClick={() => setQty((q) => clamp(q + 1))}
+              className="flex h-full w-11 items-center justify-center text-ink hover:bg-sand disabled:opacity-40"
+              disabled={qty >= ceiling}
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          </div>
+          <p className="flex items-center gap-2 text-sm font-medium text-forest">
+            <span className="h-2 w-2 rounded-full bg-forest" aria-hidden />
+            In stock{maxQty > 0 && maxQty < 50 ? ` — only ${maxQty} left` : ""}
+          </p>
         </div>
-        <AddToCartButton productId={productId} quantity={qty} size="lg" className="w-full sm:min-w-40 sm:flex-1" />
       </div>
 
       {percent > 0 && (
-        <p className="text-sm text-moss-deep font-medium">
-          {percent}% bulk discount applied — {formatINR(discountedUnit)} each ·{" "}
-          {formatINR(discountedUnit * qty)} total
+        <p className="rounded-md bg-sage-wash px-3 py-2 text-sm font-medium text-forest">
+          {percent}% bulk discount applied — {formatINR(discountedUnit)} each · {formatINR(discountedUnit * qty)} total
         </p>
       )}
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <AddToCartButton
+          productId={productId}
+          quantity={qty}
+          size="lg"
+          label="Add to Cart"
+          icon={<ShoppingCart className="h-4.5 w-4.5" aria-hidden />}
+          className="w-full"
+        />
+        <Button type="button" size="lg" variant="outline" onClick={buyNow} disabled={add.isPending || !ready} className="w-full">
+          Buy now
+        </Button>
+      </div>
     </div>
   );
 }

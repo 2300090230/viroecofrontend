@@ -1,30 +1,28 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { readSessionCookie, SESSION_COOKIE } from "@/lib/session";
+import { ROLE_COOKIE } from "@/lib/session";
 
-// Next.js 16 renamed `middleware` → `proxy` (nodejs runtime). Same job here:
-// gate routes by session/role. Supabase RLS enforces authorization regardless —
-// this is only for UX (redirect before rendering a page the user can't use).
+// Next.js 16 `proxy` (formerly middleware): redirect before rendering pages the visitor can't use.
+// UX only — the Spring Boot backend independently checks authentication and role on every API call.
 const USER_PREFIXES = ["/cart", "/checkout", "/orders", "/account", "/profile"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const session = readSessionCookie(request.cookies.get(SESSION_COOKIE)?.value);
+  const role = request.cookies.get(ROLE_COOKIE)?.value;
 
-  const needsAuth = USER_PREFIXES.some((p) => pathname.startsWith(p));
-  const isAdminRoute = pathname.startsWith("/admin");
-
-  if (isAdminRoute) {
-    if (!session) return redirectTo("/login", pathname, request);
-    if (session.role !== "ADMIN") return NextResponse.redirect(new URL("/", request.url));
+  if (pathname.startsWith("/admin")) {
+    if (!role) return redirectToLogin(pathname, request);
+    if (role !== "ADMIN") return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (needsAuth && !session) return redirectTo("/login", pathname, request);
+  if (USER_PREFIXES.some((p) => pathname.startsWith(p)) && !role) {
+    return redirectToLogin(pathname, request);
+  }
 
   return NextResponse.next();
 }
 
-function redirectTo(to: string, from: string, request: NextRequest) {
-  const url = new URL(to, request.url);
+function redirectToLogin(from: string, request: NextRequest) {
+  const url = new URL("/login", request.url);
   url.searchParams.set("next", from);
   return NextResponse.redirect(url);
 }

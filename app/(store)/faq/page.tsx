@@ -94,31 +94,31 @@ export default function FaqPage() {
   });
 
   return (
-    <div className="pt-8 pb-20 bg-[#FAF9F5] min-h-screen text-[#17231C]">
+    <div className="pb-20 bg-cream min-h-screen text-ink">
       {/* FAQ Hero */}
-      <section className="border-b border-[#DFD5C6] bg-white py-14 lg:py-16">
+      <section className="border-b border-line bg-gradient-to-r from-sand via-cream to-sage-wash py-14 lg:py-16">
         <Container>
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-wash text-forest text-xs font-bold uppercase tracking-wider">
               <HelpCircle className="w-3.5 h-3.5 text-emerald-700" />
               Help &amp; Knowledge Base
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#50644C] leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-forest leading-tight">
               Frequently Asked Questions &amp; Technical Compliance
             </h1>
-            <p className="text-base sm:text-lg text-[#5A6659] leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
               Find detailed answers on our material science, food safety lab tests, MOQ pricing tiers, custom mold timelines, and global logistics.
             </p>
 
             {/* Search Box */}
             <div className="pt-2 relative max-w-xl">
-              <Search className="w-4 h-4 text-[#5A6659] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <Input
                 type="text"
                 placeholder="Search questions (e.g. MOQ, microwave, PFAS, shipping)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-[#FAF9F5] border-[#DFD5C6] rounded-none text-sm py-5"
+                className="pl-10 bg-cream border-line rounded-md text-sm py-5"
               />
             </div>
           </div>
@@ -126,17 +126,17 @@ export default function FaqPage() {
       </section>
 
       {/* Category Tabs */}
-      <section className="py-6 border-b border-[#DFD5C6] bg-[#FAF9F5]/70 sticky top-18 z-30 backdrop-blur-md">
+      <section className="py-6 border-b border-line bg-cream/70 sticky top-18 z-30 backdrop-blur-md">
         <Container>
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
             {FAQ_CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCat(cat)}
-                className={`shrink-0 px-4 py-2 rounded-none text-xs font-semibold cursor-pointer transition-all ${
+                className={`shrink-0 px-4 py-2 rounded-md text-xs font-semibold cursor-pointer transition-all ${
                   selectedCat === cat
-                    ? "bg-[#50644C] text-white shadow-xs"
-                    : "bg-white border border-[#DFD5C6] text-[#5A6659] hover:text-[#50644C] hover:border-[#50644C]"
+                    ? "bg-forest text-white shadow-xs"
+                    : "bg-white border border-line text-muted-foreground hover:text-forest hover:border-forest"
                 }`}
               >
                 {cat}
@@ -149,12 +149,12 @@ export default function FaqPage() {
       {/* Accordion Questions List */}
       <Container className="py-14 max-w-4xl space-y-6">
         {filteredFaqs.length === 0 ? (
-          <div className="text-center py-16 bg-white border border-[#DFD5C6] rounded-none p-8 space-y-3">
-            <HelpCircle className="w-10 h-10 text-[#5A6659] mx-auto" />
-            <h3 className="font-display text-lg font-bold text-[#50644C]">
+          <div className="text-center py-16 bg-white border border-line rounded-md p-8 space-y-3">
+            <HelpCircle className="w-10 h-10 text-muted-foreground mx-auto" />
+            <h3 className="font-display text-lg font-bold text-forest">
               No questions found matching &ldquo;{searchQuery}&rdquo;
             </h3>
-            <p className="text-xs text-[#5A6659]">
+            <p className="text-xs text-muted-foreground">
               Try searching with another keyword, or contact our support team directly.
             </p>
             <Button
@@ -175,23 +175,23 @@ export default function FaqPage() {
               return (
                 <div
                   key={faq.q}
-                  className="bg-white border border-[#DFD5C6] rounded-none overflow-hidden shadow-xs hover:border-[#50644C]/40 transition-colors"
+                  className="bg-white border border-line rounded-md overflow-hidden shadow-xs hover:border-forest/40 transition-colors"
                 >
                   <button
                     type="button"
                     onClick={() => setOpenIdx(isOpen ? null : i)}
-                    className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-[#FAF9F5]/70 transition-colors"
+                    className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-cream/70 transition-colors"
                   >
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-[#EDF2EB] px-2.5 py-0.5 rounded-none">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-sage-wash px-2.5 py-0.5 rounded-md">
                         {faq.category}
                       </span>
-                      <h3 className="font-display text-base sm:text-lg font-semibold text-[#17231C]">
+                      <h3 className="font-display text-base sm:text-lg font-semibold text-ink">
                         {faq.q}
                       </h3>
                     </div>
                     <div
-                      className={`w-7 h-7 rounded-none bg-[#EDF2EB] text-[#50644C] flex items-center justify-center shrink-0 transition-transform duration-200 ${
+                      className={`w-7 h-7 rounded-md bg-sage-wash text-forest flex items-center justify-center shrink-0 transition-transform duration-200 ${
                         isOpen ? "rotate-180" : ""
                       }`}
                     >
@@ -200,7 +200,7 @@ export default function FaqPage() {
                   </button>
 
                   {isOpen && (
-                    <div className="px-6 pb-6 pt-2 text-xs sm:text-sm text-[#5A6659] leading-relaxed border-t border-[#DFD5C6]/50">
+                    <div className="px-6 pb-6 pt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-line/50">
                       {faq.a}
                     </div>
                   )}
@@ -211,7 +211,7 @@ export default function FaqPage() {
         )}
 
         {/* Still Have Questions Box */}
-        <div className="bg-[#243021] text-white rounded-none p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md mt-10">
+        <div className="bg-forest-dark text-white rounded-md p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md mt-10">
           <div className="space-y-2">
             <span className="text-emerald-300 text-xs font-semibold uppercase tracking-wider">
               Need Specific Lab Documentation?
@@ -226,11 +226,11 @@ export default function FaqPage() {
           <div className="flex flex-wrap gap-3 shrink-0">
             <Button
               onClick={() => setQuoteOpen(true)}
-              className="bg-emerald-400 hover:bg-emerald-300 text-[#243021] font-bold text-xs px-6 py-3.5 rounded-none cursor-pointer transition-colors"
+              className="bg-emerald-400 hover:bg-emerald-300 text-forest-dark font-bold text-xs px-6 py-3.5 rounded-md cursor-pointer transition-colors"
             >
               Request Sample Kit
             </Button>
-            <Button asChild variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-none text-xs">
+            <Button asChild variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-md text-xs">
               <Link href="/contact">
                 Contact Support
               </Link>

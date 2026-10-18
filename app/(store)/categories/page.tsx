@@ -32,30 +32,30 @@ export default async function CategoriesPage() {
   const totalProductCount = products.length;
 
   return (
-    <div className="pt-8 pb-20 bg-[#FAF9F5] min-h-screen text-[#17231C]">
+    <div className="pb-20 bg-cream min-h-screen text-ink">
       {/* Category Hero Header */}
-      <section className="border-b border-[#DFD5C6] bg-white py-14 lg:py-16">
+      <section className="border-b border-line bg-gradient-to-r from-sand via-cream to-sage-wash py-14 lg:py-16">
         <Container>
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-wash text-forest text-xs font-bold uppercase tracking-wider">
               Circular Product Architecture
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#50644C] leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-forest leading-tight">
               Eco-Conscious Product Categories
             </h1>
-            <p className="text-base sm:text-lg text-[#5A6659] leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
               Every item in our collection is precision-molded from agricultural byproducts, bamboo
               fibers, and rice husk composites. Discover purpose-built collections for homes, hospitality,
               and enterprise catering.
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Button asChild className="bg-[#50644C] hover:bg-[#243021] text-white rounded-none px-6 cursor-pointer">
+              <Button asChild className="bg-forest hover:bg-forest-dark text-white rounded-md px-6 cursor-pointer">
                 <Link href="/products">
                   View All Products {totalProductCount > 0 ? `(${totalProductCount} items)` : ""}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="border-[#50644C]/20 text-[#50644C] hover:bg-[#EDF2EB] rounded-none px-6 cursor-pointer">
+              <Button asChild variant="outline" className="border-forest/20 text-forest hover:bg-sage-wash rounded-md px-6 cursor-pointer">
                 <Link href="/impact">
                   Explore Material Science
                 </Link>
@@ -67,15 +67,15 @@ export default async function CategoriesPage() {
 
       {/* Quick Category Quick-Select Pills */}
       {categories.length > 0 && (
-        <section className="py-6 border-b border-[#DFD5C6] bg-[#FAF9F5]/70 sticky top-18 z-30 backdrop-blur-md">
+        <section className="py-6 border-b border-line bg-cream/70 sticky top-18 z-30 backdrop-blur-md">
           <Container>
             <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#50644C] shrink-0 mr-2 flex items-center gap-1">
+              <span className="text-xs font-bold uppercase tracking-wider text-forest shrink-0 mr-2 flex items-center gap-1">
                 <Layers className="w-3.5 h-3.5" /> Filter by:
               </span>
               <Link
                 href="/products"
-                className="shrink-0 px-3.5 py-1.5 rounded-none text-xs font-semibold bg-white border border-[#DFD5C6] text-[#5A6659] hover:text-[#50644C] hover:border-[#50644C] hover:bg-[#EDF2EB] transition-all"
+                className="shrink-0 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-white border border-line text-muted-foreground hover:text-forest hover:border-forest hover:bg-sage-wash transition-all"
               >
                 All Products
               </Link>
@@ -83,7 +83,7 @@ export default async function CategoriesPage() {
                 <Link
                   key={cat.id}
                   href={`/products?category=${encodeURIComponent(cat.name)}`}
-                  className="shrink-0 px-3.5 py-1.5 rounded-none text-xs font-semibold bg-white border border-[#DFD5C6] text-[#5A6659] hover:text-[#50644C] hover:border-[#50644C] hover:bg-[#EDF2EB] transition-all"
+                  className="shrink-0 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-white border border-line text-muted-foreground hover:text-forest hover:border-forest hover:bg-sage-wash transition-all"
                 >
                   {cat.name}
                 </Link>
@@ -96,7 +96,7 @@ export default async function CategoriesPage() {
       {/* Main Categories Grid */}
       <Container className="py-14 space-y-12">
         {categories.length === 0 ? (
-          <div className="rounded-none border border-dashed border-[#DFD5C6] bg-white p-12 text-center">
+          <div className="rounded-md border border-dashed border-line bg-white p-12 text-center">
             <FolderTree className="mx-auto h-10 w-10 text-muted-foreground/50 mb-3" />
             <p className="text-sm font-medium text-foreground">No categories found</p>
             <p className="text-xs text-muted-foreground mt-1">
@@ -121,20 +121,20 @@ export default async function CategoriesPage() {
               return (
                 <div
                   key={cat.id}
-                  className="group flex flex-col bg-white border border-[#DFD5C6] rounded-none overflow-hidden shadow-xs hover:shadow-xl hover:border-[#50644C]/40 transition-all duration-300"
+                  className="group flex flex-col bg-white border border-line rounded-md overflow-hidden shadow-xs hover:shadow-xl hover:border-forest/40 transition-all duration-300"
                 >
                   {/* Image Container */}
-                  <div className="relative aspect-[16/11] overflow-hidden bg-[#F5EFE6]">
+                  <div className="relative aspect-[16/11] overflow-hidden bg-sand">
                     <ProductImage
                       images={sampleImages}
                       alt={cat.name}
                       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
-                    <span className="absolute top-3.5 left-3.5 bg-[#FAF9F5]/95 backdrop-blur-xs text-[#50644C] text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-none border border-[#DFD5C6] shadow-xs">
+                    <span className="absolute top-3.5 left-3.5 bg-cream/95 backdrop-blur-xs text-forest text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-line shadow-xs">
                       {sampleMaterial}
                     </span>
                     {matchingCount > 0 && (
-                      <span className="absolute bottom-3.5 right-3.5 bg-black/60 backdrop-blur-xs text-white text-[11px] font-medium px-2.5 py-0.5 rounded-none">
+                      <span className="absolute bottom-3.5 right-3.5 bg-black/60 backdrop-blur-xs text-white text-[11px] font-medium px-2.5 py-0.5 rounded-md">
                         {matchingCount} {matchingCount === 1 ? "item" : "items"}
                       </span>
                     )}
@@ -143,24 +143,24 @@ export default async function CategoriesPage() {
                   {/* Content */}
                   <div className="p-7 flex-1 flex flex-col justify-between space-y-5">
                     <div className="space-y-2.5">
-                      <h2 className="font-display text-2xl text-[#50644C] font-bold group-hover:text-[#243021] transition-colors">
+                      <h2 className="font-display text-2xl text-forest font-bold group-hover:text-forest-dark transition-colors">
                         {cat.name}
                       </h2>
-                      <p className="text-xs sm:text-sm text-[#5A6659] leading-relaxed">
+                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                         {matchingCount > 0
                           ? `Explore our genuine range of ${matchingCount} sustainable items crafted from natural agricultural biocomposites.`
                           : `Browse sustainable, 100% circular products in ${cat.name}.`}
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-[#DFD5C6]/80 flex items-center justify-between">
+                    <div className="pt-4 border-t border-line/80 flex items-center justify-between">
                       <span className="text-xs font-medium text-emerald-800 flex items-center gap-1.5">
                         <Leaf className="w-3.5 h-3.5 text-emerald-600" />
                         100% Plastic-Free
                       </span>
                       <Link
                         href={`/products?category=${encodeURIComponent(cat.name)}`}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#50644C] hover:text-[#243021] group/link cursor-pointer"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-forest hover:text-forest-dark group/link cursor-pointer"
                       >
                         <span>Explore Collection</span>
                         <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-1" />
@@ -174,7 +174,7 @@ export default async function CategoriesPage() {
         )}
 
         {/* Quality & Material Assurance Box */}
-        <div className="bg-[#243021] text-white rounded-none p-8 sm:p-12 shadow-xl relative overflow-hidden">
+        <div className="bg-forest-dark text-white rounded-md p-8 sm:p-12 shadow-xl relative overflow-hidden">
           <div className="relative z-10 max-w-2xl space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-emerald-300 flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4" /> Certified Safe &amp; Tested

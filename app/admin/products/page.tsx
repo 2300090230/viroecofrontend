@@ -118,7 +118,7 @@ export default function AdminProductsPage() {
             setSelectedCategory(e.target.value);
             setPage(0);
           }}
-          className="rounded-none border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-hidden focus:ring-2 focus:ring-ring"
+          className="rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-hidden focus:ring-2 focus:ring-ring"
         >
           <option value="">All Categories ({allList.length})</option>
           {categoriesList.map((cat) => (
@@ -157,7 +157,7 @@ export default function AdminProductsPage() {
                           <ProductImage
                             images={p.productImages}
                             alt={p.pname}
-                            className="h-12 w-12 shrink-0 border border-border object-cover rounded-none"
+                            className="h-12 w-12 shrink-0 border border-border object-cover rounded-md"
                             sizes="48px"
                           />
                           <div>
@@ -184,7 +184,7 @@ export default function AdminProductsPage() {
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         {p.quantity > 0 ? (
-                          <span className="tabular-nums text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-none font-medium">
+                          <span className="tabular-nums text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md font-medium">
                             {p.quantity} in stock
                           </span>
                         ) : (

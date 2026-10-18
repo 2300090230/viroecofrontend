@@ -3,43 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { normalizeImageUrls } from "@/lib/images";
 
-/**
- * Normalizes input image data into an array of clean URL strings.
- * Handles arrays, single strings, and semicolon/comma-separated strings.
- */
-export function normalizeImageUrls(images: unknown): string[] {
-  if (!images) return [];
-  const cleanUrl = (url: unknown) => {
-    if (typeof url !== "string") return "";
-    let trimmed = url.trim();
-    if (trimmed.includes("viroeco.eco") || trimmed.includes("Viroeco.eco")) {
-      trimmed = trimmed.replace(/https?:\/\/(www\.)?viroeco\.eco/gi, "https://eha.eco");
-    }
-    return trimmed;
-  };
-
-  const isValidUrl = (url: string) =>
-    url.length > 0 &&
-    (url.startsWith("http://") ||
-      url.startsWith("https://") ||
-      url.startsWith("/") ||
-      url.startsWith("data:image/"));
-
-  if (Array.isArray(images)) {
-    return images
-      .flatMap((item) => (typeof item === "string" ? item.split(/[;,]/) : []))
-      .map(cleanUrl)
-      .filter(isValidUrl);
-  }
-  if (typeof images === "string") {
-    return images
-      .split(/[;,]/)
-      .map(cleanUrl)
-      .filter(isValidUrl);
-  }
-  return [];
-}
+export { normalizeImageUrls };
 
 /**
  * Renders the product's primary image immediately with smooth fallback
@@ -66,23 +32,23 @@ export function ProductImage({
     return (
       <div
         className={cn(
-          "relative flex items-center justify-center overflow-hidden bg-[#F5EFE6]",
+          "relative flex items-center justify-center overflow-hidden bg-sand",
           className,
         )}
         aria-label={`${alt} — image coming soon`}
         role="img"
       >
         <div className="grain absolute inset-0 opacity-20" />
-        <div className="relative flex flex-col items-center gap-1.5 text-[#50644C]/60 p-2 text-center select-none">
-          <LeafMark className="h-7 w-7 text-[#50644C]/50" />
-          <span className="font-display text-xs font-semibold tracking-wide text-[#50644C]/70">Viroeco</span>
+        <div className="relative flex flex-col items-center gap-1.5 text-forest/60 p-2 text-center select-none">
+          <LeafMark className="h-7 w-7 text-forest/50" />
+          <span className="font-display text-xs font-semibold tracking-wide text-forest/70">VIRO eco</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={cn("relative overflow-hidden bg-[#F5EFE6]", className)}>
+    <div className={cn("relative overflow-hidden bg-sand", className)}>
       <Image
         src={src}
         alt={alt}

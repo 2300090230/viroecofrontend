@@ -3,22 +3,55 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { ProductImage, normalizeImageUrls } from "@/components/product-image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ProductImage } from "@/components/product-image";
+import { normalizeImageUrls } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 export function ProductGallery({ images, alt }: { images: string[] | string | undefined | null; alt: string }) {
   const [active, setActive] = useState(0);
-  const [erroredIndices, setErroredIndices] = useState<Record<number, boolean>>({});
+  const [errored, setErrored] = useState<Record<number, boolean>>({});
+  const valid = normalizeImageUrls(images);
 
-  const validImages = normalizeImageUrls(images);
-
-  if (validImages.length === 0 || erroredIndices[active]) {
-    return <ProductImage images={[]} alt={alt} className="aspect-square w-full border border-[#DFD5C6] rounded-none" priority />;
+  if (valid.length === 0 || errored[active]) {
+    return <ProductImage images={[]} alt={alt} className="aspect-square w-full rounded-xl border border-line" priority />;
   }
 
+  const go = (dir: 1 | -1) => setActive((i) => (i + dir + valid.length) % valid.length);
+
   return (
-    <div className="flex flex-col gap-3">
-      <div className="relative aspect-square w-full overflow-hidden border border-[#DFD5C6] rounded-none bg-[#F5EFE6]">
+    <div className="flex flex-col-reverse gap-3 sm:flex-row">
+      {valid.length > 1 && (
+        <div className="scrollbar-none flex gap-2.5 overflow-x-auto sm:max-h-[560px] sm:w-20 sm:flex-col sm:overflow-y-auto">
+          {valid.map((src, i) => (
+            <button
+              key={`${src}-${i}`}
+              type="button"
+              onClick={() => setActive(i)}
+              aria-label={`View image ${i + 1}`}
+              aria-current={i === active}
+              className={cn(
+                "relative aspect-square w-16 shrink-0 overflow-hidden rounded-lg border-2 bg-sand transition-all sm:w-20",
+                i === active ? "border-forest" : "border-transparent opacity-80 hover:opacity-100 hover:border-line-strong",
+              )}
+            >
+              {!errored[i] && (
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="80px"
+                  unoptimized
+                  className="object-cover"
+                  onError={() => setErrored((p) => ({ ...p, [i]: true }))}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="group relative aspect-square w-full flex-1 overflow-hidden rounded-xl border border-line bg-sand">
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
@@ -29,50 +62,38 @@ export function ProductGallery({ images, alt }: { images: string[] | string | un
             className="absolute inset-0"
           >
             <Image
-              src={validImages[active]}
+              src={valid[active]}
               alt={alt}
               fill
-              sizes="(max-width:768px) 100vw, 560px"
+              sizes="(max-width:1024px) 100vw, 560px"
               priority
               unoptimized
               className="object-cover"
-              onError={() => setErroredIndices((prev) => ({ ...prev, [active]: true }))}
+              onError={() => setErrored((p) => ({ ...p, [active]: true }))}
             />
           </motion.div>
         </AnimatePresence>
-      </div>
-
-      {validImages.length > 1 && (
-        <div className="flex flex-wrap gap-2.5">
-          {validImages.map((src, i) => (
+        {valid.length > 1 && (
+          <>
             <button
-              key={`${src}-${i}`}
-              onClick={() => setActive(i)}
-              aria-label={`View image ${i + 1}`}
-              className={cn(
-                "relative h-16 w-16 cursor-pointer overflow-hidden rounded-none border transition-all bg-[#F5EFE6]",
-                i === active ? "border-[#50644C] ring-2 ring-[#50644C]/20" : "border-[#DFD5C6] hover:border-[#50644C]/50",
-              )}
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Previous image"
+              className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink opacity-0 shadow-md transition-opacity group-hover:opacity-100 focus:opacity-100"
             >
-              {!erroredIndices[i] ? (
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  sizes="64px"
-                  unoptimized
-                  className="object-cover"
-                  onError={() => setErroredIndices((prev) => ({ ...prev, [i]: true }))}
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-[10px] font-semibold text-[#50644C]/60">
-                  Viroeco
-                </div>
-              )}
+              <ChevronLeft className="h-5 w-5" />
             </button>
-          ))}
-        </div>
-      )}
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Next image"
+              className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink opacity-0 shadow-md transition-opacity group-hover:opacity-100 focus:opacity-100"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }

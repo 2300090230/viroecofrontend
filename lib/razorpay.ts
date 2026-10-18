@@ -18,14 +18,18 @@ export interface RazorpayOptions {
 }
 
 export interface RazorpayResult {
-  razorpay_order_id?: string;
+  razorpay_order_id: string;
   razorpay_payment_id: string;
-  razorpay_signature?: string;
+  razorpay_signature: string;
+}
+
+export interface RazorpayFailure {
+  error?: { description?: string; reason?: string };
 }
 
 export interface RazorpayInstance {
   open: () => void;
-  on: (event: string, handler: (response: any) => void) => void;
+  on: (event: "payment.failed", handler: (response: RazorpayFailure) => void) => void;
   close?: () => void;
 }
 

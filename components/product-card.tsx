@@ -1,80 +1,84 @@
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 import { ProductImage } from "@/components/product-image";
 import { AddToCartButton } from "@/components/add-to-cart-button";
-import { Badge } from "@/components/ui/badge";
 import { formatINR, discountPct } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import type { Product } from "@/lib/types";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, className }: { product: Product; className?: string }) {
   const off = discountPct(product.price, product.originalPrice);
+  const href = `/products/${product.productId}`;
+  const meta = [product.size, product.packSize && `Pack of ${product.packSize}`].filter(Boolean).join(" · ");
 
   return (
-    <div className="group relative flex flex-col rounded-none border border-[#DFD5C6] bg-white overflow-hidden shadow-xs hover:shadow-md hover:border-[#50644C]/40 transition-all duration-300">
-      <Link
-        href={`/products/${product.productId}`}
-        className="relative block aspect-[4/3] sm:aspect-square overflow-hidden bg-[#F5EFE6]"
-        aria-label={product.pname}
-      >
+    <article
+      className={cn(
+        "group flex h-full flex-col overflow-hidden rounded-lg border border-line bg-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-forest/25 hover:shadow-card-hover",
+        className,
+      )}
+    >
+      <Link href={href} className="relative block aspect-square overflow-hidden bg-sand" aria-label={product.pname}>
         <ProductImage
           images={product.productImages}
           alt={product.pname}
-          className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-105"
+          className="h-full w-full transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
-        {off > 0 && (
-          <span className="absolute left-2 sm:left-3 top-2 sm:top-3 bg-[#50644C] text-white px-1.5 sm:px-2.5 py-0.5 text-[9px] sm:text-[11px] font-semibold rounded-none shadow-xs">
-            −{off}%
-          </span>
-        )}
-        {product.sustainabilityTag ? (
-          <span className="absolute right-2 sm:right-3 top-2 sm:top-3 bg-[#EDF2EB]/95 backdrop-blur-xs text-[#50644C] border border-[#50644C]/10 px-1.5 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider rounded-none shadow-xs">
-            {product.sustainabilityTag}
-          </span>
-        ) : (
-          <span className="absolute right-2 sm:right-3 top-2 sm:top-3 bg-[#EDF2EB]/95 backdrop-blur-xs text-[#50644C] border border-[#50644C]/10 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider rounded-none shadow-xs flex items-center">
-            <span>Zero Plastic</span>
+        <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
+          {off > 0 && (
+            <span className="rounded-full bg-terra-deep px-2.5 py-1 text-[11px] font-semibold text-white">
+              {off}% off
+            </span>
+          )}
+          {product.sustainabilityTag && (
+            <span className="rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-medium text-forest shadow-xs">
+              {product.sustainabilityTag}
+            </span>
+          )}
+        </div>
+        {!product.isAvailable && (
+          <span className="absolute inset-x-0 bottom-0 bg-ink/75 py-1.5 text-center text-xs font-medium text-white">
+            Out of stock
           </span>
         )}
       </Link>
 
-      <div className="flex flex-1 flex-col p-3 sm:p-5 justify-between space-y-2 sm:space-y-3">
-        <div className="space-y-1">
-          <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-wider text-[#5A6659] font-medium">
-            <span className="truncate max-w-[100px] sm:max-w-none">{product.subCategory || product.category || "Eco Tableware"}</span>
-            {product.packSize && <span className="hidden sm:inline">Pack: {product.packSize}</span>}
-          </div>
-          <Link href={`/products/${product.productId}`} className="cursor-pointer block">
-            <h3 className="font-display text-sm sm:text-base font-semibold text-[#17231C] group-hover:text-[#50644C] transition-colors line-clamp-1">
+      <div className="flex flex-1 flex-col gap-3 p-4">
+        <div className="flex-1 space-y-1">
+          <p className="truncate text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            {product.subCategory || product.category}
+          </p>
+          <Link href={href}>
+            <h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-semibold leading-snug text-ink transition-colors group-hover:text-forest">
               {product.pname}
             </h3>
           </Link>
-          {product.material && (
-            <p className="text-[11px] sm:text-xs text-[#5A6659] line-clamp-1">
-              {product.material}
-            </p>
+          {meta && <p className="truncate text-xs text-muted-foreground">{meta}</p>}
+        </div>
+
+        <div className="flex items-baseline gap-2">
+          <span className="text-lg font-bold text-ink">{formatINR(product.price)}</span>
+          {off > 0 && (
+            <span className="text-sm text-muted-foreground line-through">{formatINR(product.originalPrice)}</span>
           )}
         </div>
 
-        <div className="pt-2 border-t border-[#DFD5C6]/60 flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 sm:gap-2">
-          <div className="flex items-baseline gap-1 sm:gap-1.5">
-            <span className="text-sm sm:text-base font-bold text-[#50644C]">{formatINR(product.price)}</span>
-            {off > 0 && (
-              <span className="text-[10px] sm:text-xs text-[#5A6659] line-through">
-                {formatINR(product.originalPrice)}
-              </span>
-            )}
-          </div>
-
-          <div>
-            {product.isAvailable ? (
-              <AddToCartButton productId={product.productId} size="sm" className="bg-[#50644C] hover:bg-[#243021] text-white rounded-none px-2 sm:px-3 py-1 text-[11px] sm:text-xs cursor-pointer" />
-            ) : (
-              <Badge variant="outline" className="text-[10px] sm:text-xs text-[#5A6659] border-[#DFD5C6] px-1.5 py-0.5">
-                Out
-              </Badge>
-            )}
-          </div>
-        </div>
+        {product.isAvailable ? (
+          <AddToCartButton
+            productId={product.productId}
+            className="w-full gap-2"
+            label="Add to Cart"
+            icon={<ShoppingCart className="h-4 w-4" aria-hidden />}
+          />
+        ) : (
+          <Link
+            href={href}
+            className="flex h-10 w-full items-center justify-center rounded-md border border-line text-sm font-medium text-muted-foreground hover:border-forest/40 hover:text-forest"
+          >
+            View details
+          </Link>
+        )}
       </div>
-    </div>
+    </article>
   );
 }

@@ -21,10 +21,10 @@ interface AdminBreadcrumbProps {
  */
 export function AdminBreadcrumb({ items }: AdminBreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-[#5A6659] mb-6">
+    <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-muted-foreground mb-6">
       <Link
         href="/admin"
-        className="font-medium hover:text-[#50644C] transition-colors"
+        className="font-medium hover:text-forest transition-colors"
       >
         Admin
       </Link>
@@ -32,13 +32,13 @@ export function AdminBreadcrumb({ items }: AdminBreadcrumbProps) {
         const isLast = idx === items.length - 1;
         return (
           <span key={idx} className="flex items-center gap-1.5">
-            <ChevronRight className="w-3.5 h-3.5 text-[#C5C3BC] shrink-0" />
+            <ChevronRight className="w-3.5 h-3.5 text-line-strong shrink-0" />
             {isLast || !item.href ? (
-              <span className={isLast ? "text-[#17231C] font-semibold" : "font-medium hover:text-[#50644C]"}>
+              <span className={isLast ? "text-ink font-semibold" : "font-medium hover:text-forest"}>
                 {item.label}
               </span>
             ) : (
-              <Link href={item.href} className="font-medium hover:text-[#50644C] transition-colors">
+              <Link href={item.href} className="font-medium hover:text-forest transition-colors">
                 {item.label}
               </Link>
             )}

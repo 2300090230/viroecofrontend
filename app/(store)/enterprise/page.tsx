@@ -51,28 +51,28 @@ const SLA_PILLARS = [
 
 export default function EnterpriseSolutionsPage() {
   return (
-    <div className="pt-8 pb-20 bg-[#FAF9F5] min-h-screen text-[#17231C]">
+    <div className="pb-20 bg-cream min-h-screen text-ink">
       {/* Enterprise Hero */}
-      <section className="border-b border-[#DFD5C6] bg-white py-14 lg:py-16">
+      <section className="border-b border-line bg-gradient-to-r from-sand via-cream to-sage-wash py-14 lg:py-16">
         <Container>
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-[#EDF2EB] text-[#50644C] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-wash text-forest text-xs font-bold uppercase tracking-wider">
               B2B Enterprise &amp; Institutional Supply
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#50644C] leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-forest leading-tight">
               Enterprise Foodservice Solutions Engineered for Scale
             </h1>
-            <p className="text-base sm:text-lg text-[#5A6659] leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
               Serving Fortune 500 cafeterias, luxury resort chains, airline catering networks, and nationwide cloud kitchens with zero-failure, 100% circular tableware.
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Button asChild className="bg-[#50644C] hover:bg-[#243021] text-white rounded-none px-6 cursor-pointer">
+              <Button asChild className="bg-forest hover:bg-forest-dark text-white rounded-md px-6 cursor-pointer">
                 <Link href="/contact">
                   Request Enterprise Sample Kit
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="border-[#50644C]/20 text-[#50644C] hover:bg-[#EDF2EB] rounded-none px-6 cursor-pointer">
+              <Button asChild variant="outline" className="border-forest/20 text-forest hover:bg-sage-wash rounded-md px-6 cursor-pointer">
                 <Link href="/products">
                   Browse Catalog
                 </Link>
@@ -88,14 +88,14 @@ export default function EnterpriseSolutionsPage() {
       {/* Enterprise SLA Guarantees */}
       <Container className="py-16 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#50644C] font-bold inline-flex items-center gap-1.5">
+          <span className="text-xs uppercase tracking-[0.25em] text-forest font-bold inline-flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             Institutional Reliability
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#50644C]">
+          <h2 className="font-display text-3xl sm:text-4xl font-bold text-forest">
             Why Enterprise Procurement Teams Partner With ViroEco
           </h2>
-          <p className="text-xs sm:text-sm text-[#5A6659]">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             We solve the real challenges of sustainable transitions: consistency, volume availability, temperature resilience, and pricing predictability.
           </p>
         </div>
@@ -106,16 +106,16 @@ export default function EnterpriseSolutionsPage() {
             return (
               <div
                 key={p.title}
-                className="bg-white border border-[#DFD5C6] rounded-none p-6 space-y-3 shadow-xs hover:border-[#50644C]/40 hover:shadow-md transition-all flex flex-col justify-between"
+                className="bg-white border border-line rounded-md p-6 space-y-3 shadow-xs hover:border-forest/40 hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-none bg-[#EDF2EB] text-[#50644C] flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-[#50644C]" />
+                  <div className="w-10 h-10 rounded-md bg-sage-wash text-forest flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-forest" />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-[#50644C]">
+                  <h3 className="font-display text-lg font-bold text-forest">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-[#5A6659] leading-relaxed">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {p.description}
                   </p>
                 </div>

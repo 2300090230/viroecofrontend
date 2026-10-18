@@ -14,6 +14,7 @@ export function AddToCartButton({
   className,
   label = "Add to cart",
   size = "default",
+  icon,
 }: {
   productId: number;
   quantity?: number;
@@ -21,6 +22,7 @@ export function AddToCartButton({
   className?: string;
   label?: string;
   size?: "sm" | "default" | "lg";
+  icon?: React.ReactNode;
 }) {
   const { session, ready } = useAuth();
   const { add } = useCart();
@@ -46,6 +48,7 @@ export function AddToCartButton({
       disabled={disabled || add.isPending || !ready}
       className={cn("cursor-pointer", className)}
     >
+      {!add.isPending && icon}
       {add.isPending ? "Adding…" : label}
     </Button>
   );

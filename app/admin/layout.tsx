@@ -13,33 +13,33 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const { isCollapsed, toggleSidebar } = useAdminSidebar();
 
   return (
-    <div className="flex min-h-screen bg-[#FAF9F5] text-[#17231C]">
+    <div className="flex min-h-screen bg-cream text-ink">
       {/* Collapsible Sidebar */}
       <AdminSidebar />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
         {/* Top Executive Header */}
-        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-[#DFD5C6] px-4 sm:px-6 lg:px-10 py-3.5 flex items-center justify-between gap-3">
+        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-line px-4 sm:px-6 lg:px-10 py-3.5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             {/* Sidebar Open/Close Toggle Button */}
             <button
               onClick={toggleSidebar}
-              className="p-2 rounded-none border border-[#DFD5C6] hover:bg-[#FAF9F5] text-[#50644C] transition-colors cursor-pointer flex items-center justify-center shrink-0"
+              className="p-2 rounded-md border border-line hover:bg-cream text-forest transition-colors cursor-pointer flex items-center justify-center shrink-0"
               title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
               aria-label="Toggle sidebar"
             >
               <PanelLeft className="w-4 h-4" />
             </button>
 
-            <div className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-[#FAF9F5] border border-[#DFD5C6] text-[11px] text-[#5A6659] font-medium">
+            <div className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-cream border border-line text-[11px] text-muted-foreground font-medium">
               <span>Viroeco Biocomposites Active</span>
             </div>
           </div>
 
           {/* Quick Action Controls */}
           <div className="flex items-center gap-2">
-            <Button asChild variant="outline" size="sm" className="border-[#DFD5C6] hover:bg-[#FAF9F5] text-xs font-medium rounded-none">
+            <Button asChild variant="outline" size="sm" className="border-line hover:bg-cream text-xs font-medium rounded-md">
               <Link href="/" target="_blank" className="flex items-center gap-1.5">
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span>View Store</span>

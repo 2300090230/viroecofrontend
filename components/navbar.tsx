@@ -1,9 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Menu, ShoppingBag, User } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  ChevronDown,
+  CircleHelp,
+  Menu,
+  Search,
+  ShoppingCart,
+  Truck,
+  User,
+} from "lucide-react";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,190 +26,321 @@ import {
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/providers/auth-provider";
 import { useCart } from "@/hooks/use-cart";
+import { getCategories } from "@/lib/endpoints";
 import { cn } from "@/lib/utils";
 import { QuoteDialog } from "@/components/quote-dialog";
 import { Logo } from "@/components/logo";
 
-const LINKS = [
-  { href: "/products", label: "Our Products" },
-  { href: "/categories", label: "Categories" },
-  { href: "/calculator", label: "Savings Calculator" },
-  { href: "/enterprise", label: "Enterprise Solutions" },
-  { href: "/about", label: "Why Us" },
+type NavLink = { href: string; label: string };
+
+const NAV_LINKS: NavLink[] = [
+  { href: "/", label: "Home" },
+  { href: "/products", label: "Shop" },
+  // "Categories" dropdown is rendered between these two groups
+  { href: "/impact", label: "Sustainability" },
+  { href: "/about", label: "About Us" },
+  { href: "/enterprise", label: "Bulk & Corporate" },
   { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
 ];
+
+function isActive(pathname: string | null, href: string) {
+  if (!pathname) return false;
+  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function useCategories() {
+  return useQuery({
+    queryKey: ["nav-categories"],
+    queryFn: async () => {
+      const cats = await getCategories();
+      return [...cats].sort((a, b) => a.name.localeCompare(b.name));
+    },
+    staleTime: 5 * 60_000,
+  });
+}
 
 export function Navbar() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const { session, isAdmin, signOut } = useAuth();
   const { count } = useCart();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const categories = useCategories();
 
   return (
     <>
-      <header
-        className={cn(
-          "sticky top-0 z-40 transition-all duration-300 backdrop-blur-xl",
-          scrolled
-            ? "border-b border-[#50644C]/15 bg-[#FAF9F5]/80 shadow-[0_4px_30px_rgba(36,48,33,0.05)]"
-            : "border-b border-[#50644C]/10 bg-[#FAF9F5]/90",
-        )}
-      >
-        <Container className="flex h-18 items-center justify-between gap-4">
-          {/* Brand Logo */}
-          <Logo size="md" imageClassName="h-10 w-auto" />
+      {/* Announcement bar — scrolls away; the main header below stays pinned */}
+      <div className="bg-forest-dark text-white/90 no-print">
+        <Container className="flex h-9 items-center justify-between gap-4 text-xs">
+          <p className="truncate">Sustainable products for a better everyday</p>
+          <div className="hidden sm:flex items-center divide-x divide-white/25">
+            <Link href="/orders" className="flex items-center gap-1.5 px-3 hover:text-white transition-colors">
+              <Truck className="h-3.5 w-3.5" aria-hidden /> Track Order
+            </Link>
+            <Link href="/faq" className="flex items-center gap-1.5 pl-3 hover:text-white transition-colors">
+              <CircleHelp className="h-3.5 w-3.5" aria-hidden /> Help
+            </Link>
+          </div>
+        </Container>
+      </div>
 
-          {/* Glassy Nav Links Bar */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 p-1 bg-white/40 backdrop-blur-md border border-[#50644C]/12 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_2px_8px_rgba(0,0,0,0.02)]">
-            {LINKS.map((l) => {
-              const isActive = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
-              return (
-                <Link
-                  key={l.label}
-                  href={l.href}
-                  className={cn(
-                    "cursor-pointer px-3 py-1.5 text-sm font-medium transition-all duration-200 rounded-none border",
-                    isActive
-                      ? "text-[#243021] bg-white/95 backdrop-blur-md font-semibold border-[#50644C]/35 shadow-[0_2px_10px_rgba(80,100,76,0.12),inset_0_1px_0_rgba(255,255,255,1)]"
-                      : "text-[#1A241C]/80 border-transparent hover:text-[#50644C] hover:bg-white/80 hover:backdrop-blur-md hover:border-[#50644C]/25 hover:shadow-[0_4px_12px_rgba(80,100,76,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
-                  )}
-                >
-                  {l.label}
-                </Link>
-              );
-            })}
-          </nav>
+      <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85 no-print">
+        <Container className="flex h-[72px] items-center gap-4 lg:gap-8">
+          {/* Logo keeps its fixed slot and aspect ratio at every breakpoint */}
+          <Logo size="lg" className="shrink-0" imageClassName="h-10 sm:h-11 w-auto" />
 
-          {/* Right Action Icons & CTA */}
-          <div className="flex items-center gap-2">
+          <HeaderSearch className="hidden md:flex flex-1 max-w-xl mx-auto" />
+
+          <div className="ml-auto flex items-center gap-1 sm:gap-3">
             <AccountMenu session={session} isAdmin={isAdmin} signOut={signOut} />
 
-            <Button
-              asChild
-              variant="ghost"
-              size="icon"
-              className="relative cursor-pointer bg-white/50 backdrop-blur-md border border-[#50644C]/15 hover:bg-white/90 hover:border-[#50644C]/30 hover:shadow-[0_4px_12px_rgba(80,100,76,0.08)] text-[#50644C] transition-all duration-200"
+            <Link
+              href="/cart"
+              aria-label={`Cart, ${count} items`}
+              className="relative flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-ink hover:text-forest transition-colors"
             >
-              <Link href="/cart" aria-label={`Cart, ${count} items`}>
-                <ShoppingBag className="h-5 w-5" />
-                {count > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-none bg-[#50644C] px-1 text-[10px] font-semibold text-white shadow-xs">
-                    {count}
-                  </span>
-                )}
-              </Link>
-            </Button>
-
-            {/* Mobile Sheet */}
-            <Sheet open={open} onOpenChange={setOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="cursor-pointer lg:hidden bg-white/50 backdrop-blur-md border border-[#50644C]/15 hover:bg-white/90 text-[#50644C] transition-all duration-200"
-                  aria-label="Menu"
+              <span className="relative">
+                <ShoppingCart className="h-5 w-5" />
+                <span
+                  className={cn(
+                    "absolute -right-2 -top-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-semibold text-white",
+                    count > 0 ? "bg-forest" : "bg-olive/70",
+                  )}
                 >
-                  <Menu className="h-5 w-5 text-[#50644C]" />
+                  {count}
+                </span>
+              </span>
+              <span className="hidden sm:inline">Cart</span>
+            </Link>
+
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden text-ink" aria-label="Open menu">
+                  <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-[#FAF9F5]/98 backdrop-blur-2xl border-l border-[#DFD5C6] w-[85vw] max-w-sm max-h-[100dvh] overflow-y-auto p-4 sm:p-6 flex flex-col justify-between">
-                <div>
-                  <SheetTitle className="px-2 pt-2">
-                    <Logo size="md" imageClassName="h-9 w-auto" />
-                  </SheetTitle>
-                  <nav className="mt-6 flex flex-col space-y-1">
-                    {session && (
-                      <div className="mb-3 pb-3 border-b border-[#DFD5C6] px-2">
-                        <p className="text-[10px] uppercase tracking-wider text-[#5A6659] font-bold">Logged In Account</p>
-                        <p className="text-xs font-semibold text-[#17231C] truncate">{session.name || session.gmail}</p>
-                        <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                          {isAdmin ? (
-                            <Link
-                              href="/admin"
-                              onClick={() => setOpen(false)}
-                              className="font-semibold text-[#50644C] hover:underline"
-                            >
-                              Admin Dashboard →
-                            </Link>
-                          ) : (
-                            <>
-                              <Link
-                                href="/profile"
-                                onClick={() => setOpen(false)}
-                                className="font-semibold text-[#50644C] hover:underline"
-                              >
-                                My Profile
-                              </Link>
-                              <span className="text-[#5A6659]">•</span>
-                              <Link
-                                href="/orders"
-                                onClick={() => setOpen(false)}
-                                className="font-semibold text-[#50644C] hover:underline"
-                              >
-                                My Orders
-                              </Link>
-                              <span className="text-[#5A6659]">•</span>
-                              <Link
-                                href="/account"
-                                onClick={() => setOpen(false)}
-                                className="font-semibold text-[#50644C] hover:underline"
-                              >
-                                Addresses
-                              </Link>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    {LINKS.map((l) => {
-                      const isActive = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
-                      return (
-                        <Link
-                          key={l.label}
-                          href={l.href}
-                          onClick={() => setOpen(false)}
-                          className={cn(
-                            "cursor-pointer px-3.5 py-2.5 rounded-none text-sm font-medium transition-all duration-200 border",
-                            isActive
-                              ? "text-[#243021] bg-white/90 backdrop-blur-md font-semibold border-[#50644C]/30 shadow-xs"
-                              : "text-[#1A241C]/85 border-transparent hover:text-[#50644C] hover:bg-white/80 hover:backdrop-blur-md hover:border-[#50644C]/20 hover:shadow-xs"
-                          )}
-                        >
-                          {l.label}
-                        </Link>
-                      );
-                    })}
-                  </nav>
-                </div>
-
-                <div className="pt-4 mt-6 border-t border-[#DFD5C6] space-y-3">
-                  <Button
-                    onClick={() => {
-                      setOpen(false);
-                      setQuoteOpen(true);
-                    }}
-                    className="w-full bg-[#50644C] hover:bg-[#384935] text-white rounded-none py-2.5 cursor-pointer shadow-xs text-xs font-semibold"
-                  >
-                    Request Enterprise Sample Kit
-                  </Button>
-                </div>
+              <SheetContent side="right" className="w-[86vw] max-w-sm overflow-y-auto bg-white p-0">
+                <SheetTitle className="border-b border-line px-5 py-4">
+                  <Logo size="md" imageClassName="h-9 w-auto" />
+                </SheetTitle>
+                <MobileMenu
+                  pathname={pathname}
+                  categories={categories.data ?? []}
+                  session={session}
+                  isAdmin={isAdmin}
+                  signOut={signOut}
+                  close={() => setMenuOpen(false)}
+                  openQuote={() => {
+                    setMenuOpen(false);
+                    setQuoteOpen(true);
+                  }}
+                />
               </SheetContent>
             </Sheet>
           </div>
         </Container>
+
+        {/* Search on small screens */}
+        <Container className="pb-3 md:hidden">
+          <HeaderSearch />
+        </Container>
+
+        {/* Primary navigation */}
+        <nav aria-label="Primary" className="hidden lg:block border-t border-line">
+          <Container className="flex h-11 items-center justify-center gap-1 xl:gap-3">
+            {NAV_LINKS.slice(0, 2).map((l) => (
+              <NavItem key={l.href} link={l} active={isActive(pathname, l.href)} />
+            ))}
+            <CategoriesMenu categories={categories.data ?? []} active={pathname === "/categories"} />
+            {NAV_LINKS.slice(2).map((l) => (
+              <NavItem key={l.href} link={l} active={isActive(pathname, l.href)} />
+            ))}
+          </Container>
+        </nav>
       </header>
 
       <QuoteDialog open={quoteOpen} onOpenChange={setQuoteOpen} />
     </>
+  );
+}
+
+function NavItem({ link, active }: { link: NavLink; active: boolean }) {
+  return (
+    <Link
+      href={link.href}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "relative px-3 py-2.5 text-sm font-medium transition-colors",
+        active ? "text-forest" : "text-ink/85 hover:text-forest",
+        "after:absolute after:inset-x-3 after:-bottom-px after:h-0.5 after:rounded-full after:bg-forest after:transition-transform after:origin-left",
+        active ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100",
+      )}
+    >
+      {link.label}
+    </Link>
+  );
+}
+
+function CategoriesMenu({ categories, active }: { categories: { id: number; name: string }[]; active: boolean }) {
+  return (
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger
+        className={cn(
+          "flex items-center gap-1 px-3 py-2.5 text-sm font-medium outline-none transition-colors data-[state=open]:text-forest",
+          active ? "text-forest" : "text-ink/85 hover:text-forest",
+        )}
+      >
+        Categories <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="center" className="w-60 p-1.5">
+        {categories.length === 0 ? (
+          <p className="px-2 py-3 text-xs text-muted-foreground">Categories are loading…</p>
+        ) : (
+          categories.map((c) => (
+            <DropdownMenuItem key={c.id} asChild className="cursor-pointer">
+              <Link href={`/products?category=${encodeURIComponent(c.name)}`}>{c.name}</Link>
+            </DropdownMenuItem>
+          ))
+        )}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild className="cursor-pointer font-medium text-forest">
+          <Link href="/categories">View all categories</Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function HeaderSearch({ className }: { className?: string }) {
+  const router = useRouter();
+  const [value, setValue] = useState("");
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    const q = value.trim();
+    router.push(q ? `/products?query=${encodeURIComponent(q)}` : "/products");
+  };
+
+  return (
+    <form role="search" onSubmit={submit} className={cn("flex w-full", className)}>
+      <label htmlFor="site-search" className="sr-only">
+        Search products
+      </label>
+      <input
+        id="site-search"
+        type="search"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Search mugs, plates, planters, storage…"
+        className="h-11 w-full min-w-0 rounded-l-md border border-r-0 border-input bg-cream px-4 text-sm text-ink placeholder:text-muted-foreground outline-none focus:border-forest focus:bg-white focus:ring-2 focus:ring-forest/15"
+      />
+      <button
+        type="submit"
+        aria-label="Search"
+        className="flex h-11 w-12 shrink-0 items-center justify-center rounded-r-md bg-forest text-white hover:bg-forest-dark transition-colors"
+      >
+        <Search className="h-4.5 w-4.5" />
+      </button>
+    </form>
+  );
+}
+
+function MobileMenu({
+  pathname,
+  categories,
+  session,
+  isAdmin,
+  signOut,
+  close,
+  openQuote,
+}: {
+  pathname: string | null;
+  categories: { id: number; name: string }[];
+  session: ReturnType<typeof useAuth>["session"];
+  isAdmin: boolean;
+  signOut: () => void;
+  close: () => void;
+  openQuote: () => void;
+}) {
+  const [catsOpen, setCatsOpen] = useState(false);
+  const linkCls = (active: boolean) =>
+    cn(
+      "block rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
+      active ? "bg-sage-wash text-forest" : "text-ink hover:bg-sand",
+    );
+
+  return (
+    <div className="flex min-h-[calc(100dvh-73px)] flex-col justify-between">
+      <nav aria-label="Mobile" className="space-y-1 p-4">
+        {NAV_LINKS.slice(0, 2).map((l) => (
+          <Link key={l.href} href={l.href} onClick={close} className={linkCls(isActive(pathname, l.href))}>
+            {l.label}
+          </Link>
+        ))}
+        <button
+          type="button"
+          onClick={() => setCatsOpen((o) => !o)}
+          aria-expanded={catsOpen}
+          className={cn(linkCls(false), "flex w-full items-center justify-between")}
+        >
+          Categories
+          <ChevronDown className={cn("h-4 w-4 transition-transform", catsOpen && "rotate-180")} />
+        </button>
+        {catsOpen && (
+          <div className="ml-3 space-y-0.5 border-l border-line pl-3">
+            {categories.map((c) => (
+              <Link
+                key={c.id}
+                href={`/products?category=${encodeURIComponent(c.name)}`}
+                onClick={close}
+                className="block rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-sand hover:text-ink"
+              >
+                {c.name}
+              </Link>
+            ))}
+            <Link href="/categories" onClick={close} className="block px-3 py-2 text-sm font-medium text-forest">
+              View all categories
+            </Link>
+          </div>
+        )}
+        {NAV_LINKS.slice(2).map((l) => (
+          <Link key={l.href} href={l.href} onClick={close} className={linkCls(isActive(pathname, l.href))}>
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+
+      <div className="space-y-3 border-t border-line p-4">
+        {session ? (
+          <div className="space-y-1">
+            <p className="px-3 text-xs text-muted-foreground">Signed in as</p>
+            <p className="truncate px-3 text-sm font-semibold text-ink">{session.name || session.gmail}</p>
+            {isAdmin ? (
+              <Link href="/admin" onClick={close} className={linkCls(false)}>
+                Admin dashboard
+              </Link>
+            ) : (
+              <>
+                <Link href="/profile" onClick={close} className={linkCls(false)}>My profile</Link>
+                <Link href="/orders" onClick={close} className={linkCls(false)}>My orders</Link>
+                <Link href="/account" onClick={close} className={linkCls(false)}>Saved addresses</Link>
+              </>
+            )}
+            <button type="button" onClick={signOut} className={cn(linkCls(false), "w-full text-left text-destructive")}>
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <Button asChild className="w-full">
+            <Link href="/login" onClick={close}>Sign in</Link>
+          </Button>
+        )}
+        <Button variant="outline" className="w-full" onClick={openQuote}>
+          Request a bulk quote
+        </Button>
+      </div>
+    </div>
   );
 }
 
@@ -213,57 +353,52 @@ function AccountMenu({
   isAdmin: boolean;
   signOut: () => void;
 }) {
+  const label = (
+    <>
+      <User className="h-5 w-5" />
+      <span className="hidden sm:inline">Account</span>
+    </>
+  );
+  const cls =
+    "flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-ink hover:text-forest transition-colors outline-none";
+
   if (!session) {
     return (
-      <Button
-        asChild
-        variant="ghost"
-        size="icon"
-        className="cursor-pointer bg-white/50 backdrop-blur-md border border-[#50644C]/15 hover:bg-white/90 hover:border-[#50644C]/30 hover:shadow-[0_4px_12px_rgba(80,100,76,0.08)] text-[#50644C] transition-all duration-200"
-      >
-        <Link href="/login" aria-label="Sign in">
-          <User className="h-5 w-5" />
-        </Link>
-      </Button>
+      <Link href="/login" aria-label="Sign in" className={cls}>
+        {label}
+      </Link>
     );
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="cursor-pointer bg-white/50 backdrop-blur-md border border-[#50644C]/15 hover:bg-white/90 hover:border-[#50644C]/30 hover:shadow-[0_4px_12px_rgba(80,100,76,0.08)] text-[#50644C] transition-all duration-200"
-          aria-label="Account"
-        >
-          <User className="h-5 w-5" />
-        </Button>
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger className={cls} aria-label="Account">
+        {label}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 bg-white/95 backdrop-blur-xl border-[#DFD5C6] text-[#17231C] rounded-none shadow-[0_12px_36px_rgba(0,0,0,0.08)]">
-        <DropdownMenuLabel className="truncate font-semibold text-xs text-[#5A6659]">
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuLabel className="truncate text-xs font-normal text-muted-foreground">
           {session.name || session.gmail}
         </DropdownMenuLabel>
-        <DropdownMenuSeparator className="bg-[#DFD5C6]" />
+        <DropdownMenuSeparator />
         {isAdmin ? (
-          <DropdownMenuItem asChild className="cursor-pointer hover:bg-white/80 hover:backdrop-blur-md">
-            <Link href="/admin">Admin Dashboard</Link>
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <Link href="/admin">Admin dashboard</Link>
           </DropdownMenuItem>
         ) : (
           <>
-            <DropdownMenuItem asChild className="cursor-pointer hover:bg-white/80 hover:backdrop-blur-md font-medium">
-              <Link href="/profile">My Profile</Link>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href="/profile">My profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild className="cursor-pointer hover:bg-white/80 hover:backdrop-blur-md">
-              <Link href="/orders">My Orders</Link>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href="/orders">My orders</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild className="cursor-pointer hover:bg-white/80 hover:backdrop-blur-md">
-              <Link href="/account">Saved Addresses</Link>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href="/account">Saved addresses</Link>
             </DropdownMenuItem>
           </>
         )}
-        <DropdownMenuSeparator className="bg-[#DFD5C6]" />
-        <DropdownMenuItem onClick={signOut} className="cursor-pointer text-red-600 hover:bg-red-50/80">
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={signOut} className="cursor-pointer text-destructive focus:text-destructive">
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -44,7 +44,7 @@ import { formatINR } from "@/lib/format";
 import type { UpdateProfileRequest } from "@/lib/types";
 
 export default function ProfilePage() {
-  const { session, ready } = useAuth();
+  const { session, ready, setSession } = useAuth();
   const queryClient = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -97,10 +97,11 @@ export default function ProfilePage() {
     },
     onSuccess: (updated) => {
       queryClient.setQueryData(["userProfile", session?.gmail], updated);
+      if (session) setSession({ ...session, name: updated.name, contactno: updated.contactno, gender: updated.gender, dob: updated.dob });
       toast.success("Profile details updated successfully!");
     },
-    onError: (err: any) => {
-      toast.error(err?.message || "Failed to update profile.");
+    onError: (err: Error) => {
+      toast.error(err.message || "Failed to update profile.");
     },
   });
 
@@ -109,7 +110,8 @@ export default function ProfilePage() {
     mutationFn: async () => {
       if (!session?.gmail) throw new Error("Not authenticated");
       if (!currentPassword) throw new Error("Please enter your current password");
-      if (newPassword.length < 6) throw new Error("New password must be at least 6 characters");
+      if (!/^(?=.*[A-Za-z])(?=.*d).{8,72}$/.test(newPassword))
+        throw new Error("New password must be 8–72 characters and include a letter and a number");
       if (newPassword !== confirmPassword) throw new Error("Passwords do not match");
 
       return await changeUserPassword(session.gmail, {
@@ -123,8 +125,8 @@ export default function ProfilePage() {
       setNewPassword("");
       setConfirmPassword("");
     },
-    onError: (err: any) => {
-      toast.error(err?.message || "Failed to update password.");
+    onError: (err: Error) => {
+      toast.error(err.message || "Failed to update password.");
     },
   });
 
@@ -135,10 +137,11 @@ export default function ProfilePage() {
     setUploading(true);
     try {
       const newImageUrl = await updateProfileImage(session.gmail, file);
+      setSession({ ...session, imageUrl: newImageUrl });
       queryClient.invalidateQueries({ queryKey: ["userProfile", session.gmail] });
       toast.success("Profile photo updated successfully!");
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to upload photo.");
+    } catch (err) {
+      toast.error((err instanceof Error && err.message) || "Failed to upload photo.");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -152,11 +155,12 @@ export default function ProfilePage() {
       return await removeProfileImage(session.gmail);
     },
     onSuccess: (msg) => {
+      if (session) setSession({ ...session, imageUrl: "" });
       queryClient.invalidateQueries({ queryKey: ["userProfile", session?.gmail] });
       toast.success(msg || "Profile photo removed successfully!");
     },
-    onError: (err: any) => {
-      toast.error(err?.message || "Failed to remove photo.");
+    onError: (err: Error) => {
+      toast.error(err.message || "Failed to remove photo.");
     },
   });
 
@@ -177,7 +181,7 @@ export default function ProfilePage() {
 
   if (!ready || profileQuery.isLoading) {
     return (
-      <div className="pt-24 min-h-[70vh]">
+      <div className="min-h-[70vh] bg-cream">
         <Container className="py-10">
           <Skeleton className="h-10 w-48 mb-8" />
           <div className="grid gap-8 lg:grid-cols-[20rem_1fr]">
@@ -191,12 +195,12 @@ export default function ProfilePage() {
 
   if (!session) {
     return (
-      <div className="pt-24 min-h-[70vh]">
+      <div className="min-h-[70vh] bg-cream">
         <Container className="py-16 text-center">
-          <User className="mx-auto h-12 w-12 text-[#50644C]/40" />
+          <User className="mx-auto h-12 w-12 text-forest/40" />
           <h2 className="mt-4 font-display text-2xl">Please sign in to view your profile</h2>
           <p className="mt-2 text-sm text-muted-foreground">Access your orders, saved addresses, and profile details.</p>
-          <Button asChild className="mt-6 bg-[#50644C] hover:bg-[#384935] text-white">
+          <Button asChild className="mt-6 bg-forest hover:bg-forest-dark text-white">
             <Link href="/login">Sign In</Link>
           </Button>
         </Container>
@@ -226,17 +230,17 @@ export default function ProfilePage() {
   );
 
   return (
-    <div className="pt-24 min-h-[85vh] bg-[#FAF9F5]/40">
+    <div className="min-h-[85vh] bg-cream">
       <Container className="py-10">
         {/* Page Title & Breadcrumb */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#50644C]/15 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-forest/15 pb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#50644C]">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-forest">
               <span>Customer Portal</span>
               <span>/</span>
               <span>My Profile</span>
             </div>
-            <h1 className="mt-1 font-display text-3xl sm:text-4xl text-[#17231C]">
+            <h1 className="mt-1 font-display text-3xl sm:text-4xl text-ink">
               Customer Profile &amp; Account
             </h1>
           </div>
@@ -246,10 +250,10 @@ export default function ProfilePage() {
               asChild
               variant="outline"
               size="sm"
-              className="border-[#50644C]/25 text-[#243021] hover:bg-white"
+              className="border-forest/25 text-forest-dark hover:bg-white"
             >
               <Link href="/orders" className="flex items-center gap-1.5">
-                <ShoppingBag className="w-4 h-4 text-[#50644C]" />
+                <ShoppingBag className="w-4 h-4 text-forest" />
                 <span>My Orders ({orders.length})</span>
               </Link>
             </Button>
@@ -257,7 +261,7 @@ export default function ProfilePage() {
               asChild
               variant="outline"
               size="sm"
-              className="border-[#50644C]/25 text-[#243021] hover:bg-white"
+              className="border-forest/25 text-forest-dark hover:bg-white"
             >
               <Link href="/cart" className="flex items-center gap-1.5">
                 <span>View Cart</span>
@@ -271,15 +275,15 @@ export default function ProfilePage() {
         <div className="mt-8 grid gap-8 lg:grid-cols-[22rem_1fr] items-start">
           {/* Left Column: User Card & Eco Stats */}
           <aside className="space-y-6">
-            <div className="border border-[#50644C]/20 bg-white/80 backdrop-blur-md p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="border border-forest/20 bg-white/80 backdrop-blur-md p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
               {/* Avatar & Photo Upload */}
               <div className="flex flex-col items-center text-center">
                 <div className="relative group">
-                  <Avatar className="h-28 w-28 rounded-none border border-[#50644C]/25 shadow-xs bg-[#EAE4D9]">
+                  <Avatar className="h-28 w-28 rounded-md border border-forest/25 shadow-xs bg-line">
                     {user.imageUrl ? (
-                      <AvatarImage src={user.imageUrl} alt={user.name || user.gmail} className="rounded-none object-cover" />
+                      <AvatarImage src={user.imageUrl} alt={user.name || user.gmail} className="rounded-md object-cover" />
                     ) : null}
-                    <AvatarFallback className="bg-[#EAE4D9] text-[#243021] font-display text-3xl font-semibold rounded-none">
+                    <AvatarFallback className="bg-line text-forest-dark font-display text-3xl font-semibold rounded-md">
                       {initials}
                     </AvatarFallback>
                   </Avatar>
@@ -289,7 +293,7 @@ export default function ProfilePage() {
                     <button
                       onClick={() => fileRef.current?.click()}
                       disabled={uploading || removePhotoMut.isPending}
-                      className="p-1.5 bg-[#50644C] text-white shadow-xs hover:bg-[#384935] transition-transform hover:scale-105 cursor-pointer rounded-none border border-white/50"
+                      className="p-1.5 bg-forest text-white shadow-xs hover:bg-forest-dark transition-transform hover:scale-105 cursor-pointer rounded-md border border-white/50"
                       title="Change profile picture"
                       aria-label="Upload new photo"
                     >
@@ -299,7 +303,7 @@ export default function ProfilePage() {
                       <button
                         onClick={() => removePhotoMut.mutate()}
                         disabled={uploading || removePhotoMut.isPending}
-                        className="p-1.5 bg-red-600 text-white shadow-xs hover:bg-red-700 transition-transform hover:scale-105 cursor-pointer rounded-none border border-white/50 ml-0.5"
+                        className="p-1.5 bg-red-600 text-white shadow-xs hover:bg-red-700 transition-transform hover:scale-105 cursor-pointer rounded-md border border-white/50 ml-0.5"
                         title="Remove profile picture"
                         aria-label="Remove photo"
                       >
@@ -325,9 +329,9 @@ export default function ProfilePage() {
                     size="sm"
                     onClick={() => fileRef.current?.click()}
                     disabled={uploading || removePhotoMut.isPending}
-                    className="h-7 text-xs border-[#50644C]/30 text-[#243021] hover:bg-[#FAF9F5] cursor-pointer"
+                    className="h-7 text-xs border-forest/30 text-forest-dark hover:bg-cream cursor-pointer"
                   >
-                    <Camera className="w-3 h-3 mr-1 text-[#50644C]" />
+                    <Camera className="w-3 h-3 mr-1 text-forest" />
                     {uploading ? "Uploading…" : user.imageUrl ? "Change" : "Upload Photo"}
                   </Button>
                   {user.imageUrl && (
@@ -345,17 +349,17 @@ export default function ProfilePage() {
                   )}
                 </div>
 
-                <h2 className="mt-4 font-display text-xl font-bold text-[#17231C]">
+                <h2 className="mt-4 font-display text-xl font-bold text-ink">
                   {user.name || "Eco Partner"}
                 </h2>
                 <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                  <Mail className="w-3 h-3 text-[#50644C]" />
+                  <Mail className="w-3 h-3 text-forest" />
                   {user.gmail}
                 </p>
 
                 <div className="mt-3 flex flex-wrap justify-center gap-2">
-                  <Badge className="bg-[#50644C]/10 text-[#50644C] border-[#50644C]/20 text-[11px] font-medium">
-                    <CheckCircle2 className="w-3 h-3 mr-1 text-[#50644C]" />
+                  <Badge className="bg-forest/10 text-forest border-forest/20 text-[11px] font-medium">
+                    <CheckCircle2 className="w-3 h-3 mr-1 text-forest" />
                     {user.role === "ADMIN" ? "Administrator" : "Verified Customer"}
                   </Badge>
                   {user.enabled && (
@@ -366,29 +370,29 @@ export default function ProfilePage() {
                 </div>
 
                 {uploading && (
-                  <p className="mt-2 text-xs text-[#50644C] animate-pulse font-medium">
+                  <p className="mt-2 text-xs text-forest animate-pulse font-medium">
                     Uploading photo…
                   </p>
                 )}
               </div>
 
               {/* Quick Info Rows */}
-              <div className="mt-6 border-t border-[#50644C]/15 pt-5 space-y-3 text-xs">
-                <div className="flex items-center justify-between text-[#1A241C]">
+              <div className="mt-6 border-t border-forest/15 pt-5 space-y-3 text-xs">
+                <div className="flex items-center justify-between text-ink">
                   <span className="text-muted-foreground flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-[#50644C]" /> Phone
+                    <Phone className="w-3.5 h-3.5 text-forest" /> Phone
                   </span>
                   <span className="font-medium">{user.contactno || "Not set"}</span>
                 </div>
-                <div className="flex items-center justify-between text-[#1A241C]">
+                <div className="flex items-center justify-between text-ink">
                   <span className="text-muted-foreground flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-[#50644C]" /> Gender
+                    <User className="w-3.5 h-3.5 text-forest" /> Gender
                   </span>
                   <span className="font-medium capitalize">{user.gender || "Not specified"}</span>
                 </div>
-                <div className="flex items-center justify-between text-[#1A241C]">
+                <div className="flex items-center justify-between text-ink">
                   <span className="text-muted-foreground flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#50644C]" /> Date of Birth
+                    <Calendar className="w-3.5 h-3.5 text-forest" /> Date of Birth
                   </span>
                   <span className="font-medium">{user.dob || "Not set"}</span>
                 </div>
@@ -396,8 +400,8 @@ export default function ProfilePage() {
             </div>
 
             {/* Eco Impact Stats Box */}
-            <div className="border border-[#50644C]/20 bg-gradient-to-br from-[#243021] to-[#1A2418] text-white p-5 shadow-sm">
-              <div className="flex items-center gap-2 text-[#CCAC88]">
+            <div className="border border-forest/20 bg-gradient-to-br from-forest-dark to-forest-dark text-white p-5 shadow-sm">
+              <div className="flex items-center gap-2 text-camel">
                 <Leaf className="w-4 h-4" />
                 <span className="text-xs font-bold uppercase tracking-wider">Your Eco Contribution</span>
               </div>
@@ -406,7 +410,7 @@ export default function ProfilePage() {
               </p>
               <div className="mt-4 grid grid-cols-2 gap-3 text-center">
                 <div className="bg-white/10 p-3 border border-white/10">
-                  <p className="font-display text-xl font-bold text-[#CCAC88]">
+                  <p className="font-display text-xl font-bold text-camel">
                     {totalItemsOrdered}
                   </p>
                   <p className="text-[10px] text-emerald-200/80 uppercase tracking-wider mt-0.5">
@@ -414,7 +418,7 @@ export default function ProfilePage() {
                   </p>
                 </div>
                 <div className="bg-white/10 p-3 border border-white/10">
-                  <p className="font-display text-xl font-bold text-[#CCAC88]">
+                  <p className="font-display text-xl font-bold text-camel">
                     {(totalItemsOrdered * 0.12).toFixed(1)} <span className="text-xs font-normal">kg</span>
                   </p>
                   <p className="text-[10px] text-emerald-200/80 uppercase tracking-wider mt-0.5">
@@ -426,30 +430,30 @@ export default function ProfilePage() {
           </aside>
 
           {/* Right Column: Tabbed Content (Personal Details, Addresses, Orders, Security) */}
-          <main className="border border-[#50644C]/20 bg-white/90 backdrop-blur-md p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+          <main className="border border-forest/20 bg-white/90 backdrop-blur-md p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid grid-cols-2 sm:grid-cols-4 bg-[#F2EDE4] p-1 border border-[#50644C]/15 mb-6 h-auto w-full gap-1">
+              <TabsList className="grid grid-cols-2 sm:grid-cols-4 bg-sand p-1 border border-forest/15 mb-6 h-auto w-full gap-1">
                 <TabsTrigger
                   value="details"
-                  className="cursor-pointer py-2 px-3 text-xs font-semibold text-[#1A241C]/75 border border-transparent data-[state=active]:bg-white data-[state=active]:text-[#243021] data-[state=active]:border-[#50644C]/15 data-[state=active]:shadow-xs transition-all"
+                  className="cursor-pointer py-2 px-3 text-xs font-semibold text-ink/75 border border-transparent data-[state=active]:bg-white data-[state=active]:text-forest-dark data-[state=active]:border-forest/15 data-[state=active]:shadow-xs transition-all"
                 >
                   Personal Info
                 </TabsTrigger>
                 <TabsTrigger
                   value="addresses"
-                  className="cursor-pointer py-2 px-3 text-xs font-semibold text-[#1A241C]/75 border border-transparent data-[state=active]:bg-white data-[state=active]:text-[#243021] data-[state=active]:border-[#50644C]/15 data-[state=active]:shadow-xs transition-all"
+                  className="cursor-pointer py-2 px-3 text-xs font-semibold text-ink/75 border border-transparent data-[state=active]:bg-white data-[state=active]:text-forest-dark data-[state=active]:border-forest/15 data-[state=active]:shadow-xs transition-all"
                 >
                   Address Book ({addresses.length})
                 </TabsTrigger>
                 <TabsTrigger
                   value="orders"
-                  className="cursor-pointer py-2 px-3 text-xs font-semibold text-[#1A241C]/75 border border-transparent data-[state=active]:bg-white data-[state=active]:text-[#243021] data-[state=active]:border-[#50644C]/15 data-[state=active]:shadow-xs transition-all"
+                  className="cursor-pointer py-2 px-3 text-xs font-semibold text-ink/75 border border-transparent data-[state=active]:bg-white data-[state=active]:text-forest-dark data-[state=active]:border-forest/15 data-[state=active]:shadow-xs transition-all"
                 >
                   Recent Orders ({orders.length})
                 </TabsTrigger>
                 <TabsTrigger
                   value="security"
-                  className="cursor-pointer py-2 px-3 text-xs font-semibold text-[#1A241C]/75 border border-transparent data-[state=active]:bg-white data-[state=active]:text-[#243021] data-[state=active]:border-[#50644C]/15 data-[state=active]:shadow-xs transition-all"
+                  className="cursor-pointer py-2 px-3 text-xs font-semibold text-ink/75 border border-transparent data-[state=active]:bg-white data-[state=active]:text-forest-dark data-[state=active]:border-forest/15 data-[state=active]:shadow-xs transition-all"
                 >
                   Security
                 </TabsTrigger>
@@ -458,7 +462,7 @@ export default function ProfilePage() {
               {/* Tab 1: Personal Info Form */}
               <TabsContent value="details" className="space-y-6 focus-visible:outline-none">
                 <div>
-                  <h3 className="font-display text-xl text-[#17231C]">Personal Information</h3>
+                  <h3 className="font-display text-xl text-ink">Personal Information</h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     Manage your personal details and contact information.
                   </p>
@@ -466,7 +470,7 @@ export default function ProfilePage() {
 
                 <form onSubmit={handleSaveProfile} className="space-y-4 max-w-xl">
                   <div className="space-y-1.5">
-                    <Label htmlFor="name" className="text-xs font-semibold text-[#17231C]">
+                    <Label htmlFor="name" className="text-xs font-semibold text-ink">
                       Full Name
                     </Label>
                     <Input
@@ -475,19 +479,19 @@ export default function ProfilePage() {
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Your full name"
                       required
-                      className="border-[#50644C]/20 bg-white"
+                      className="border-forest/20 bg-white"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="gmail" className="text-xs font-semibold text-[#17231C]">
+                    <Label htmlFor="gmail" className="text-xs font-semibold text-ink">
                       Email Address (Account ID)
                     </Label>
                     <Input
                       id="gmail"
                       value={user.gmail}
                       disabled
-                      className="border-[#50644C]/15 bg-[#FAF9F5] text-muted-foreground cursor-not-allowed"
+                      className="border-forest/15 bg-cream text-muted-foreground cursor-not-allowed"
                     />
                     <p className="text-[11px] text-muted-foreground">
                       Email address is linked to your login identity and cannot be changed.
@@ -496,7 +500,7 @@ export default function ProfilePage() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
-                      <Label htmlFor="contactno" className="text-xs font-semibold text-[#17231C]">
+                      <Label htmlFor="contactno" className="text-xs font-semibold text-ink">
                         Phone / Contact Number
                       </Label>
                       <Input
@@ -504,12 +508,12 @@ export default function ProfilePage() {
                         value={contactno}
                         onChange={(e) => setContactno(e.target.value)}
                         placeholder="+91 98765 43210"
-                        className="border-[#50644C]/20 bg-white"
+                        className="border-forest/20 bg-white"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label htmlFor="dob" className="text-xs font-semibold text-[#17231C]">
+                      <Label htmlFor="dob" className="text-xs font-semibold text-ink">
                         Date of Birth
                       </Label>
                       <Input
@@ -517,20 +521,20 @@ export default function ProfilePage() {
                         type="date"
                         value={dob}
                         onChange={(e) => setDob(e.target.value)}
-                        className="border-[#50644C]/20 bg-white"
+                        className="border-forest/20 bg-white"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="gender" className="text-xs font-semibold text-[#17231C]">
+                    <Label htmlFor="gender" className="text-xs font-semibold text-ink">
                       Gender
                     </Label>
                     <select
                       id="gender"
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
-                      className="w-full h-9 px-3 text-sm bg-white border border-[#50644C]/20 text-[#17231C] rounded-none focus:outline-none focus:ring-1 focus:ring-[#50644C]"
+                      className="w-full h-9 px-3 text-sm bg-white border border-forest/20 text-ink rounded-md focus:outline-none focus:ring-1 focus:ring-forest"
                     >
                       <option value="NA">Select Gender</option>
                       <option value="Male">Male</option>
@@ -544,7 +548,7 @@ export default function ProfilePage() {
                     <Button
                       type="submit"
                       disabled={updateProfileMut.isPending}
-                      className="bg-[#50644C] hover:bg-[#384935] text-white px-6 cursor-pointer font-medium text-xs shadow-xs"
+                      className="bg-forest hover:bg-forest-dark text-white px-6 cursor-pointer font-medium text-xs shadow-xs"
                     >
                       {updateProfileMut.isPending ? "Saving Changes…" : "Save Profile Details"}
                     </Button>
@@ -556,14 +560,14 @@ export default function ProfilePage() {
               <TabsContent value="addresses" className="space-y-6 focus-visible:outline-none">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-display text-xl text-[#17231C]">Saved Addresses</h3>
+                    <h3 className="font-display text-xl text-ink">Saved Addresses</h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       Manage delivery destinations for fast enterprise and retail checkout.
                     </p>
                   </div>
                   <AddressFormDialog
                     trigger={
-                      <Button size="sm" className="bg-[#50644C] hover:bg-[#384935] text-white cursor-pointer text-xs">
+                      <Button size="sm" className="bg-forest hover:bg-forest-dark text-white cursor-pointer text-xs">
                         + Add New Address
                       </Button>
                     }
@@ -576,14 +580,14 @@ export default function ProfilePage() {
                     <Skeleton className="h-32" />
                   </div>
                 ) : addresses.length === 0 ? (
-                  <div className="border border-dashed border-[#50644C]/25 p-8 text-center bg-[#FAF9F5]/60">
-                    <MapPin className="mx-auto h-8 w-8 text-[#50644C]/50" />
-                    <p className="mt-2 text-sm font-semibold text-[#17231C]">No addresses saved yet</p>
+                  <div className="border border-dashed border-forest/25 p-8 text-center bg-cream/60">
+                    <MapPin className="mx-auto h-8 w-8 text-forest/50" />
+                    <p className="mt-2 text-sm font-semibold text-ink">No addresses saved yet</p>
                     <p className="text-xs text-muted-foreground mt-1">Add your shipping or billing address for easy ordering.</p>
                     <div className="mt-4">
                       <AddressFormDialog
                         trigger={
-                          <Button size="sm" variant="outline" className="border-[#50644C]/30 text-[#50644C] cursor-pointer">
+                          <Button size="sm" variant="outline" className="border-forest/30 text-forest cursor-pointer">
                             Add Address
                           </Button>
                         }
@@ -595,11 +599,11 @@ export default function ProfilePage() {
                     {addresses.map((a) => (
                       <div
                         key={a.id}
-                        className="border border-[#50644C]/20 bg-white p-4 shadow-xs flex flex-col justify-between"
+                        className="border border-forest/20 bg-white p-4 shadow-xs flex flex-col justify-between"
                       >
                         <div>
                           <div className="flex items-start justify-between">
-                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-[#50644C]/10 text-[#50644C]">
+                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-forest/10 text-forest">
                               {a.addressType}
                             </span>
                             <div className="flex gap-1">
@@ -607,7 +611,7 @@ export default function ProfilePage() {
                                 address={a}
                                 trigger={
                                   <button
-                                    className="cursor-pointer p-1.5 text-muted-foreground hover:text-[#50644C]"
+                                    className="cursor-pointer p-1.5 text-muted-foreground hover:text-forest"
                                     aria-label="Edit address"
                                   >
                                     <Pencil className="h-3.5 w-3.5" />
@@ -623,7 +627,7 @@ export default function ProfilePage() {
                               </button>
                             </div>
                           </div>
-                          <p className="mt-3 text-xs leading-relaxed text-[#17231C]">
+                          <p className="mt-3 text-xs leading-relaxed text-ink">
                             <span className="font-semibold">{a.doorNumber}</span>, {a.street}
                             <br />
                             {a.city}, {a.state} {a.zipCode}
@@ -641,13 +645,13 @@ export default function ProfilePage() {
               <TabsContent value="orders" className="space-y-6 focus-visible:outline-none">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-display text-xl text-[#17231C]">Recent Orders</h3>
+                    <h3 className="font-display text-xl text-ink">Recent Orders</h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       Track and review your recent circular purchases and procurement dispatches.
                     </p>
                   </div>
                   {orders.length > 0 && (
-                    <Button asChild size="sm" variant="outline" className="border-[#50644C]/30 text-[#50644C]">
+                    <Button asChild size="sm" variant="outline" className="border-forest/30 text-forest">
                       <Link href="/orders">View Full History</Link>
                     </Button>
                   )}
@@ -659,26 +663,26 @@ export default function ProfilePage() {
                     <Skeleton className="h-20" />
                   </div>
                 ) : orders.length === 0 ? (
-                  <div className="border border-dashed border-[#50644C]/25 p-8 text-center bg-[#FAF9F5]/60">
-                    <ShoppingBag className="mx-auto h-8 w-8 text-[#50644C]/50" />
-                    <p className="mt-2 text-sm font-semibold text-[#17231C]">No orders placed yet</p>
+                  <div className="border border-dashed border-forest/25 p-8 text-center bg-cream/60">
+                    <ShoppingBag className="mx-auto h-8 w-8 text-forest/50" />
+                    <p className="mt-2 text-sm font-semibold text-ink">No orders placed yet</p>
                     <p className="text-xs text-muted-foreground mt-1">
                       Browse our eco-friendly tableware and sustainable packaging catalog.
                     </p>
-                    <Button asChild size="sm" className="mt-4 bg-[#50644C] hover:bg-[#384935] text-white">
+                    <Button asChild size="sm" className="mt-4 bg-forest hover:bg-forest-dark text-white">
                       <Link href="/products">Explore Catalog</Link>
                     </Button>
                   </div>
                 ) : (
-                  <div className="divide-y divide-[#50644C]/15 border border-[#50644C]/20 bg-white">
+                  <div className="divide-y divide-forest/15 border border-forest/20 bg-white">
                     {orders.slice(0, 5).map((o) => (
                       <Link
                         key={o.id}
                         href={`/orders/${o.id}`}
-                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 hover:bg-[#FAF9F5] transition-colors"
+                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 hover:bg-cream transition-colors"
                       >
                         <div>
-                          <p className="font-display font-bold text-sm text-[#17231C]">
+                          <p className="font-display font-bold text-sm text-ink">
                             Order #{o.id}
                           </p>
                           <p className="text-xs text-muted-foreground mt-0.5">
@@ -688,7 +692,7 @@ export default function ProfilePage() {
                         </div>
                         <div className="flex items-center justify-between sm:justify-end gap-3">
                           <OrderStatusBadge status={o.status} />
-                          <span className="font-medium text-sm tabular-nums text-[#17231C]">
+                          <span className="font-medium text-sm tabular-nums text-ink">
                             {formatINR(o.totalAmount)}
                           </span>
                           <ArrowRight className="w-4 h-4 text-muted-foreground hidden sm:inline-block" />
@@ -702,7 +706,7 @@ export default function ProfilePage() {
               {/* Tab 4: Security & Password */}
               <TabsContent value="security" className="space-y-6 focus-visible:outline-none">
                 <div>
-                  <h3 className="font-display text-xl text-[#17231C]">Account Security</h3>
+                  <h3 className="font-display text-xl text-ink">Account Security</h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     Update your password and maintain credential security.
                   </p>
@@ -710,7 +714,7 @@ export default function ProfilePage() {
 
                 <form onSubmit={handleSavePassword} className="space-y-4 max-w-md">
                   <div className="space-y-1.5">
-                    <Label htmlFor="current-pass" className="text-xs font-semibold text-[#17231C]">
+                    <Label htmlFor="current-pass" className="text-xs font-semibold text-ink">
                       Current Password
                     </Label>
                     <div className="relative">
@@ -721,14 +725,14 @@ export default function ProfilePage() {
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         required
-                        className="border-[#50644C]/20 bg-white pr-9"
+                        className="border-forest/20 bg-white pr-9"
                       />
                       <Lock className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="new-pass" className="text-xs font-semibold text-[#17231C]">
+                    <Label htmlFor="new-pass" className="text-xs font-semibold text-ink">
                       New Password (minimum 6 characters)
                     </Label>
                     <div className="relative">
@@ -740,14 +744,14 @@ export default function ProfilePage() {
                         onChange={(e) => setNewPassword(e.target.value)}
                         required
                         minLength={6}
-                        className="border-[#50644C]/20 bg-white pr-9"
+                        className="border-forest/20 bg-white pr-9"
                       />
                       <Lock className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="confirm-pass" className="text-xs font-semibold text-[#17231C]">
+                    <Label htmlFor="confirm-pass" className="text-xs font-semibold text-ink">
                       Confirm New Password
                     </Label>
                     <div className="relative">
@@ -759,7 +763,7 @@ export default function ProfilePage() {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                         minLength={6}
-                        className="border-[#50644C]/20 bg-white pr-9"
+                        className="border-forest/20 bg-white pr-9"
                       />
                       <Lock className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
                     </div>
@@ -769,7 +773,7 @@ export default function ProfilePage() {
                     <Button
                       type="submit"
                       disabled={changePasswordMut.isPending}
-                      className="bg-[#50644C] hover:bg-[#384935] text-white px-6 cursor-pointer font-medium text-xs shadow-xs"
+                      className="bg-forest hover:bg-forest-dark text-white px-6 cursor-pointer font-medium text-xs shadow-xs"
                     >
                       {changePasswordMut.isPending ? "Updating Password…" : "Update Password"}
                     </Button>
